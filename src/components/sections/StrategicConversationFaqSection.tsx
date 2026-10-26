@@ -44,7 +44,7 @@ export default function StrategicConversationFaqSection() {
   };
 
   return (
-    <section className="relative bg-[#000208] text-white pt-6 sm:pt-10 pb-12 sm:pb-16 overflow-hidden border-t border-white/5">
+    <section id="contact" className="relative bg-[#000208] text-white pt-8 sm:pt-12 pb-12 sm:pb-16 overflow-hidden border-t border-white/5 scroll-mt-24">
       
 
 
@@ -55,15 +55,15 @@ export default function StrategicConversationFaqSection() {
         {/* ========================================================= */}
         <div className="text-center max-w-3xl mx-auto space-y-2.5 sm:space-y-3 pb-4 sm:pb-6">
           
-          {/* Clean Modern White Tag */}
+          {/* Signature Light Blue Tag matching Logo */}
           <div className="flex items-center justify-center space-x-3 select-none">
-            <span className="w-10 sm:w-16 h-[1px] bg-gradient-to-r from-transparent to-white/30" />
-            <span className="w-1.5 sm:w-2 h-[1.5px] bg-white/60" />
-            <span className="text-xs sm:text-[13px] font-sans font-semibold tracking-[0.22em] text-white uppercase">
+            <span className="w-10 sm:w-16 h-[1px] bg-gradient-to-r from-transparent to-[#7ec8ff]/40" />
+            <span className="w-1.5 sm:w-2 h-[1.5px] bg-[#7ec8ff]/80" />
+            <span className="text-xs sm:text-[13px] font-oxanium font-bold tracking-[0.28em] text-[#7ec8ff] uppercase drop-shadow-[0_0_12px_rgba(126,200,255,0.4)]">
               CONTACT
             </span>
-            <span className="w-1.5 sm:w-2 h-[1.5px] bg-white/60" />
-            <span className="w-10 sm:w-16 h-[1px] bg-gradient-to-l from-transparent to-white/30" />
+            <span className="w-1.5 sm:w-2 h-[1.5px] bg-[#7ec8ff]/80" />
+            <span className="w-10 sm:w-16 h-[1px] bg-gradient-to-l from-transparent to-[#7ec8ff]/40" />
           </div>
 
           {/* Heading */}

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import { COMPANY_INFO } from "@/data/company";
+import { useSettings } from "@/context/SettingsContext";
 import {
   Send,
   CheckCircle2,
@@ -19,6 +20,7 @@ import {
 } from "lucide-react";
 
 export default function ContactSection() {
+  const { settings } = useSettings();
   const [formData, setFormData] = useState({
     fullName: "",
     company: "",
@@ -116,7 +118,7 @@ export default function ContactSection() {
                   <MapPin className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-1" />
                   <div>
                     <div className="font-semibold text-white">Engineering Headquarters</div>
-                    <div className="text-slate-400 text-xs mt-0.5">{COMPANY_INFO.contact.corporateOffice}</div>
+                    <div className="text-slate-400 text-xs mt-0.5">{settings.corporateOffice || COMPANY_INFO.contact.corporateOffice}</div>
                   </div>
                 </div>
 
@@ -124,11 +126,11 @@ export default function ContactSection() {
                   <Mail className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-1" />
                   <div>
                     <div className="font-semibold text-white">Direct Communications</div>
-                    <a href={`mailto:${COMPANY_INFO.contact.email}`} className="text-cyan-300 hover:underline text-xs">
-                      {COMPANY_INFO.contact.email}
+                    <a href={`mailto:${settings.contactEmail || COMPANY_INFO.contact.email}`} className="text-cyan-300 hover:underline text-xs">
+                      {settings.contactEmail || COMPANY_INFO.contact.email}
                     </a>
                     <div className="text-slate-400 text-[11px] mt-0.5">
-                      Strategic inquiries: {COMPANY_INFO.contact.inquiriesEmail}
+                      Strategic inquiries: {settings.inquiriesEmail || COMPANY_INFO.contact.inquiriesEmail}
                     </div>
                   </div>
                 </div>
@@ -137,15 +139,15 @@ export default function ContactSection() {
                   <Phone className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-1" />
                   <div>
                     <div className="font-semibold text-white">Telephone Exchange</div>
-                    <div className="text-slate-300 text-xs">{COMPANY_INFO.contact.phone}</div>
-                    <div className="text-slate-400 text-[11px] mt-0.5">{COMPANY_INFO.contact.hours}</div>
+                    <div className="text-slate-300 text-xs">{settings.phone || COMPANY_INFO.contact.phone}</div>
+                    <div className="text-slate-400 text-[11px] mt-0.5">{settings.workingHours || COMPANY_INFO.contact.hours}</div>
                   </div>
                 </div>
               </div>
 
               <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 text-[11px] font-mono text-slate-400 leading-relaxed">
                 <div className="text-cyan-400 font-bold mb-1">CLEARANCE NOTICE</div>
-                {COMPANY_INFO.contact.clearanceNotice}
+                {settings.clearanceNotice || COMPANY_INFO.contact.clearanceNotice}
               </div>
             </div>
           </div>

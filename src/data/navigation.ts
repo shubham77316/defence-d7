@@ -35,18 +35,33 @@ export const NAV_LINKS: NavItem[] = [
   },
   {
     label: "Products",
-    href: "/businesses",
+    href: "/capabilities",
     description: "Sovereign aerospace systems and tactical defence solutions.",
     children: [
       {
-        label: "Aerospace Systems",
-        href: "/businesses#aerospace",
-        description: "Autonomous aerial platforms, tactical UAVs & surveillance suites."
+        label: "Defence Solutions",
+        href: "/defence",
+        description: "Tactical armor, survivability equipment and kinetic technologies."
       },
       {
-        label: "Defence Solutions",
-        href: "/businesses#defence",
-        description: "Tactical armor, survivability equipment and kinetic technologies."
+        label: "Jio",
+        href: "/news?id=jio",
+        description: ""
+      },
+      {
+        label: "PETRO",
+        href: "/news?id=petro",
+        description: ""
+      },
+      {
+        label: "Bisto",
+        href: "/news?id=bisto",
+        description: ""
+      },
+      {
+        label: "Aerospace Systems",
+        href: "/aerospace",
+        description: "Autonomous aerial platforms, tactical UAVs & surveillance suites."
       }
     ]
   },
@@ -66,12 +81,6 @@ export const NAV_LINKS: NavItem[] = [
     description: "Official releases, platform advancements and defence briefings."
   },
   {
-    label: "E-Shop",
-    href: "https://eshop.skywardens.com",
-    description: "Direct procurement portal for verified tactical and industrial supplies.",
-    badge: "external"
-  },
-  {
     label: "Contact",
     href: "/contact",
     description: "Direct strategic liaison and institutional inquiry portal."
@@ -81,7 +90,7 @@ export const NAV_LINKS: NavItem[] = [
 export const FOOTER_LINKS = {
   sectors: [
     { label: "Aerospace Systems", href: "/businesses#aerospace" },
-    { label: "Defence Solutions", href: "/businesses#defence" },
+    { label: "Defence Solutions", href: "/defence" },
     { label: "Advanced Ground Systems", href: "/businesses#advanced-systems" },
     { label: "Petrochemical & Materials", href: "/businesses#petrochemical" }
   ],

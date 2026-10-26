@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 
 interface NewsItem {
   id: string;
@@ -15,17 +16,7 @@ interface NewsItem {
   href: string;
 }
 
-const newsItems: NewsItem[] = [
-  {
-    id: "aerospace-highlights",
-    title: "Aerospace highlights and autonomous program positioning",
-    category: "AEROSPACE",
-    date: "MARCH 2026",
-    description:
-      "Precision-engineered sovereign airframes, autonomous flight trials, and tactical unmanned aerial surveillance milestones.",
-    image: "/images/stealth-fighter-hangar.jpg",
-    href: "/news/aerospace-highlights",
-  },
+const FALLBACK_NEWS_ITEMS: NewsItem[] = [
   {
     id: "defence-systems",
     title: "Defence systems, protective platforms, and readiness updates",
@@ -36,10 +27,82 @@ const newsItems: NewsItem[] = [
     image: "/images/defence-systems-radar.jpg",
     href: "/news/defence-systems",
   },
+  {
+    id: "aerospace-highlights",
+    title: "Aerospace highlights and autonomous program positioning",
+    category: "AEROSPACE",
+    date: "MARCH 2026",
+    description:
+      "Precision-engineered sovereign airframes, autonomous flight trials, and tactical unmanned aerial surveillance milestones.",
+    image: "/images/stealth-fighter-hangar.jpg",
+    href: "/news/aerospace-highlights",
+  },
 ];
 
 export default function NewsInsightsSection() {
-  const [activeId, setActiveId] = useState<string>(newsItems[0].id);
+  const [items, setItems] = useState<NewsItem[]>(FALLBACK_NEWS_ITEMS);
+  const [activeId, setActiveId] = useState<string>(FALLBACK_NEWS_ITEMS[0].id);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const res = await fetch("/api/news", { cache: "no-store" });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+            // Strictly extract only Defence and Aerospace
+            const defenceData = json.data.find((d: any) => {
+              const s = `${d.slug || ""} ${d.category || ""} ${d.title || ""}`.toLowerCase();
+              return s.includes("defence") || s.includes("defense");
+            });
+
+            const aerospaceData = json.data.find((d: any) => {
+              const s = `${d.slug || ""} ${d.category || ""} ${d.title || ""}`.toLowerCase();
+              return s.includes("aerospace");
+            });
+
+            const onlyTwo: NewsItem[] = [
+              {
+                id: defenceData?.slug || "defence-systems",
+                title: defenceData?.title || FALLBACK_NEWS_ITEMS[0].title,
+                category: "DEFENCE",
+                date: defenceData?.date || FALLBACK_NEWS_ITEMS[0].date,
+                description: defenceData?.excerpt || defenceData?.description || FALLBACK_NEWS_ITEMS[0].description,
+                image: (defenceData?.image && typeof defenceData.image === "string" && defenceData.image.trim().length > 0)
+                  ? defenceData.image.trim()
+                  : FALLBACK_NEWS_ITEMS[0].image,
+                href: `/news/${defenceData?.slug || "defence-systems"}`,
+              },
+              {
+                id: aerospaceData?.slug || "aerospace-highlights",
+                title: aerospaceData?.title || FALLBACK_NEWS_ITEMS[1].title,
+                category: "AEROSPACE",
+                date: aerospaceData?.date || FALLBACK_NEWS_ITEMS[1].date,
+                description: aerospaceData?.excerpt || aerospaceData?.description || FALLBACK_NEWS_ITEMS[1].description,
+                image: (aerospaceData?.image && typeof aerospaceData.image === "string" && aerospaceData.image.trim().length > 0)
+                  ? aerospaceData.image.trim()
+                  : FALLBACK_NEWS_ITEMS[1].image,
+                href: `/news/${aerospaceData?.slug || "aerospace-highlights"}`,
+              },
+            ];
+
+            setItems(onlyTwo);
+            setActiveId((prev) => (onlyTwo.some((d) => d.id === prev) ? prev : onlyTwo[0].id));
+          }
+        }
+      } catch (err) {
+        // Fallback silently
+      }
+    };
+    fetchNews();
+
+    window.addEventListener("focus", fetchNews);
+    const interval = setInterval(fetchNews, 4000);
+    return () => {
+      window.removeEventListener("focus", fetchNews);
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <section className="relative pt-6 sm:pt-10 pb-8 sm:pb-10 bg-[#02050e] overflow-hidden border-t border-white/10 select-none">
@@ -53,71 +116,60 @@ export default function NewsInsightsSection() {
         }}
       />
 
-      {/* Main Container Aligned with Navbar ("A" of ANUVYOM to "Contact Anuvyom") */}
+      {/* Main Container Aligned with Navbar */}
       <div className="relative w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-14 z-10">
-        
         {/* Section Header */}
-        <div className="flex flex-col items-center justify-center text-center space-y-2 sm:space-y-2.5 pb-5 sm:pb-7 select-none">
-          {/* Clean Modern White Tag */}
-          <div className="flex items-center justify-center space-x-3 select-none">
-            <span className="w-10 sm:w-16 h-[1px] bg-gradient-to-r from-transparent to-white/30" />
-            <span className="w-1.5 sm:w-2 h-[1.5px] bg-white/60" />
-            <span className="text-xs sm:text-[13px] font-sans font-semibold tracking-[0.22em] text-white uppercase">
-              THE NEWSROOM
-            </span>
-            <span className="w-1.5 sm:w-2 h-[1.5px] bg-white/60" />
-            <span className="w-10 sm:w-16 h-[1px] bg-gradient-to-l from-transparent to-white/30" />
+        <div className="max-w-4xl xl:max-w-[1120px] mx-auto w-full relative pb-5 sm:pb-7">
+          <div className="flex flex-col items-center justify-center text-center space-y-2 sm:space-y-2.5 select-none">
+            {/* Clean Modern White Tag */}
+            <div className="flex items-center justify-center space-x-3 select-none">
+              <span className="w-10 sm:w-16 h-[1px] bg-gradient-to-r from-transparent to-white/30" />
+              <span className="w-1.5 sm:w-2 h-[1.5px] bg-white/60" />
+              <span className="text-xs sm:text-[13px] font-sans font-semibold tracking-[0.22em] text-white uppercase">
+                THE NEWSROOM
+              </span>
+              <span className="w-1.5 sm:w-2 h-[1.5px] bg-white/60" />
+              <span className="w-10 sm:w-16 h-[1px] bg-gradient-to-l from-transparent to-white/30" />
+            </div>
+
+            {/* Monumental Headline */}
+            <h2 className="font-oxanium text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white uppercase select-none">
+              NEWS & INSIGHTS
+            </h2>
+
+            {/* Subtitle */}
+            <p className="text-slate-400 text-xs sm:text-sm md:text-base leading-relaxed font-normal max-w-2xl">
+              Strategic disclosures, technological breakthroughs, and multi-domain deployment communiqués.
+            </p>
           </div>
 
-          <div className="w-full flex justify-center py-0.5">
-            <svg
-              viewBox="0 0 540 48"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-full max-w-[340px] sm:max-w-[440px] md:max-w-[520px] h-auto drop-shadow-[0_4px_24px_rgba(56,189,248,0.22)]"
-              aria-label="NEWS & INSIGHTS"
+          {/* Desktop Right View All Link */}
+          <div className="hidden sm:flex absolute right-0 bottom-8 items-center">
+            <Link
+              href="/news"
+              className="group inline-flex items-center gap-1.5 text-sm md:text-[15px] font-medium text-[#38bdf8] hover:text-[#7dd3fc] transition-colors duration-200"
             >
-              <defs>
-                {/* Brand Logo Shield Light Radiant Blue Sheen */}
-                <linearGradient id="newsLogoShieldBlueSheen" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#93d5ff" />
-                  <stop offset="30%" stopColor="#5bb4f8" />
-                  <stop offset="70%" stopColor="#288ee0" />
-                  <stop offset="100%" stopColor="#1a68aa" />
-                </linearGradient>
-
-                {/* Titanium White Steel Radiant Gradient */}
-                <linearGradient id="newsLogoTitaniumSteelSheen" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#ffffff" />
-                  <stop offset="35%" stopColor="#f1f5f9" />
-                  <stop offset="70%" stopColor="#cbd5e1" />
-                  <stop offset="100%" stopColor="#94a3b8" />
-                </linearGradient>
-              </defs>
-
-              <text
-                x="50%"
-                y="38"
-                textAnchor="middle"
-                fontFamily="var(--font-oxanium), 'Rajdhani', 'Anton', sans-serif"
-                fontSize="44"
-                fontWeight="900"
-                letterSpacing="0.08em"
-              >
-                <tspan fill="url(#newsLogoShieldBlueSheen)">NEWS </tspan>
-                <tspan fill="url(#newsLogoTitaniumSteelSheen)">&amp; </tspan>
-                <tspan fill="url(#newsLogoShieldBlueSheen)">INSIGHTS</tspan>
-              </text>
-            </svg>
+              <span className="tracking-wide">View all news</span>
+              <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-[#38bdf8] group-hover:text-[#7dd3fc]" />
+            </Link>
           </div>
 
-          <div className="w-16 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_10px_#22d3ee] mt-0.5" />
+          {/* Mobile Center View All Link */}
+          <div className="flex sm:hidden justify-center pt-3">
+            <Link
+              href="/news"
+              className="group inline-flex items-center gap-1.5 text-sm font-medium text-[#38bdf8] hover:text-[#7dd3fc] transition-colors duration-200"
+            >
+              <span className="tracking-wide">View all news</span>
+              <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-[#38bdf8] group-hover:text-[#7dd3fc]" />
+            </Link>
+          </div>
         </div>
 
-        {/* 2-Image Seamless Expanding Accordion Gallery (Balanced Width) */}
+        {/* Seamless Expanding Accordion Gallery */}
         <div className="max-w-4xl xl:max-w-[1120px] mx-auto w-full">
           <div className="flex flex-col md:flex-row gap-0 w-full h-[320px] sm:h-[360px] md:h-[410px] lg:h-[440px] rounded-2xl md:rounded-3xl overflow-hidden border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.85)] divide-y md:divide-y-0 md:divide-x divide-white/10 transition-all duration-500 bg-[#050914]">
-            {newsItems.map((item, idx) => {
+            {items.map((item, idx) => {
               const isActive = activeId === item.id;
 
               return (
@@ -135,18 +187,22 @@ export default function NewsInsightsSection() {
                       : "flex-[1] opacity-70 hover:opacity-100"
                   }`}
                 >
-                  {/* Background Image Fill */}
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className={`object-cover object-center transition-transform duration-700 ${
-                      isActive ? "scale-100" : "scale-110 grayscale-[15%]"
-                    }`}
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    priority={idx === 0}
-                    unoptimized
-                  />
+                  {/* Background Image Fill (if image exists) or tactical gradient */}
+                  {item.image && item.image.trim().length > 0 ? (
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className={`object-cover object-center transition-transform duration-700 ${
+                        isActive ? "scale-100" : "scale-110 grayscale-[15%]"
+                      }`}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      priority={idx === 0}
+                      unoptimized
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#071329] via-[#040c1c] to-[#02050f]" />
+                  )}
 
                   {/* Subtle Hover / Active Overlay */}
                   <div
@@ -160,9 +216,8 @@ export default function NewsInsightsSection() {
                   {/* Left Edge Subtle Contrast Gradient */}
                   <div className="absolute inset-y-0 left-0 w-24 sm:w-28 bg-gradient-to-r from-black/70 via-black/25 to-transparent pointer-events-none z-10" />
 
-                  {/* Vertical Category Label at Start of Image (Top-aligned) */}
+                  {/* Vertical Category Label */}
                   <div className="absolute left-3 sm:left-4 md:left-5 top-5 sm:top-6 z-20 flex flex-col items-center gap-3.5 pointer-events-none select-none">
-                    {/* Vertical Category Text */}
                     <div className="flex items-center gap-2.5 [writing-mode:vertical-rl] rotate-180">
                       <span
                         className={`text-base sm:text-lg md:text-xl lg:text-2xl font-mono uppercase tracking-[0.25em] font-extrabold transition-all duration-300 drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)] ${
@@ -183,7 +238,7 @@ export default function NewsInsightsSection() {
                     </div>
                   </div>
 
-                  {/* 2-Line Data Overlay inside the Image (Dark Format, Compact Height, Minor Font) */}
+                  {/* Data Overlay inside Image */}
                   <AnimatePresence>
                     {isActive && (
                       <motion.div
@@ -209,7 +264,6 @@ export default function NewsInsightsSection() {
             })}
           </div>
         </div>
-
       </div>
     </section>
   );

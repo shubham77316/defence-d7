@@ -58,6 +58,9 @@ export const metadata: Metadata = {
   authors: [{ name: "Sky Wardens Strategic Systems" }]
 };
 
+import { SettingsProvider } from "@/context/SettingsContext";
+import { NavigationProvider } from "@/context/NavigationContext";
+
 export default function RootLayout({
   children
 }: Readonly<{
@@ -66,9 +69,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`dark scroll-smooth ${jakarta.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} ${anton.variable} ${oxanium.variable} ${orbitron.variable}`}>
       <body className="bg-[#020408] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-sky-500 selection:text-slate-950">
-        <Navbar />
-        <main className="flex-1 w-full">{children}</main>
-        <Footer />
+        <SettingsProvider>
+          <NavigationProvider>
+            <Navbar />
+            <main className="flex-1 w-full">{children}</main>
+            <Footer />
+          </NavigationProvider>
+        </SettingsProvider>
       </body>
     </html>
   );
