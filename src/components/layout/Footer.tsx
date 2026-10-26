@@ -192,7 +192,7 @@ export default function Footer() {
   }));
 
   return (
-    <footer className="w-full bg-[#03060d] text-slate-300 border-t border-white/10 pt-10 sm:pt-14 pb-8 sm:pb-12">
+    <footer className="w-full bg-[#03060d] text-slate-300 border-t border-white/10 pt-10 sm:pt-14 pb-2 sm:pb-4">
       {/* Hidden Global SVG Gradient Definition for Social Icons */}
       <svg width="0" height="0" className="absolute pointer-events-none w-0 h-0" aria-hidden="true">
         <defs>
@@ -323,15 +323,15 @@ export default function Footer() {
         </div>
 
         {/* Bottom Copyright */}
-        <div className="pt-6 sm:pt-8 pb-3 text-[10px] sm:text-xs font-mono uppercase tracking-[0.15em] text-slate-500 text-center sm:text-left">
+        <div className="pt-4 sm:pt-6 pb-0 text-[10px] sm:text-xs font-mono uppercase tracking-[0.15em] text-slate-500 text-center sm:text-left">
           COPYRIGHT &copy; {new Date().getFullYear()} {footerData?.copyrightText || settings.copyrightText || settings.companyName || "SKY WARDENS ALLIANCE PVT. LTD."}
         </div>
       </div>
 
       {/* Massive Monumental SKY WARDENS Wordmark at the Very Last of the Page - Aligned With Navbar */}
-      <div className="w-full pt-8 sm:pt-12 pb-8 sm:pb-12 flex items-center justify-center select-none overflow-hidden px-4 sm:px-6 md:px-8 lg:px-12 xl:px-14">
+      <div className="w-full pt-1 sm:pt-2 pb-0 flex items-center justify-center select-none overflow-hidden px-4 sm:px-6 md:px-8 lg:px-12 xl:px-14">
         <svg
-          viewBox="0 0 1000 156"
+          viewBox="0 15 1000 133"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           className="w-full h-auto overflow-hidden block"
