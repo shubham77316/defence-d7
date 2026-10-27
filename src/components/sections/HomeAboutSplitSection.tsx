@@ -172,14 +172,14 @@ export default function HomeAboutSplitSection() {
             <div className="pt-2 flex justify-center">
               <Link
                 href="/about"
-                className="group relative inline-flex items-center justify-center px-8 sm:px-9 py-3 sm:py-3.5 bg-black/40 hover:bg-sky-500/10 text-slate-200 hover:text-white border border-white/20 hover:border-sky-400/80 text-xs font-bold tracking-widest uppercase transition-all duration-300 ease-out backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(56,189,248,0.4),inset_0_0_15px_rgba(56,189,248,0.15)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer"
+                className="group relative inline-flex items-center justify-center px-8 sm:px-9 py-3 sm:py-3.5 bg-black/40 hover:bg-[#7ec8ff]/10 text-slate-200 hover:text-white border border-white/20 hover:border-[#7ec8ff]/90 text-xs font-bold tracking-widest uppercase transition-all duration-300 ease-out backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(126,200,255,0.45),inset_0_0_15px_rgba(126,200,255,0.15)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer"
               >
                 {/* Shimmer / Light beam sweep effect on hover */}
-                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
 
                 <span className="relative z-10 flex items-center justify-center gap-2">
-                  <span className="transition-colors duration-300 group-hover:text-sky-200">LEARN MORE</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-sky-300 transition-transform duration-300 ease-out group-hover:translate-x-1.5 group-hover:scale-110 drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]" />
+                  <span className="transition-colors duration-300 group-hover:text-[#e0f2fe]">LEARN MORE</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-[#7ec8ff] transition-transform duration-300 ease-out group-hover:translate-x-1.5 group-hover:scale-110 drop-shadow-[0_0_8px_rgba(126,200,255,0.9)]" />
                 </span>
               </Link>
             </div>

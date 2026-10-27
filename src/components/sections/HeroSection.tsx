@@ -164,12 +164,12 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
               {Boolean(data.heroSecondaryCtaText && data.heroSecondaryCtaText.trim()) && (
                 <Link
                   href={data.heroSecondaryCtaLink || "/contact"}
-                  className="group relative inline-flex items-center justify-center px-6 sm:px-7 py-3 sm:py-3.5 bg-black/40 hover:bg-sky-500/10 text-slate-200 hover:text-white border border-white/20 hover:border-sky-400/70 text-[11px] sm:text-xs font-semibold tracking-wider uppercase transition-all duration-300 ease-out backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(56,189,248,0.35),inset_0_0_15px_rgba(56,189,248,0.15)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer"
+                  className="group relative inline-flex items-center justify-center px-6 sm:px-7 py-3 sm:py-3.5 bg-black/40 hover:bg-[#7ec8ff]/10 text-slate-200 hover:text-white border border-white/20 hover:border-[#7ec8ff]/90 text-[11px] sm:text-xs font-semibold tracking-wider uppercase transition-all duration-300 ease-out backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(126,200,255,0.45),inset_0_0_15px_rgba(126,200,255,0.15)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer"
                 >
                   {/* Subtle glassy shine sweep */}
-                  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+                  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
 
-                  <span className="relative z-10 tracking-widest transition-colors duration-300 group-hover:text-sky-200">
+                  <span className="relative z-10 tracking-widest transition-colors duration-300 group-hover:text-[#e0f2fe]">
                     {data.heroSecondaryCtaText}
                   </span>
                 </Link>
