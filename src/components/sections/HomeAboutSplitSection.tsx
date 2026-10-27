@@ -169,13 +169,18 @@ export default function HomeAboutSplitSection() {
             </p>
 
             {/* Learn More Button */}
-            <div className="pt-1 flex justify-center">
+            <div className="pt-2 flex justify-center">
               <Link
                 href="/about"
-                className="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-white/[0.04] hover:bg-white text-white hover:text-slate-950 border border-white/20 hover:border-white text-xs font-bold tracking-widest uppercase transition-all duration-300 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:-translate-y-0.5 group"
+                className="group relative inline-flex items-center justify-center px-8 sm:px-9 py-3 sm:py-3.5 bg-black/40 hover:bg-sky-500/10 text-slate-200 hover:text-white border border-white/20 hover:border-sky-400/80 text-xs font-bold tracking-widest uppercase transition-all duration-300 ease-out backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(56,189,248,0.4),inset_0_0_15px_rgba(56,189,248,0.15)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer"
               >
-                <span>LEARN MORE</span>
-                <ArrowRight className="w-3.5 h-3.5 ml-2 text-slate-300 group-hover:text-slate-950 group-hover:translate-x-0.5 transition-transform" />
+                {/* Shimmer / Light beam sweep effect on hover */}
+                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+
+                <span className="relative z-10 flex items-center justify-center gap-2">
+                  <span className="transition-colors duration-300 group-hover:text-sky-200">LEARN MORE</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-sky-300 transition-transform duration-300 ease-out group-hover:translate-x-1.5 group-hover:scale-110 drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]" />
+                </span>
               </Link>
             </div>
           </motion.div>
