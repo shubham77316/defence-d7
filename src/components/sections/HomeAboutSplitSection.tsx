@@ -43,19 +43,9 @@ function CapabilityCard({ item, idx }: { item: CapabilityItem; idx: number }) {
 
       {/* Top Header & Content */}
       <div className="relative z-20 flex flex-col items-start w-full">
-        {/* Index Badge & Card Number */}
-        <div className="flex items-center justify-between w-full">
-          <span className="font-oxanium text-xs sm:text-[13px] font-bold tracking-widest text-[#7ec8ff] uppercase px-3 py-1 rounded-full bg-[#7ec8ff]/10 border border-[#7ec8ff]/25 shadow-[0_0_12px_rgba(126,200,255,0.2)]">
-            {item.id} // {item.tag}
-          </span>
-          <span className="font-mono text-xs text-slate-500 tracking-wider">
-            [ 0{idx + 1} ]
-          </span>
-        </div>
-
         {/* Primary Value / Title */}
-        <h4 className="font-oxanium text-3xl sm:text-4xl lg:text-[42px] font-black uppercase tracking-tight text-white mt-4 sm:mt-5 leading-none drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
-          {item.value}
+        <h4 className="font-oxanium text-3xl sm:text-4xl lg:text-[42px] font-black uppercase tracking-tight text-white mt-1 leading-none drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+          {item.value} {item.tag}
         </h4>
 
         {/* Description */}
