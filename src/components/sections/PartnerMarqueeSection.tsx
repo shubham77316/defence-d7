@@ -202,7 +202,7 @@ function LogoBharatForge() {
 
 function LogoCentum() {
   return (
-    <div className="flex items-center gap-2.5 group/item cursor-pointer px-5 flex-shrink-0">
+    <div className="flex items-center gap-2.5 group/item cursor-pointer flex-shrink-0">
       <div className="relative flex items-center gap-2.5 transition-transform duration-300 group-hover/item:scale-105">
         <div className="w-6 h-6 rounded-full border-2 border-cyan-400 flex items-center justify-center">
           <div className="w-3 h-3 rounded-full border border-sky-300 bg-sky-500/20" />
@@ -215,6 +215,24 @@ function LogoCentum() {
             T &amp; S
           </span>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// Sleek Defense-Grade Box Container for each logo
+function PartnerLogoBox({ component: ItemComponent }: { component: React.ComponentType }) {
+  return (
+    <div className="group/box relative flex-shrink-0 w-44 sm:w-52 md:w-56 h-20 sm:h-22 md:h-24 px-4 sm:px-6 rounded-xl sm:rounded-2xl border border-white/[0.08] hover:border-[#7ec8ff]/80 bg-[#040814]/85 hover:bg-[#07132a]/95 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.6)] hover:shadow-[0_0_30px_rgba(126,200,255,0.35),inset_0_0_15px_rgba(126,200,255,0.12)] flex items-center justify-center transition-all duration-300 ease-out hover:scale-[1.03] hover:-translate-y-1 cursor-pointer overflow-hidden">
+      {/* Light shimmer sweep on hover */}
+      <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/[0.08] to-transparent -translate-x-full group-hover/box:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none rounded-xl sm:rounded-2xl" />
+
+      {/* Pulsing ambient logo blue glow */}
+      <span className="absolute -inset-1 rounded-xl sm:rounded-2xl bg-[#7ec8ff]/10 blur-md opacity-0 group-hover/box:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+      {/* Centered logo emblem with subtle opacity boost on hover */}
+      <div className="relative z-10 flex items-center justify-center opacity-85 group-hover/box:opacity-100 transition-opacity duration-300 filter drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+        <ItemComponent />
       </div>
     </div>
   );
@@ -235,38 +253,49 @@ export default function PartnerMarqueeSection() {
   ];
 
   return (
-    <section className="relative w-full bg-[#010308]/90 border-y border-white/[0.06] py-4 sm:py-5 overflow-hidden select-none z-20">
-      {/* Left/Right Edge Deep Atmosphere Gradient Fades */}
-      <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-r from-[#010308] via-[#010308]/80 to-transparent z-20 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-l from-[#010308] via-[#010308]/80 to-transparent z-20 pointer-events-none" />
+    <section className="relative w-full bg-[#010308]/95 border-y border-white/[0.06] py-5 sm:py-6 overflow-hidden select-none z-20">
+      {/* Embedded CSS for butter-smooth continuous marquee with instant freeze on hover */}
+      <style>{`
+        @keyframes partnerMarqueeStream {
+          0% {
+            transform: translate3d(0, 0, 0);
+          }
+          100% {
+            transform: translate3d(-50%, 0, 0);
+          }
+        }
+        .partner-marquee-track {
+          display: flex;
+          align-items: center;
+          width: max-content;
+          will-change: transform;
+          animation: partnerMarqueeStream 42s linear infinite;
+        }
+        .partner-marquee-wrapper:hover .partner-marquee-track,
+        .partner-marquee-track:hover {
+          animation-play-state: paused !important;
+        }
+      `}</style>
 
-      {/* Moving Marquee Stream - Pure Logos (Smooth Slow Infinite Loop) */}
-      <div className="flex overflow-hidden relative w-full items-center">
-        <motion.div
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{
-            repeat: Infinity,
-            repeatType: "loop",
-            ease: "linear",
-            duration: 35,
-          }}
-          className="flex items-center gap-10 sm:gap-14 lg:gap-16 flex-nowrap will-change-transform py-0 pr-10 sm:pr-14 lg:pr-16"
-        >
+      {/* Left/Right Edge Deep Atmosphere Gradient Fades */}
+      <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-r from-[#010308] via-[#010308]/85 to-transparent z-30 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-l from-[#010308] via-[#010308]/85 to-transparent z-30 pointer-events-none" />
+
+      {/* Moving Marquee Stream - Pure Logos in Boxes (Freezes/Pauses on Hover, Resumes on Leave) */}
+      <div className="partner-marquee-wrapper flex overflow-hidden relative w-full items-center py-1">
+        <div className="partner-marquee-track flex items-center gap-3 sm:gap-4 md:gap-5 flex-nowrap pr-3 sm:pr-4 md:pr-5">
           {[
             ...allMarqueeLogos,
             ...allMarqueeLogos,
-          ].map((item, idx) => {
-            const ItemComponent = item.component;
-            return (
-              <div
-                key={`partner-logo-${item.id}-${idx}`}
-                className="flex-shrink-0 flex items-center justify-center opacity-75 hover:opacity-100 hover:scale-105 transition-all duration-300 filter drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] cursor-pointer py-1"
-              >
-                <ItemComponent />
-              </div>
-            );
-          })}
-        </motion.div>
+            ...allMarqueeLogos,
+            ...allMarqueeLogos,
+          ].map((item, idx) => (
+            <PartnerLogoBox
+              key={`partner-logo-${item.id}-${idx}`}
+              component={item.component}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
