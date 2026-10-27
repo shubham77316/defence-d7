@@ -75,12 +75,6 @@ function CapabilityCard({ item, idx }: { item: CapabilityItem; idx: number }) {
         <div className="absolute inset-0 bg-gradient-to-tr from-[#02050e]/60 via-transparent to-sky-400/10 pointer-events-none" />
         <div className="absolute inset-0 rounded-full border border-white/20 pointer-events-none" />
       </motion.div>
-
-      {/* Bottom Footer Accent */}
-      <div className="relative z-20 flex items-center gap-2 text-[10px] sm:text-[11px] font-mono tracking-widest text-slate-500 uppercase mt-auto pt-6">
-        <span className="w-1.5 h-1.5 rounded-full bg-[#7ec8ff] animate-pulse shadow-[0_0_8px_#7ec8ff]" />
-        <span className="group-hover:text-slate-300 transition-colors duration-300">SKY WARDENS CAPABILITY</span>
-      </div>
     </motion.div>
   );
 }
