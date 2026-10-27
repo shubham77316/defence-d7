@@ -106,10 +106,10 @@ export default function HomeAboutSplitSection() {
           {/* ========================================================================= */}
           {/* 3-CARD SCROLL STACKING DECK (EXACT REFERENCE FORMAT)                      */}
           {/* ========================================================================= */}
-          <div className="relative w-full max-w-[500px] sm:max-w-[520px] mx-auto pt-6 pb-12 sm:pb-16">
+          <div className="relative w-full max-w-[500px] sm:max-w-[520px] mx-auto pt-6 pb-24 sm:pb-32">
             {capabilities.map((item, idx) => {
-              // Staggered top offsets: 0 -> 112px, 1 -> 140px, 2 -> 168px (giving clear clearance below 80px navbar)
-              const topOffset = `calc(112px + ${idx * 28}px)`;
+              // Staggered top offsets: 0 -> 110px, 1 -> 130px, 2 -> 150px (uniform 20px peek matching reference)
+              const topOffset = `calc(110px + ${idx * 20}px)`;
               const isLast = idx === capabilities.length - 1;
 
               return (
@@ -118,7 +118,7 @@ export default function HomeAboutSplitSection() {
                   className="sticky w-full flex justify-center"
                   style={{
                     top: topOffset,
-                    marginBottom: isLast ? "320px" : "420px",
+                    marginBottom: isLast ? "500px" : "440px",
                     zIndex: (idx + 1) * 10,
                   }}
                 >
