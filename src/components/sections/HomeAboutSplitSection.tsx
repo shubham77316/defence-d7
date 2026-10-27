@@ -64,14 +64,14 @@ function ScrollDeckCards({ capabilities }: { capabilities: CapabilityItem[] }) {
     offset: ["start start", "end end"],
   });
 
-  // Card 2 (Model, idx 1): travels from 100vh down to 0px, stopping precisely at top-[12px]
-  const card1Y = useTransform(scrollYProgress, [0.08, 0.32], ["100vh", "0px"], { clamp: true });
+  // Card 2 (Model, idx 1): travels from 100vh down to 0px, stopping precisely at top-[26px]
+  const card1Y = useTransform(scrollYProgress, [0.12, 0.42], ["100vh", "0px"], { clamp: true });
 
-  // Card 3 (Direction, idx 2): travels from 100vh down to 0px, stopping precisely at top-[24px] (exact user picture position)
-  const card2Y = useTransform(scrollYProgress, [0.40, 0.65], ["100vh", "0px"], { clamp: true });
+  // Card 3 (Direction, idx 2): travels from 100vh down to 0px, stopping precisely at top-[52px]
+  const card2Y = useTransform(scrollYProgress, [0.50, 0.80], ["100vh", "0px"], { clamp: true });
 
   return (
-    <div ref={containerRef} className="relative w-full h-[300vh]">
+    <div ref={containerRef} className="relative w-full h-[260vh]">
       {/* Pinned Sticky Stage - Stays centered below 80px navbar */}
       <div className="sticky top-[108px] sm:top-[112px] w-full max-w-[500px] sm:max-w-[520px] mx-auto h-[630px] flex justify-center">
         
@@ -83,9 +83,9 @@ function ScrollDeckCards({ capabilities }: { capabilities: CapabilityItem[] }) {
           <CapabilityCardContent item={capabilities[0]} />
         </div>
 
-        {/* CARD 2 (MODEL) - MIDDLE LAYER docks at top: 12px */}
+        {/* CARD 2 (MODEL) - MIDDLE LAYER docks at top: 26px */}
         <motion.div
-          className="absolute top-[12px] w-full flex justify-center"
+          className="absolute top-[26px] w-full flex justify-center"
           style={{
             y: card1Y,
             zIndex: 20,
@@ -94,9 +94,9 @@ function ScrollDeckCards({ capabilities }: { capabilities: CapabilityItem[] }) {
           <CapabilityCardContent item={capabilities[1]} />
         </motion.div>
 
-        {/* CARD 3 (DIRECTION) - TOP LAYER docks at top: 24px (EXACT USER PIC POSITION) */}
+        {/* CARD 3 (DIRECTION) - TOP LAYER docks at top: 52px */}
         <motion.div
-          className="absolute top-[24px] w-full flex justify-center"
+          className="absolute top-[52px] w-full flex justify-center"
           style={{
             y: card2Y,
             zIndex: 30,
