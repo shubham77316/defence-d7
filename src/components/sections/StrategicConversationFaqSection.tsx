@@ -124,7 +124,7 @@ export default function StrategicConversationFaqSection() {
           </div>
 
           {/* Subtitle */}
-          <p className="text-slate-400 text-xs sm:text-sm font-light tracking-wide max-w-xl mx-auto">
+          <p className="text-slate-200 text-sm sm:text-base md:text-lg leading-relaxed font-normal select-none max-w-xl mx-auto text-center">
             Ideas grow through the right discussions. Start one with us today.
           </p>
 

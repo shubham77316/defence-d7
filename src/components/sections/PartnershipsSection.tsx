@@ -590,7 +590,7 @@ export default function PartnershipsSection() {
           </div>
 
           {/* Subtitle Description */}
-          <p className="text-slate-400 text-xs sm:text-sm md:text-base leading-relaxed font-normal max-w-2xl text-center">
+          <p className="text-slate-200 text-sm sm:text-base md:text-lg leading-relaxed font-normal select-none max-w-2xl text-center">
             Sky Wardens works with government bodies, industrial partners, and engineering institutions. Every relationship is chosen deliberately and built to last.
           </p>
         </motion.div>

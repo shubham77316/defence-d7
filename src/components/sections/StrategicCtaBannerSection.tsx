@@ -78,7 +78,7 @@ export default function StrategicCtaBannerSection({ initialData }: StrategicCtaB
 
             {/* Subtitle / Paragraph from CMS */}
             {Boolean(data.ctaBannerDesc && data.ctaBannerDesc.trim()) && (
-              <p className="text-slate-400 text-sm sm:text-base md:text-lg font-light leading-relaxed max-w-2xl">
+              <p className="text-slate-200 text-sm sm:text-base md:text-lg leading-relaxed font-normal select-none max-w-2xl">
                 {data.ctaBannerDesc}
               </p>
             )}
