@@ -90,19 +90,34 @@ export default function StrategicCtaBannerSection({ initialData }: StrategicCtaB
                 {Boolean(data.ctaBannerButtonText && data.ctaBannerButtonText.trim()) && (
                   <Link
                     href={data.ctaBannerButtonLink || "/contact"}
-                    className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#93d5ff] via-[#5bb4f8] to-[#288ee0] hover:from-[#b6e5ff] hover:via-[#7ec8ff] hover:to-[#3ba1f3] text-slate-950 font-bold text-xs sm:text-sm tracking-wide shadow-[0_4px_20px_rgba(91,180,248,0.35)] transition-all duration-300 hover:shadow-[0_6px_28px_rgba(147,213,255,0.55)] hover:-translate-y-0.5"
+                    className="group relative inline-flex items-center justify-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 rounded-full bg-gradient-to-r from-[#93d5ff] via-[#5bb4f8] to-[#288ee0] hover:from-[#b6e5ff] hover:via-[#7ec8ff] hover:to-[#3ba1f3] text-slate-950 font-bold text-xs sm:text-sm tracking-wide shadow-[0_0_25px_rgba(91,180,248,0.45)] hover:shadow-[0_0_40px_rgba(147,213,255,0.8),0_0_15px_rgba(255,255,255,0.5)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 transition-all duration-300 ease-out rounded-full overflow-hidden text-center cursor-pointer border border-sky-200/50"
                   >
-                    <span>{data.ctaBannerButtonText}</span>
-                    <ArrowRight className="w-4 h-4 text-slate-950 font-bold" />
+                    {/* Shimmer / Light beam sweep effect on hover */}
+                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+
+                    {/* Pulsing ambient radial glow */}
+                    <span className="absolute -inset-1 rounded-full bg-sky-300/30 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+                    <span className="relative z-10 flex items-center gap-2">
+                      <span className="tracking-wide drop-shadow-[0_1px_1px_rgba(255,255,255,0.3)]">
+                        {data.ctaBannerButtonText}
+                      </span>
+                      <ArrowRight className="w-4 h-4 text-slate-950 font-bold transition-transform duration-300 ease-out group-hover:translate-x-1.5 group-hover:scale-110 drop-shadow-[0_0_6px_rgba(0,0,0,0.3)]" />
+                    </span>
                   </Link>
                 )}
 
                 {Boolean(data.ctaBannerSecondaryButtonText && data.ctaBannerSecondaryButtonText.trim()) && (
                   <Link
                     href={data.ctaBannerSecondaryButtonLink || "/capabilities"}
-                    className="inline-flex items-center justify-center px-7 py-3.5 rounded-full bg-white text-slate-950 font-bold text-xs sm:text-sm tracking-wide hover:bg-slate-200 shadow-md transition-all duration-300 hover:-translate-y-0.5"
+                    className="group relative inline-flex items-center justify-center px-7 sm:px-8 py-3.5 sm:py-4 rounded-full bg-black/40 hover:bg-[#7ec8ff]/10 text-slate-200 hover:text-white border border-white/20 hover:border-[#7ec8ff]/90 text-xs sm:text-sm font-semibold tracking-wide hover:shadow-[0_0_30px_rgba(126,200,255,0.45),inset_0_0_15px_rgba(126,200,255,0.15)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 backdrop-blur-md transition-all duration-300 ease-out overflow-hidden text-center cursor-pointer"
                   >
-                    {data.ctaBannerSecondaryButtonText}
+                    {/* Subtle glassy shine sweep */}
+                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+
+                    <span className="relative z-10 tracking-wide transition-colors duration-300 group-hover:text-[#e0f2fe]">
+                      {data.ctaBannerSecondaryButtonText}
+                    </span>
                   </Link>
                 )}
               </div>
