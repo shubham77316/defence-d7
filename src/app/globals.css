@@ -1,0 +1,103 @@
+  @import "tailwindcss";
+
+  @layer base {
+    :root {
+      --bg-void: #03060d;
+      --bg-surface: #070e1c;
+      --bg-surface-raised: #0d172c;
+      --border-subtle: #1e293b;
+      --border-focus: #38bdf8;
+      --accent-blue: #0284c7;
+      --accent-cyan: #00e5ff;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      color-scheme: dark;
+    }
+
+    body {
+      background-color: #03060d;
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Clean precision scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #03060d;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 2px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155;
+    }
+  }
+
+  /* Precision Engineering Grid */
+  .tech-grid-bg {
+    background-image: 
+      linear-gradient(to right, rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* Corporate Engineering Panel */
+  .editorial-card,
+  .corporate-panel {
+    background-color: #070e1c;
+    border: 1px solid #1e293b;
+    transition: border-color 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+  }
+
+  .editorial-card:hover,
+  .corporate-panel:hover {
+    border-color: #334155;
+    background-color: #0b1528;
+  }
+
+  /* Clean Monospace Spec Label */
+  .spec-label {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #94a3b8;
+  }
+
+  /* Monumental Display Condensed Typography matching AGENCY reference */
+  .font-anton {
+    font-family: var(--font-anton), "Anton", "Impact", "Bebas Neue", "Arial Black", sans-serif;
+  }
+
+  /* Aerospace / Sci-Fi Chamfered Angular Font matching user's image */
+  .font-oxanium {
+    font-family: var(--font-oxanium), "Oxanium", var(--font-orbitron), "Orbitron", monospace, sans-serif;
+  }
+
+  /* Blue Stencil / Outline Line Numeral - Clean crisp stroke without background glow */
+  .numeral-stencil-blue {
+    color: transparent;
+    -webkit-text-stroke: 1.5px #38bdf8;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .group:hover .numeral-stencil-blue {
+  -webkit-text-stroke: 1.8px #67e8f9;
+}
+
+
