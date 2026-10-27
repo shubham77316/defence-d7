@@ -87,7 +87,7 @@ export default function HomeAboutSplitSection() {
                   BUILT FOR WHAT THE DEFENCE WORLD NEEDS
                 </h3>
                 <div className="w-36 sm:w-56 md:w-72 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_12px_#22d3ee]" />
-                <p className="text-xs sm:text-sm text-slate-400 font-normal leading-relaxed max-w-3xl mx-auto pt-2">
+                <p className="text-slate-200 text-sm sm:text-base md:text-lg leading-relaxed font-normal select-none text-center max-w-3xl mx-auto pt-2">
                   {settings.foundingVision || "Sky Wardens was established to develop durable industrial capability, engineering systems and strategic technologies designed for long-term impact."}
                 </p>
               </div>
@@ -169,13 +169,18 @@ export default function HomeAboutSplitSection() {
             </p>
 
             {/* Learn More Button */}
-            <div className="pt-1 flex justify-center">
+            <div className="pt-2 flex justify-center">
               <Link
                 href="/about"
-                className="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-white/[0.04] hover:bg-white text-white hover:text-slate-950 border border-white/20 hover:border-white text-xs font-bold tracking-widest uppercase transition-all duration-300 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:-translate-y-0.5 group"
+                className="group relative inline-flex items-center justify-center px-8 sm:px-9 py-3 sm:py-3.5 bg-black/40 hover:bg-[#7ec8ff]/10 text-slate-200 hover:text-white border border-white/20 hover:border-[#7ec8ff]/90 text-xs font-bold tracking-widest uppercase transition-all duration-300 ease-out backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(126,200,255,0.45),inset_0_0_15px_rgba(126,200,255,0.15)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer"
               >
-                <span>LEARN MORE</span>
-                <ArrowRight className="w-3.5 h-3.5 ml-2 text-slate-300 group-hover:text-slate-950 group-hover:translate-x-0.5 transition-transform" />
+                {/* Shimmer / Light beam sweep effect on hover */}
+                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+
+                <span className="relative z-10 flex items-center justify-center gap-2">
+                  <span className="transition-colors duration-300 group-hover:text-[#e0f2fe]">LEARN MORE</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-[#7ec8ff] transition-transform duration-300 ease-out group-hover:translate-x-1.5 group-hover:scale-110 drop-shadow-[0_0_8px_rgba(126,200,255,0.9)]" />
+                </span>
               </Link>
             </div>
           </motion.div>
