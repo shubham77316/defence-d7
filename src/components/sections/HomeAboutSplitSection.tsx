@@ -87,7 +87,7 @@ export default function HomeAboutSplitSection() {
                   BUILT FOR WHAT THE DEFENCE WORLD NEEDS
                 </h3>
                 <div className="w-36 sm:w-56 md:w-72 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_12px_#22d3ee]" />
-                <p className="text-xs sm:text-sm text-slate-400 font-normal leading-relaxed max-w-3xl mx-auto pt-2">
+                <p className="text-slate-200 text-sm sm:text-base md:text-lg leading-relaxed font-normal select-none text-center max-w-3xl mx-auto pt-2">
                   {settings.foundingVision || "Sky Wardens was established to develop durable industrial capability, engineering systems and strategic technologies designed for long-term impact."}
                 </p>
               </div>
