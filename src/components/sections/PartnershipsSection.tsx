@@ -638,9 +638,14 @@ export default function PartnershipsSection() {
         >
           <Link
             href="/partnerships"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white/[0.06] border border-white/15 text-white hover:bg-white/[0.1] hover:border-sky-400/60 hover:text-sky-300 text-sm font-semibold tracking-wider uppercase transition-all duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.4)] hover:shadow-[0_6px_20px_rgba(2,132,199,0.3)] hover:-translate-y-0.5"
+            className="group relative inline-flex items-center justify-center px-8 sm:px-9 py-3 sm:py-3.5 bg-black/40 hover:bg-[#7ec8ff]/10 text-slate-200 hover:text-white border border-white/20 hover:border-[#7ec8ff]/90 text-xs sm:text-sm font-bold tracking-widest uppercase transition-all duration-300 ease-out backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(126,200,255,0.45),inset_0_0_15px_rgba(126,200,255,0.15)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer"
           >
-            <span>Learn More</span>
+            {/* Shimmer / Light beam sweep effect on hover */}
+            <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+
+            <span className="relative z-10 transition-colors duration-300 group-hover:text-[#e0f2fe]">
+              LEARN MORE
+            </span>
           </Link>
         </motion.div>
 

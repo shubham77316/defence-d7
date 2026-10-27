@@ -141,9 +141,14 @@ export default function StrategicConversationFaqSection() {
             {/* Learn About Us Button (Dark Translucent Pill with White Border) */}
             <Link
               href="/about"
-              className="px-7 py-3 rounded-full bg-black/40 border border-white/20 text-white font-medium text-xs sm:text-sm tracking-wide transition-all duration-300 hover:bg-white/10 hover:border-white/40 hover:-translate-y-0.5 backdrop-blur-md select-none"
+              className="group relative inline-flex items-center justify-center px-7 py-3 rounded-full bg-black/40 hover:bg-[#7ec8ff]/10 text-slate-200 hover:text-white border border-white/20 hover:border-[#7ec8ff]/90 text-xs sm:text-sm font-semibold tracking-wide transition-all duration-300 ease-out backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(126,200,255,0.45),inset_0_0_15px_rgba(126,200,255,0.15)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 overflow-hidden select-none cursor-pointer"
             >
-              Learn About Us
+              {/* Shimmer / Light beam sweep effect on hover */}
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+
+              <span className="relative z-10 transition-colors duration-300 group-hover:text-[#e0f2fe]">
+                Learn About Us
+              </span>
             </Link>
           </div>
 
