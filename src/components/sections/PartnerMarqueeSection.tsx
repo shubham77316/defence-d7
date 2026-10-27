@@ -223,7 +223,7 @@ function LogoCentum() {
 // Sleek Compact Defense-Grade Box Container for each logo
 function PartnerLogoBox({ component: ItemComponent }: { component: React.ComponentType }) {
   return (
-    <div className="group/box relative flex-shrink-0 w-36 sm:w-44 md:w-48 h-15 sm:h-17 md:h-19 px-3 sm:px-4 rounded-lg sm:rounded-xl border border-white/[0.09] hover:border-[#7ec8ff]/80 bg-[#040814]/85 hover:bg-[#07132a]/95 backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.6)] hover:shadow-[0_0_24px_rgba(126,200,255,0.35),inset_0_0_12px_rgba(126,200,255,0.12)] flex items-center justify-center transition-all duration-300 ease-out hover:scale-[1.02] cursor-pointer overflow-hidden my-1">
+    <div className="group/box relative flex-shrink-0 w-36 sm:w-44 md:w-48 h-15 sm:h-17 md:h-19 px-3 sm:px-4 rounded-lg sm:rounded-xl border border-white/[0.09] hover:border-[#7ec8ff]/80 bg-[#040814]/85 hover:bg-[#07132a]/95 backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.6)] hover:shadow-[0_0_24px_rgba(126,200,255,0.35),inset_0_0_12px_rgba(126,200,255,0.12)] flex items-center justify-center transition-all duration-300 ease-out hover:scale-[1.02] cursor-pointer overflow-hidden">
       {/* Light shimmer sweep on hover */}
       <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/[0.08] to-transparent -translate-x-full group-hover/box:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none rounded-lg sm:rounded-xl" />
 
@@ -253,7 +253,7 @@ export default function PartnerMarqueeSection() {
   ];
 
   return (
-    <section className="relative w-full bg-[#010308]/95 border-y border-white/[0.06] py-2 sm:py-3 overflow-hidden select-none z-20">
+    <section className="relative w-full bg-[#010308]/95 border-y border-white/[0.06] py-1 sm:py-1.5 overflow-hidden select-none z-20">
       {/* Embedded CSS for butter-smooth continuous marquee with instant freeze on hover */}
       <style>{`
         @keyframes partnerMarqueeStream {
@@ -281,9 +281,9 @@ export default function PartnerMarqueeSection() {
       <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-r from-[#010308] via-[#010308]/85 to-transparent z-30 pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-l from-[#010308] via-[#010308]/85 to-transparent z-30 pointer-events-none" />
 
-      {/* Moving Marquee Stream - Pure Logos in Boxes (Freezes/Pauses on Hover, Resumes on Leave) with safe vertical breathing room */}
-      <div className="partner-marquee-wrapper flex overflow-hidden relative w-full items-center py-3 sm:py-4">
-        <div className="partner-marquee-track flex items-center gap-3 sm:gap-4 md:gap-5 flex-nowrap pr-3 sm:pr-4 md:pr-5 py-1">
+      {/* Moving Marquee Stream - Pure Logos in Boxes with tight, clean vertical spacing */}
+      <div className="partner-marquee-wrapper flex overflow-hidden relative w-full items-center py-1 sm:py-1.5">
+        <div className="partner-marquee-track flex items-center gap-3 sm:gap-4 md:gap-5 flex-nowrap pr-3 sm:pr-4 md:pr-5">
           {[
             ...allMarqueeLogos,
             ...allMarqueeLogos,
