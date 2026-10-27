@@ -183,7 +183,7 @@ export default function Logo({
           <div className="flex items-center flex-wrap gap-x-1 sm:gap-x-2 gap-y-0.5 mt-0.5 sm:mt-1 select-none text-[8px] xs:text-[9.5px] sm:text-[11px] md:text-[11.5px] font-semibold text-slate-300 tracking-wider">
             {sectors.slice(0, 3).map((sec, idx) => (
               <React.Fragment key={sec}>
-                <span className="hover:text-cyan-300 transition-colors whitespace-nowrap">{sec}</span>
+                <span className="whitespace-nowrap">{sec}</span>
                 {idx < Math.min(sectors.length, 3) - 1 && <span className="text-white/30 font-normal px-0.5">/</span>}
               </React.Fragment>
             ))}
