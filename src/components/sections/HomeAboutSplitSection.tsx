@@ -3,130 +3,69 @@
 import React, { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useSettings } from "@/context/SettingsContext";
 
-interface CapabilityItem {
+interface CapabilityCardData {
   id: string;
-  tag: string;
-  value: string;
-  desc: string;
+  badge: string;
+  title: string;
+  subtitle: string;
   image: string;
 }
 
-// Standalone Capability Box with Bottom-Right Circular Image that Rises Diagonally on Scroll
-function CapabilityCard({ item, idx }: { item: CapabilityItem; idx: number }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ["start end", "end start"],
-  });
-
-  // Diagonal scroll motion: enters from bottom-right corner and glides up towards center
-  const circleX = useTransform(scrollYProgress, [0, 0.5, 1], [50, 0, -35]);
-  const circleY = useTransform(scrollYProgress, [0, 0.5, 1], [70, 0, -45]);
-  const circleRotate = useTransform(scrollYProgress, [0, 0.5, 1], [12, 0, -8]);
-  const circleScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.88, 1, 1.04]);
-
-  return (
-    <motion.div
-      ref={cardRef}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.5, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative h-[380px] sm:h-[420px] md:h-[440px] rounded-2xl sm:rounded-3xl border border-white/[0.12] hover:border-[#7ec8ff]/70 bg-gradient-to-b from-[#060c1c]/90 via-[#040814]/95 to-[#02050e] backdrop-blur-md overflow-hidden p-6 sm:p-7 flex flex-col justify-between shadow-[0_12px_35px_rgba(0,0,0,0.7)] hover:shadow-[0_16px_45px_rgba(2,132,199,0.28)] transition-all duration-500 select-none cursor-pointer"
-    >
-      {/* Subtle Light Shimmer Sweep across the card on hover */}
-      <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/[0.08] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none z-30" />
-
-      {/* Top Header & Content */}
-      <div className="relative z-20 flex flex-col items-start w-full">
-        {/* Primary Value / Title */}
-        <h4 className="font-oxanium text-3xl sm:text-4xl lg:text-[42px] font-black uppercase tracking-tight text-white mt-1 leading-none drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
-          {item.value} {item.tag}
-        </h4>
-
-        {/* Description */}
-        <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed mt-3 max-w-[80%] drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">
-          {item.desc}
-        </p>
-      </div>
-
-      {/* Circular Imagery Disc: Enters diagonally from bottom-right corner and rises towards center on scroll */}
-      <motion.div
-        style={{
-          x: circleX,
-          y: circleY,
-          rotate: circleRotate,
-          scale: circleScale,
-        }}
-        className="absolute -bottom-8 -right-8 sm:-bottom-10 sm:-right-10 w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 rounded-full border-2 border-sky-400/40 group-hover:border-[#7ec8ff] overflow-hidden shadow-[0_14px_45px_rgba(0,0,0,0.95),0_0_25px_rgba(56,189,248,0.25)] z-10 transition-colors duration-500 pointer-events-none"
-      >
-        <Image
-          src={item.image}
-          alt={item.tag}
-          fill
-          sizes="(max-width: 768px) 100vw, 360px"
-          className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out filter brightness-90 contrast-105 group-hover:brightness-105"
-        />
-        {/* Radar glass tint & concentric border overlay */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-[#02050e]/60 via-transparent to-sky-400/10 pointer-events-none" />
-        <div className="absolute inset-0 rounded-full border border-white/20 pointer-events-none" />
-      </motion.div>
-    </motion.div>
-  );
-}
+const CAPABILITY_CARDS: CapabilityCardData[] = [
+  {
+    id: "01",
+    badge: "01 // STRATEGIC SECTORS",
+    title: "Aerospace & Multi-Domain Defence",
+    subtitle:
+      "Sovereign tactical airframes, kinetic survivability, and autonomous reconnaissance engineered for national security.",
+    image: "/images/foundation-sectors.jpg",
+  },
+  {
+    id: "02",
+    badge: "02 // OPERATIONAL MODEL",
+    title: "Direct Sovereign B2G Engagement",
+    subtitle:
+      "Chosen deliberately to partner with armed forces, tier-1 industrial conglomerates, and sovereign defence laboratories.",
+    image: "/images/foundation-model.jpg",
+  },
+  {
+    id: "03",
+    badge: "03 // LONG-TERM DIRECTION",
+    title: "Built for What Decades to Matter",
+    subtitle:
+      "Durable sovereign industrial capability, the kind that takes years to build and decades to execute.",
+    image: "/images/foundation-direction.jpg",
+  },
+];
 
 export default function HomeAboutSplitSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const { settings } = useSettings();
 
-  const capabilities: CapabilityItem[] = [
-    {
-      id: "01",
-      tag: "SECTORS",
-      value: "02",
-      desc: "Aerospace and Defence platforms engineered for sovereign security.",
-      image: "/images/foundation-sectors.jpg",
-    },
-    {
-      id: "02",
-      tag: "MODEL",
-      value: "B2G",
-      desc: "Government, institutional, and tier-1 defence partner engagement.",
-      image: "/images/foundation-model.jpg",
-    },
-    {
-      id: "03",
-      tag: "DIRECTION",
-      value: "Long Term",
-      desc: "Durable capability, scale, and strategic execution built for decades.",
-      image: "/images/foundation-direction.jpg",
-    },
-  ];
-
   return (
     <section
       ref={sectionRef}
-      className="relative pt-8 sm:pt-12 pb-8 sm:pb-10 bg-[#02050e] border-t border-white/[0.08] overflow-hidden select-none"
+      className="relative pt-8 sm:pt-12 pb-10 sm:pb-14 bg-[#02050e] border-t border-white/[0.08] select-none"
     >
       {/* Clean Solid Dark Background */}
       <div className="absolute inset-0 bg-[#02050e] pointer-events-none z-0" />
 
       {/* Main Inner Content */}
       <div className="relative w-full max-w-[1680px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 z-10">
-        <div className="flex flex-col items-start justify-center space-y-8 sm:space-y-12">
+        <div className="flex flex-col items-center justify-center space-y-8 sm:space-y-12">
           
           {/* ========================================================================= */}
           {/* TOP SECTION: ABOUT US HERO (PERFECTLY CENTER ALIGNED)                     */}
           {/* ========================================================================= */}
           <div className="relative w-full flex items-center justify-center text-center">
             <motion.div
-              initial={{ y: 60, opacity: 0 }}
+              initial={{ y: 50, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: false, amount: 0.15 }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
               className="flex flex-col items-center text-center space-y-3 sm:space-y-4 max-w-4xl mx-auto"
             >
@@ -167,14 +106,65 @@ export default function HomeAboutSplitSection() {
           </div>
 
           {/* ========================================================================= */}
-          {/* 3 STANDALONE CAPABILITY BOXES WITH BOTTOM-RIGHT PARALLAX CIRCLE RISING    */}
+          {/* PINNED STACKING CARDS ON SCROLL (MATCHING REFERENCE SCREENSHOTS)          */}
           {/* ========================================================================= */}
-          <div className="relative w-full pt-2 pb-2">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7 lg:gap-8 w-full max-w-7xl mx-auto">
-              {capabilities.map((item, idx) => (
-                <CapabilityCard key={item.id} item={item} idx={idx} />
-              ))}
-            </div>
+          <div className="relative w-full max-w-[560px] mx-auto pt-4 pb-8">
+            {CAPABILITY_CARDS.map((card, idx) => {
+              // Staggered sticky top offsets so previous cards peek out from behind
+              const stickyTop = `calc(90px + ${idx * 26}px)`;
+              const isLast = idx === CAPABILITY_CARDS.length - 1;
+
+              return (
+                <div
+                  key={card.id}
+                  className={`sticky flex justify-center w-full ${
+                    isLast ? "mb-6" : "mb-28 sm:mb-36 md:mb-44"
+                  }`}
+                  style={{ top: stickyTop }}
+                >
+                  <motion.div
+                    initial={{ opacity: 0, y: 70 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.15 }}
+                    transition={{
+                      duration: 0.55,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                    className="group relative w-full h-[470px] sm:h-[520px] md:h-[550px] rounded-[32px] sm:rounded-[38px] border-2 border-white/[0.14] hover:border-[#7ec8ff]/80 bg-[#030611] backdrop-blur-2xl p-3.5 sm:p-4.5 md:p-5 flex flex-col justify-between shadow-[0_24px_60px_rgba(0,0,0,0.95),0_0_40px_rgba(0,0,0,0.85)] hover:shadow-[0_24px_70px_rgba(2,132,199,0.32)] transition-all duration-300 select-none cursor-pointer overflow-hidden"
+                  >
+                    {/* Diagonal Shimmer beam sweep on hover */}
+                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/[0.08] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none rounded-[32px] sm:rounded-[38px] z-30" />
+
+                    {/* Top Part: High-Resolution Visual with Rounded Corners (matching Reference Image 1) */}
+                    <div className="relative w-full h-[270px] sm:h-[310px] md:h-[330px] rounded-[24px] sm:rounded-[28px] overflow-hidden border border-white/10 group-hover:border-[#7ec8ff]/40 transition-colors duration-300">
+                      <Image
+                        src={card.image}
+                        alt={card.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 540px"
+                        className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out filter brightness-95 contrast-105"
+                      />
+                      {/* Top Corner Pill Badge */}
+                      <div className="absolute top-3 left-3 z-20">
+                        <span className="font-oxanium text-[10px] sm:text-[11px] font-bold tracking-widest text-[#7ec8ff] uppercase px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-sky-400/30 shadow-md">
+                          {card.badge}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Bottom Part: Clean Centered Typography Statement (matching Reference Image 1) */}
+                    <div className="flex-1 flex flex-col items-center justify-center text-center px-3 sm:px-6 pt-3 pb-2">
+                      <h4 className="font-oxanium text-xl sm:text-2xl md:text-[25px] font-bold text-white tracking-tight leading-tight group-hover:text-[#e0f2fe] transition-colors duration-300">
+                        {card.title}
+                      </h4>
+                      <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed mt-2.5 max-w-md">
+                        {card.subtitle}
+                      </p>
+                    </div>
+                  </motion.div>
+                </div>
+              );
+            })}
           </div>
 
           {/* ========================================================================= */}
@@ -184,8 +174,8 @@ export default function HomeAboutSplitSection() {
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.15 }}
-            transition={{ duration: 0.45, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full flex flex-col items-center text-center space-y-5 -mt-2 sm:-mt-3 max-w-3xl mx-auto"
+            transition={{ duration: 0.45, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full flex flex-col items-center text-center space-y-5 -mt-2 sm:-mt-4 max-w-3xl mx-auto"
           >
             {/* Narrative 2-Line Text */}
             <p className="text-slate-200 text-sm sm:text-base md:text-lg leading-relaxed font-normal select-none text-center">
