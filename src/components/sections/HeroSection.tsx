@@ -132,16 +132,24 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
           {/* Action Group: Buttons */}
           {(Boolean(data.heroCtaText && data.heroCtaText.trim()) ||
             Boolean(data.heroSecondaryCtaText && data.heroSecondaryCtaText.trim())) && (
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-2.5 sm:gap-3 pt-2 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-3 sm:gap-4 pt-3 w-full sm:w-auto">
               {Boolean(data.heroCtaText && data.heroCtaText.trim()) && (
                 <Link
                   href={data.heroCtaLink || "/capabilities"}
-                  className="group relative inline-flex items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-[#257dc0] to-[#5aa9f7] hover:from-[#338ad0] hover:to-[#70b9ff] text-white font-bold text-[11px] sm:text-xs tracking-wider uppercase transition-all duration-300 shadow-[0_0_20px_rgba(90,169,247,0.35)] hover:shadow-[0_0_30px_rgba(90,169,247,0.55)] hover:-translate-y-0.5 rounded-full overflow-hidden text-center"
+                  className="group relative inline-flex items-center justify-center px-6 sm:px-7 py-3 sm:py-3.5 bg-gradient-to-r from-[#1d6fa5] via-[#257dc0] to-[#5aa9f7] hover:from-[#257dc0] hover:via-[#3b8fd4] hover:to-[#70b9ff] text-white font-bold text-[11px] sm:text-xs tracking-wider uppercase transition-all duration-300 ease-out shadow-[0_0_25px_rgba(90,169,247,0.4)] hover:shadow-[0_0_40px_rgba(90,169,247,0.75),0_0_15px_rgba(255,255,255,0.4)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer border border-sky-300/30"
                 >
-                  <span className="relative z-10 flex items-center justify-center gap-1.5">
-                    <span>{data.heroCtaText}</span>
+                  {/* Shimmer / Light beam sweep effect on hover */}
+                  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/35 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+
+                  {/* Pulsing ambient radial glow */}
+                  <span className="absolute -inset-1 rounded-full bg-sky-400/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+                  <span className="relative z-10 flex items-center justify-center gap-2">
+                    <span className="tracking-widest drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                      {data.heroCtaText}
+                    </span>
                     <svg
-                      className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1"
+                      className="w-3.5 h-3.5 transition-transform duration-300 ease-out group-hover:translate-x-1.5 group-hover:scale-110 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
@@ -156,9 +164,14 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
               {Boolean(data.heroSecondaryCtaText && data.heroSecondaryCtaText.trim()) && (
                 <Link
                   href={data.heroSecondaryCtaLink || "/contact"}
-                  className="inline-flex items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 bg-white/[0.06] hover:bg-white/[0.12] text-white border border-white/20 hover:border-sky-400/50 text-[11px] sm:text-xs font-semibold tracking-wider uppercase transition-all duration-300 backdrop-blur-md shadow-md hover:-translate-y-0.5 rounded-full text-center"
+                  className="group relative inline-flex items-center justify-center px-6 sm:px-7 py-3 sm:py-3.5 bg-black/40 hover:bg-sky-500/10 text-slate-200 hover:text-white border border-white/20 hover:border-sky-400/70 text-[11px] sm:text-xs font-semibold tracking-wider uppercase transition-all duration-300 ease-out backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(56,189,248,0.35),inset_0_0_15px_rgba(56,189,248,0.15)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer"
                 >
-                  <span>{data.heroSecondaryCtaText}</span>
+                  {/* Subtle glassy shine sweep */}
+                  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+
+                  <span className="relative z-10 tracking-widest transition-colors duration-300 group-hover:text-sky-200">
+                    {data.heroSecondaryCtaText}
+                  </span>
                 </Link>
               )}
             </div>

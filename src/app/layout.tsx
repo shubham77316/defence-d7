@@ -60,6 +60,7 @@ export const metadata: Metadata = {
 
 import { SettingsProvider } from "@/context/SettingsContext";
 import { NavigationProvider } from "@/context/NavigationContext";
+import SmoothScroll from "@/components/common/SmoothScroll";
 
 export default function RootLayout({
   children
@@ -67,15 +68,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`dark scroll-smooth ${jakarta.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} ${anton.variable} ${oxanium.variable} ${orbitron.variable}`}>
+    <html lang="en" className={`dark ${jakarta.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} ${anton.variable} ${oxanium.variable} ${orbitron.variable}`}>
       <body className="bg-[#020408] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-sky-500 selection:text-slate-950">
-        <SettingsProvider>
-          <NavigationProvider>
-            <Navbar />
-            <main className="flex-1 w-full">{children}</main>
-            <Footer />
-          </NavigationProvider>
-        </SettingsProvider>
+        <SmoothScroll>
+          <SettingsProvider>
+            <NavigationProvider>
+              <Navbar />
+              <main className="flex-1 w-full">{children}</main>
+              <Footer />
+            </NavigationProvider>
+          </SettingsProvider>
+        </SmoothScroll>
       </body>
     </html>
   );
