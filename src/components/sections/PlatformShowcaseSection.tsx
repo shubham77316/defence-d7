@@ -74,7 +74,7 @@ export default function PlatformShowcaseSection({ initialData }: PlatformShowcas
 
           {/* Subtitle / Description from CMS */}
           {Boolean(data.showcaseDesc && data.showcaseDesc.trim()) && (
-            <p className="text-slate-400 text-xs sm:text-sm md:text-base leading-relaxed font-normal max-w-2xl">
+            <p className="text-slate-200 text-sm sm:text-base md:text-lg leading-relaxed font-normal select-none text-center max-w-2xl">
               {data.showcaseDesc}
             </p>
           )}

@@ -138,7 +138,7 @@ export default function NewsInsightsSection() {
             </h2>
 
             {/* Subtitle */}
-            <p className="text-slate-400 text-xs sm:text-sm md:text-base leading-relaxed font-normal max-w-2xl">
+            <p className="text-slate-200 text-sm sm:text-base md:text-lg leading-relaxed font-normal select-none max-w-2xl">
               Strategic disclosures, technological breakthroughs, and multi-domain deployment communiqués.
             </p>
           </div>
