@@ -129,11 +129,11 @@ export default function StrategicConversationFaqSection() {
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-1.5 sm:pt-2">
-            {/* Contact Sky Wardens Button (Blue Gradient Hero Pill with Arrow & Shimmer) */}
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-1.5 sm:pt-2">
+            {/* Contact Sky Wardens Button (Compact Blue Gradient Hero Pill) */}
             <Link
               href="/contact"
-              className="group relative inline-flex items-center justify-center px-6 sm:px-7 py-3 sm:py-3.5 bg-gradient-to-r from-[#1d6fa5] via-[#257dc0] to-[#5aa9f7] hover:from-[#257dc0] hover:via-[#3b8fd4] hover:to-[#70b9ff] text-white font-bold text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 ease-out shadow-[0_0_25px_rgba(90,169,247,0.4)] hover:shadow-[0_0_40px_rgba(90,169,247,0.75),0_0_15px_rgba(255,255,255,0.4)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer border border-sky-300/30"
+              className="group relative inline-flex items-center justify-center px-5 sm:px-6 py-2 sm:py-2.5 bg-gradient-to-r from-[#1d6fa5] via-[#257dc0] to-[#5aa9f7] hover:from-[#257dc0] hover:via-[#3b8fd4] hover:to-[#70b9ff] text-white font-bold text-[11px] sm:text-xs tracking-wider uppercase transition-all duration-300 ease-out shadow-[0_0_20px_rgba(90,169,247,0.35)] hover:shadow-[0_0_32px_rgba(90,169,247,0.7),0_0_12px_rgba(255,255,255,0.4)] hover:-translate-y-0.5 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer border border-sky-300/30"
             >
               {/* Shimmer / Light beam sweep effect on hover */}
               <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/35 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
@@ -145,14 +145,14 @@ export default function StrategicConversationFaqSection() {
                 <span className="tracking-widest drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                   CONTACT SKY WARDENS
                 </span>
-                <ArrowRight className="w-3.5 h-3.5 text-white transition-transform duration-300 ease-out group-hover:translate-x-1.5 group-hover:scale-110 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
+                <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white transition-transform duration-300 ease-out group-hover:translate-x-1 group-hover:scale-110 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
               </span>
             </Link>
 
-            {/* Learn About Us Button (Dark Translucent Pill with Border & Subtle Sweep) */}
+            {/* Learn About Us Button (Compact Dark Translucent Pill) */}
             <Link
               href="/about"
-              className="group relative inline-flex items-center justify-center px-6 sm:px-7 py-3 sm:py-3.5 bg-black/40 hover:bg-[#7ec8ff]/10 text-slate-200 hover:text-white border border-white/20 hover:border-[#7ec8ff]/90 text-xs sm:text-sm font-semibold tracking-wider uppercase transition-all duration-300 ease-out backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(126,200,255,0.45),inset_0_0_15px_rgba(126,200,255,0.15)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer"
+              className="group relative inline-flex items-center justify-center px-5 sm:px-6 py-2 sm:py-2.5 bg-black/40 hover:bg-[#7ec8ff]/10 text-slate-200 hover:text-white border border-white/20 hover:border-[#7ec8ff]/90 text-[11px] sm:text-xs font-semibold tracking-wider uppercase transition-all duration-300 ease-out backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.4)] hover:shadow-[0_0_25px_rgba(126,200,255,0.4),inset_0_0_12px_rgba(126,200,255,0.15)] hover:-translate-y-0.5 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer"
             >
               {/* Subtle glassy shine sweep */}
               <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
