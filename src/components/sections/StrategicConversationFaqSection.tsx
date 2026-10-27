@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ArrowRight } from "lucide-react";
 
 interface FaqItem {
   id: string;
@@ -130,24 +130,38 @@ export default function StrategicConversationFaqSection() {
 
           {/* CTA Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-1.5 sm:pt-2">
-            {/* Contact Sky Wardens Button (Solid White Pill) */}
+            {/* Contact Sky Wardens Button (Solid White Pill with Light Sweep, Radial Glow & Sliding Arrow) */}
             <Link
               href="/contact"
-              className="px-7 py-3 rounded-full bg-white text-slate-950 font-semibold text-xs sm:text-sm tracking-wide transition-all duration-300 hover:bg-slate-200 hover:shadow-[0_0_25px_rgba(255,255,255,0.25)] hover:-translate-y-0.5 select-none"
+              className="group relative inline-flex items-center justify-center gap-2 px-7 sm:px-8 py-3 sm:py-3.5 rounded-full bg-white hover:bg-slate-100 text-slate-950 font-bold text-xs sm:text-sm tracking-wide transition-all duration-300 ease-out shadow-[0_0_20px_rgba(255,255,255,0.25)] hover:shadow-[0_0_35px_rgba(255,255,255,0.7),0_0_20px_rgba(126,200,255,0.45)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 overflow-hidden select-none cursor-pointer border border-white/90"
             >
-              Contact Sky Wardens
+              {/* Shimmer light sweep beam */}
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-sky-400/35 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+
+              {/* Pulsing ambient glow */}
+              <span className="absolute -inset-1 rounded-full bg-white/25 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                <span className="font-bold tracking-wide">
+                  Contact Sky Wardens
+                </span>
+                <ArrowRight className="w-3.5 h-3.5 text-slate-950 transition-transform duration-300 ease-out group-hover:translate-x-1.5 group-hover:scale-110 drop-shadow-[0_0_6px_rgba(0,0,0,0.3)]" />
+              </span>
             </Link>
 
-            {/* Learn About Us Button (Dark Translucent Pill with White Border) */}
+            {/* Learn About Us Button (Dark Translucent Pill with Logo Sheen Border, Light Sweep & Sliding Arrow) */}
             <Link
               href="/about"
-              className="group relative inline-flex items-center justify-center px-7 py-3 rounded-full bg-black/40 hover:bg-[#7ec8ff]/10 text-slate-200 hover:text-white border border-white/20 hover:border-[#7ec8ff]/90 text-xs sm:text-sm font-semibold tracking-wide transition-all duration-300 ease-out backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(126,200,255,0.45),inset_0_0_15px_rgba(126,200,255,0.15)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 overflow-hidden select-none cursor-pointer"
+              className="group relative inline-flex items-center justify-center gap-2 px-7 sm:px-8 py-3 sm:py-3.5 rounded-full bg-black/40 hover:bg-[#7ec8ff]/10 text-slate-200 hover:text-white border border-white/20 hover:border-[#7ec8ff]/90 text-xs sm:text-sm font-semibold tracking-wide transition-all duration-300 ease-out backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(126,200,255,0.45),inset_0_0_15px_rgba(126,200,255,0.15)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 overflow-hidden select-none cursor-pointer"
             >
               {/* Shimmer / Light beam sweep effect on hover */}
               <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
 
-              <span className="relative z-10 transition-colors duration-300 group-hover:text-[#e0f2fe]">
-                Learn About Us
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                <span className="transition-colors duration-300 group-hover:text-[#e0f2fe]">
+                  Learn About Us
+                </span>
+                <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-[#7ec8ff] transition-transform duration-300 ease-out group-hover:translate-x-1.5 group-hover:scale-110 drop-shadow-[0_0_8px_rgba(126,200,255,0.9)]" />
               </span>
             </Link>
           </div>
