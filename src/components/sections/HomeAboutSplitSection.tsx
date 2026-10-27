@@ -3,7 +3,7 @@
 import React, { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useSettings } from "@/context/SettingsContext";
 
@@ -13,6 +13,100 @@ interface CapabilityItem {
   headline: string;
   desc: string;
   image: string;
+}
+
+// Reusable Physical Pill Card Component
+function CapabilityCardContent({ item }: { item: CapabilityItem }) {
+  return (
+    <div className="relative w-full h-[510px] sm:h-[550px] md:h-[570px] rounded-[36px] sm:rounded-[42px] md:rounded-[46px] bg-[#02050e] border-2 border-white/[0.12] p-3.5 sm:p-4 md:p-5 flex flex-col justify-between shadow-[0_24px_60px_rgba(0,0,0,0.98),0_0_0_1px_rgba(255,255,255,0.06),0_-8px_30px_rgba(0,0,0,0.9)] overflow-hidden select-none">
+      {/* Subtle border highlight */}
+      <div className="absolute inset-0 rounded-[36px] sm:rounded-[42px] md:rounded-[46px] border border-sky-400/20 pointer-events-none" />
+
+      {/* TOP PORTION: INNER ROUNDED PHOTOGRAPH */}
+      <div className="relative w-full h-[280px] sm:h-[310px] md:h-[330px] rounded-[24px] sm:rounded-[28px] md:rounded-[32px] overflow-hidden bg-[#070d1e] shadow-[inset_0_0_20px_rgba(0,0,0,0.8)]">
+        <Image
+          src={item.image}
+          alt={item.headline}
+          fill
+          sizes="(max-width: 768px) 100vw, 520px"
+          priority
+          className="object-cover object-center filter brightness-95 contrast-105"
+        />
+        {/* Subtle atmospheric vignette */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
+
+        {/* Corner Badge */}
+        <div className="absolute top-3.5 left-4 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md border border-white/15 text-[11px] font-mono tracking-widest text-sky-300 uppercase font-semibold">
+          {item.badge}
+        </div>
+      </div>
+
+      {/* BOTTOM PORTION: BOLD CENTERED STATEMENT */}
+      <div className="flex-1 flex flex-col items-center justify-center text-center px-3 sm:px-5 py-4 sm:py-5">
+        <h4 className="font-sans text-xl sm:text-2xl md:text-[25px] font-bold text-white leading-snug tracking-tight text-center drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+          {item.headline}
+        </h4>
+        <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed text-center mt-2.5 max-w-[92%]">
+          {item.desc}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// Unified Stacking Deck with scroll-driven clamped transforms:
+// Card 2 and Card 3 enter from below and clamp PRECISELY at top: 26px and top: 52px.
+// They NEVER overshoot or fly higher than the reference deck position!
+function ScrollDeckCards({ capabilities }: { capabilities: CapabilityItem[] }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  // Card 2 (Model, idx 1): travels from 100vh down to 0px, stopping precisely at top-[26px]
+  const card1Y = useTransform(scrollYProgress, [0.12, 0.42], ["100vh", "0px"], { clamp: true });
+
+  // Card 3 (Direction, idx 2): travels from 100vh down to 0px, stopping precisely at top-[52px]
+  const card2Y = useTransform(scrollYProgress, [0.50, 0.80], ["100vh", "0px"], { clamp: true });
+
+  return (
+    <div ref={containerRef} className="relative w-full h-[260vh]">
+      {/* Pinned Sticky Stage - Stays centered below 80px navbar */}
+      <div className="sticky top-[108px] sm:top-[112px] w-full max-w-[500px] sm:max-w-[520px] mx-auto h-[630px] flex justify-center">
+        
+        {/* CARD 1 (SECTORS) - BASE LAYER at top: 0 */}
+        <div
+          className="absolute top-0 w-full flex justify-center"
+          style={{ zIndex: 10 }}
+        >
+          <CapabilityCardContent item={capabilities[0]} />
+        </div>
+
+        {/* CARD 2 (MODEL) - MIDDLE LAYER docks at top: 26px */}
+        <motion.div
+          className="absolute top-[26px] w-full flex justify-center"
+          style={{
+            y: card1Y,
+            zIndex: 20,
+          }}
+        >
+          <CapabilityCardContent item={capabilities[1]} />
+        </motion.div>
+
+        {/* CARD 3 (DIRECTION) - TOP LAYER docks at top: 52px */}
+        <motion.div
+          className="absolute top-[52px] w-full flex justify-center"
+          style={{
+            y: card2Y,
+            zIndex: 30,
+          }}
+        >
+          <CapabilityCardContent item={capabilities[2]} />
+        </motion.div>
+      </div>
+    </div>
+  );
 }
 
 export default function HomeAboutSplitSection() {
@@ -104,64 +198,9 @@ export default function HomeAboutSplitSection() {
           </div>
 
           {/* ========================================================================= */}
-          {/* 3-CARD SCROLL STACKING DECK (EXACT REFERENCE FORMAT)                      */}
+          {/* 3-CARD SCROLL STACKING DECK (EXACT REFERENCE FORMAT WITH CLAMPED TRAVEL)   */}
           {/* ========================================================================= */}
-          <div className="relative w-full max-w-[500px] sm:max-w-[520px] mx-auto pt-6 pb-32 sm:pb-44">
-            {capabilities.map((item, idx) => {
-              // Staggered top offsets: 0 -> 112px, 1 -> 138px, 2 -> 164px (exact 26px step matching user screenshot)
-              const topOffset = `calc(112px + ${idx * 26}px)`;
-              const isLast = idx === capabilities.length - 1;
-
-              return (
-                <div
-                  key={item.id}
-                  className="sticky w-full flex justify-center"
-                  style={{
-                    top: topOffset,
-                    marginBottom: isLast ? "650px" : "440px",
-                    zIndex: (idx + 1) * 10,
-                  }}
-                >
-                  {/* PHYSICAL PILL CARD (MATCHING USER'S EXACT REFERENCE SCREENSHOT) */}
-                  <div className="relative w-full h-[510px] sm:h-[550px] md:h-[570px] rounded-[36px] sm:rounded-[42px] md:rounded-[46px] bg-[#02050e] border-2 border-white/[0.12] p-3.5 sm:p-4 md:p-5 flex flex-col justify-between shadow-[0_24px_60px_rgba(0,0,0,0.98),0_0_0_1px_rgba(255,255,255,0.06),0_-8px_30px_rgba(0,0,0,0.9)] overflow-hidden transition-all duration-300">
-                    
-                    {/* Subtle border highlight */}
-                    <div className="absolute inset-0 rounded-[36px] sm:rounded-[42px] md:rounded-[46px] border border-sky-400/20 pointer-events-none" />
-
-                    {/* TOP PORTION: INNER ROUNDED PHOTOGRAPH */}
-                    <div className="relative w-full h-[280px] sm:h-[310px] md:h-[330px] rounded-[24px] sm:rounded-[28px] md:rounded-[32px] overflow-hidden bg-[#070d1e] shadow-[inset_0_0_20px_rgba(0,0,0,0.8)]">
-                      <Image
-                        src={item.image}
-                        alt={item.headline}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 520px"
-                        priority={idx === 0}
-                        className="object-cover object-center filter brightness-95 contrast-105"
-                      />
-                      {/* Subtle atmospheric vignette */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
-                      
-                      {/* Corner Badge */}
-                      <div className="absolute top-3.5 left-4 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md border border-white/15 text-[11px] font-mono tracking-widest text-sky-300 uppercase font-semibold">
-                        {item.badge}
-                      </div>
-                    </div>
-
-                    {/* BOTTOM PORTION: BOLD CENTERED STATEMENT */}
-                    <div className="flex-1 flex flex-col items-center justify-center text-center px-3 sm:px-5 py-4 sm:py-5">
-                      <h4 className="font-sans text-xl sm:text-2xl md:text-[25px] font-bold text-white leading-snug tracking-tight text-center drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
-                        {item.headline}
-                      </h4>
-                      <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed text-center mt-2.5 max-w-[92%]">
-                        {item.desc}
-                      </p>
-                    </div>
-
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <ScrollDeckCards capabilities={capabilities} />
 
           {/* ========================================================================= */}
           {/* BOTTOM SECTION: NARRATIVE & LEARN MORE ACTION                             */}
