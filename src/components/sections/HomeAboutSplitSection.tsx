@@ -65,13 +65,13 @@ function ScrollDeckCards({ capabilities }: { capabilities: CapabilityItem[] }) {
   });
 
   // Card 2 (Model, idx 1): travels from 100vh down to 0px, stopping precisely at top-[26px]
-  const card1Y = useTransform(scrollYProgress, [0.12, 0.42], ["100vh", "0px"], { clamp: true });
+  const card1Y = useTransform(scrollYProgress, [0.08, 0.30], ["100vh", "0px"], { clamp: true });
 
   // Card 3 (Direction, idx 2): travels from 100vh down to 0px, stopping precisely at top-[52px]
-  const card2Y = useTransform(scrollYProgress, [0.50, 0.80], ["100vh", "0px"], { clamp: true });
+  const card2Y = useTransform(scrollYProgress, [0.38, 0.65], ["100vh", "0px"], { clamp: true });
 
   return (
-    <div ref={containerRef} className="relative w-full h-[260vh]">
+    <div ref={containerRef} className="relative w-full h-[280vh]">
       {/* Pinned Sticky Stage - Stays centered below 80px navbar */}
       <div className="sticky top-[108px] sm:top-[112px] w-full max-w-[500px] sm:max-w-[520px] mx-auto h-[630px] flex justify-center">
         
