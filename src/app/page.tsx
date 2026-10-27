@@ -34,7 +34,7 @@ export default async function HomePage() {
   const homepageData = await getHomepageData();
 
   return (
-    <div className="flex flex-col w-full overflow-hidden">
+    <div className="flex flex-col w-full overflow-x-clip">
       {/* 1. Flagship 3D Hero Section */}
       <HeroSection initialData={homepageData} />
 
