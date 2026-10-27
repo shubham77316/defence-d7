@@ -349,7 +349,7 @@ export default function BusinessesSection() {
             </svg>
           </div>
 
-          <p className="text-slate-400 text-xs sm:text-sm md:text-base leading-relaxed font-normal max-w-2xl">
+          <p className="text-slate-200 text-sm sm:text-base md:text-lg leading-relaxed font-normal select-none text-center max-w-2xl">
             Sky Wardens operates in sectors where the stakes are too high for anything less than full commitment.
           </p>
 
