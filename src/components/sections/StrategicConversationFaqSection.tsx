@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ArrowRight } from "lucide-react";
 
 interface FaqItem {
   id: string;
@@ -44,7 +44,7 @@ export default function StrategicConversationFaqSection() {
   };
 
   return (
-    <section className="relative bg-[#000208] text-white pt-6 sm:pt-10 pb-12 sm:pb-16 overflow-hidden border-t border-white/5">
+    <section id="contact" className="relative bg-[#000208] text-white pt-8 sm:pt-12 pb-12 sm:pb-16 overflow-hidden border-t border-white/5 scroll-mt-24">
       
 
 
@@ -55,15 +55,15 @@ export default function StrategicConversationFaqSection() {
         {/* ========================================================= */}
         <div className="text-center max-w-3xl mx-auto space-y-2.5 sm:space-y-3 pb-4 sm:pb-6">
           
-          {/* Clean Modern White Tag */}
+          {/* Signature Light Blue Tag matching Logo */}
           <div className="flex items-center justify-center space-x-3 select-none">
-            <span className="w-10 sm:w-16 h-[1px] bg-gradient-to-r from-transparent to-white/30" />
-            <span className="w-1.5 sm:w-2 h-[1.5px] bg-white/60" />
-            <span className="text-xs sm:text-[13px] font-sans font-semibold tracking-[0.22em] text-white uppercase">
+            <span className="w-10 sm:w-16 h-[1px] bg-gradient-to-r from-transparent to-[#7ec8ff]/40" />
+            <span className="w-1.5 sm:w-2 h-[1.5px] bg-[#7ec8ff]/80" />
+            <span className="text-xs sm:text-[13px] font-oxanium font-bold tracking-[0.28em] text-[#7ec8ff] uppercase drop-shadow-[0_0_12px_rgba(126,200,255,0.4)]">
               CONTACT
             </span>
-            <span className="w-1.5 sm:w-2 h-[1.5px] bg-white/60" />
-            <span className="w-10 sm:w-16 h-[1px] bg-gradient-to-l from-transparent to-white/30" />
+            <span className="w-1.5 sm:w-2 h-[1.5px] bg-[#7ec8ff]/80" />
+            <span className="w-10 sm:w-16 h-[1px] bg-gradient-to-l from-transparent to-[#7ec8ff]/40" />
           </div>
 
           {/* Heading */}
@@ -124,26 +124,39 @@ export default function StrategicConversationFaqSection() {
           </div>
 
           {/* Subtitle */}
-          <p className="text-slate-400 text-xs sm:text-sm font-light tracking-wide max-w-xl mx-auto">
+          <p className="text-slate-200 text-sm sm:text-base md:text-lg leading-relaxed font-normal select-none max-w-xl mx-auto text-center">
             Ideas grow through the right discussions. Start one with us today.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-1.5 sm:pt-2">
-            {/* Contact Sky Wardens Button (Solid White Pill) */}
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-1.5 sm:pt-2">
+            {/* Contact Sky Wardens Button (Compact Blue Gradient Hero Pill) */}
             <Link
               href="/contact"
-              className="px-7 py-3 rounded-full bg-white text-slate-950 font-semibold text-xs sm:text-sm tracking-wide transition-all duration-300 hover:bg-slate-200 hover:shadow-[0_0_25px_rgba(255,255,255,0.25)] hover:-translate-y-0.5 select-none"
+              className="group relative inline-flex items-center justify-center px-5 sm:px-6 py-2 sm:py-2.5 bg-gradient-to-r from-[#1d6fa5] via-[#257dc0] to-[#4295e8] hover:from-[#2075ad] hover:via-[#2a80c3] hover:to-[#4a9cee] text-white font-bold text-[11px] sm:text-xs tracking-wider uppercase transition-all duration-300 ease-out shadow-[0_4px_16px_rgba(29,111,165,0.22)] hover:shadow-[0_4px_20px_rgba(37,125,192,0.32)] hover:-translate-y-0.5 active:translate-y-0 rounded-full overflow-hidden text-center cursor-pointer border border-sky-300/25 hover:border-sky-300/40"
             >
-              Contact Sky Wardens
+              {/* Subtle glassy shimmer sweep */}
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                <span className="tracking-widest drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]">
+                  CONTACT SKY WARDENS
+                </span>
+                <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white transition-transform duration-300 ease-out group-hover:translate-x-1" />
+              </span>
             </Link>
 
-            {/* Learn About Us Button (Dark Translucent Pill with White Border) */}
+            {/* Learn About Us Button (Compact Dark Translucent Pill) */}
             <Link
               href="/about"
-              className="px-7 py-3 rounded-full bg-black/40 border border-white/20 text-white font-medium text-xs sm:text-sm tracking-wide transition-all duration-300 hover:bg-white/10 hover:border-white/40 hover:-translate-y-0.5 backdrop-blur-md select-none"
+              className="group relative inline-flex items-center justify-center px-5 sm:px-6 py-2 sm:py-2.5 bg-black/40 hover:bg-[#7ec8ff]/10 text-slate-200 hover:text-white border border-white/20 hover:border-[#7ec8ff]/90 text-[11px] sm:text-xs font-semibold tracking-wider uppercase transition-all duration-300 ease-out backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.4)] hover:shadow-[0_0_25px_rgba(126,200,255,0.4),inset_0_0_12px_rgba(126,200,255,0.15)] hover:-translate-y-0.5 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer"
             >
-              Learn About Us
+              {/* Subtle glassy shine sweep */}
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+
+              <span className="relative z-10 tracking-widest transition-colors duration-300 group-hover:text-[#e0f2fe]">
+                LEARN ABOUT US
+              </span>
             </Link>
           </div>
 
@@ -178,10 +191,6 @@ export default function StrategicConversationFaqSection() {
                     className="w-full flex items-center justify-between gap-4 text-left group transition-colors"
                   >
                     <div className="flex items-start sm:items-center gap-3.5 sm:gap-4">
-                      {/* Cyan Number */}
-                      <span className="text-[11px] sm:text-xs font-mono font-bold text-sky-400 mt-0.5 sm:mt-0 shrink-0">
-                        {item.num}
-                      </span>
                       {/* Question Text */}
                       <span className="text-sm sm:text-base font-semibold text-slate-100 group-hover:text-white transition-colors">
                         {item.question}

@@ -2,8 +2,8 @@ import React from "react";
 import AboutContent from "@/components/about/AboutContent";
 
 export const metadata = {
-  title: "About Sky Wardens — Built For What The Defence World Needs",
-  description: "Learn about Sky Wardens's sovereign engineering philosophy, durable industrial capability, and long-term strategic mission."
+  title: "About Sky Wardens — Precision, Protect & Progress",
+  description: "Learn about Sky Wardens Alliance Private Limited, redefining the standards of defence and industrial sectors with aerospace systems, tactical solutions, and advanced electronics."
 };
 
 export default function AboutPage() {

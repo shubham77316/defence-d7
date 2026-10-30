@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft, ShieldCheck, ChevronRight, Globe, Lock } from "lucide-react";
+import { ArrowLeft, ChevronRight, Globe, Lock } from "lucide-react";
 
 // --- Vector Logos matching the reference aesthetic ---
 function LogoIafCrest() {
@@ -478,10 +478,6 @@ export default function PartnershipsPage() {
             <ArrowLeft className="w-4 h-4" />
             <span>BACK TO HOME</span>
           </Link>
-          <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>AUTHORISED DOSSIER // SEC-LVL 4</span>
-          </div>
         </div>
 
         {/* Section Header */}
@@ -583,6 +579,26 @@ export default function PartnershipsPage() {
               </div>
             </motion.div>
           ))}
+
+          {/* Affiliations Update Elegant Banner */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="relative rounded-2xl border border-white/10 bg-[#070e1c]/60 backdrop-blur-xl px-6 py-7 sm:px-10 sm:py-8 text-center shadow-[0_8px_32px_rgba(0,0,0,0.4)] mt-6"
+          >
+            {/* Subtle Softer Corner Accents */}
+            <div className="absolute top-2.5 left-2.5 w-3 h-3 border-t border-l border-sky-400/30" />
+            <div className="absolute bottom-2.5 right-2.5 w-3 h-3 border-b border-r border-sky-400/30" />
+
+            <div className="text-xs sm:text-[13px] font-sans font-semibold tracking-wider text-[#7ec8ff] uppercase mb-2.5">
+              AFFILIATIONS UPDATE
+            </div>
+            <p className="text-slate-300 font-sans text-xs sm:text-[13.5px] md:text-sm font-normal tracking-wide uppercase max-w-3xl mx-auto leading-relaxed">
+              NEW PRODUCTS WITH OUR VARIOUS PARTNERS (ALL TYPES OF INSTITUTIONS LISTED) ARE CURRENTLY UNDER DESIGN &amp; EVALUATION, AND WILL BE ADDED AS THEY ARE CLEARED FOR RELEASE.
+            </p>
+          </motion.div>
         </div>
 
         {/* Security & Confidentiality Notice Footer Strip */}
@@ -594,12 +610,12 @@ export default function PartnershipsPage() {
           className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-400"
         >
           <div className="flex items-center gap-2">
-            <Lock className="w-3.5 h-3.5 text-cyan-400" />
+            <Lock className="w-3.5 h-3.5 text-[#7ec8ff]" />
             <span>RESTRICTED REPOSITORY // NDAS &amp; SOVEREIGN CLEARANCE PROTOCOLS ACTIVE</span>
           </div>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-1.5 text-cyan-400 hover:text-white font-semibold transition-colors uppercase tracking-wider"
+            className="inline-flex items-center gap-1.5 text-[#7ec8ff] hover:text-white font-sans font-semibold transition-colors uppercase tracking-wider"
           >
             <span>Initiate Sovereign Partnership Dialogue</span>
             <ChevronRight className="w-3.5 h-3.5" />
