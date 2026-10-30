@@ -240,11 +240,11 @@ export default function PartnershipsPage() {
   ];
 
   return (
-    <div className="relative min-h-screen bg-[#010309] text-white overflow-hidden">
+    <div className="relative min-h-screen bg-[#010309] text-white">
 
       {/* ── STICKY HERO SECTION ── */}
-      <div ref={heroRef} className="relative h-[170vh] w-full">
-        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between">
+      <div ref={heroRef} className="relative h-[170vh] w-full overflow-x-hidden">
+        <div className="sticky top-0 h-screen w-full flex flex-col justify-between">
 
           {/* Background Image — fixed behind everything */}
           <div className="absolute inset-0 z-0">
@@ -305,7 +305,7 @@ export default function PartnershipsPage() {
       </div>
 
       {/* ── MAIN CONTENT ── */}
-      <div className="relative z-10 pt-16 pb-28 overflow-hidden">
+      <div className="relative z-10 pt-16 pb-28 overflow-x-hidden">
 
         {/* Animated Defence Cyber Wireframe Background */}
         <div className="absolute top-0 inset-x-0 h-[750px] overflow-hidden pointer-events-none flex items-center justify-center">
