@@ -10,7 +10,7 @@ const DEFAULT_HOMEPAGE = {
   heroTitle: "ENGINEERING STRATEGIC CAPABILITY FOR THE NEXT ERA",
   heroSubtitle:
     "Architecting sovereign aerospace platforms, kinetic tactical survivability systems, and specialized industrial petrochemical formulations.",
-  heroCtaText: "",
+  heroCtaText: "Explore Capabilities",
   heroCtaLink: "/capabilities",
   heroSecondaryCtaText: "Initiate Liaison",
   heroSecondaryCtaLink: "/contact",

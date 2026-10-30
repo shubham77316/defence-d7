@@ -16,7 +16,7 @@ const homepageSchema = new mongoose.Schema(
     },
     heroCtaText: {
       type: String,
-      default: "",
+      default: "Explore Capabilities",
     },
     heroCtaLink: {
       type: String,
