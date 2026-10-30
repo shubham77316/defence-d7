@@ -20,12 +20,12 @@ function AffiliationScrollLetter({
   const start = 0.01 + index * 0.06;
   const end = Math.min(start + 0.14, 0.96);
 
-  const y = useTransform(progress, [start, end], ["110vh", "0vh"], { clamp: true });
-  const opacity = useTransform(progress, [start, start + 0.03, end], [0, 1, 1], { clamp: true });
+  const x = useTransform(progress, [start, end], ["65vw", "0vw"], { clamp: true });
+  const opacity = useTransform(progress, [start, start + 0.04, end], [0, 0.75, 1], { clamp: true });
 
   return (
     <motion.span
-      style={{ y, opacity }}
+      style={{ x, opacity }}
       className="inline-block bg-gradient-to-b from-[#e0f2fe] via-[#7ec8ff] to-[#38bdf8] bg-clip-text text-transparent will-change-transform"
     >
       {char}
