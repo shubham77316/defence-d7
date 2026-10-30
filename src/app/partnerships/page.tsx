@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft, ChevronRight, Globe, Lock } from "lucide-react";
+import { ArrowLeft, Globe } from "lucide-react";
 
 // --- Vector Logos matching the reference aesthetic ---
 function LogoIafCrest() {
@@ -600,27 +600,6 @@ export default function PartnershipsPage() {
             </p>
           </motion.div>
         </div>
-
-        {/* Security & Confidentiality Notice Footer Strip */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-400"
-        >
-          <div className="flex items-center gap-2">
-            <Lock className="w-3.5 h-3.5 text-[#7ec8ff]" />
-            <span>RESTRICTED REPOSITORY // NDAS &amp; SOVEREIGN CLEARANCE PROTOCOLS ACTIVE</span>
-          </div>
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-1.5 text-[#7ec8ff] hover:text-white font-sans font-semibold transition-colors uppercase tracking-wider"
-          >
-            <span>Initiate Sovereign Partnership Dialogue</span>
-            <ChevronRight className="w-3.5 h-3.5" />
-          </Link>
-        </motion.div>
 
       </div>
     </div>
