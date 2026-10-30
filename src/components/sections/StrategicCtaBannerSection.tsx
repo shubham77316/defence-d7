@@ -55,10 +55,10 @@ export default function StrategicCtaBannerSection({ initialData }: StrategicCtaB
 
   return (
     <section className="relative w-full bg-[#000208] text-white pt-10 sm:pt-14 md:pt-16 pb-6 sm:pb-8 md:pb-10 overflow-hidden border-t border-white/5 select-none">
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-2.5 sm:px-6 md:px-8 lg:px-12 xl:px-14">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* Left: Content Data & CTAs */}
-          <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-left order-2 lg:order-1">
+          {/* Left: Content Data & CTAs (Aligned with Logo) */}
+          <div className="lg:col-span-7 xl:col-span-8 space-y-5 sm:space-y-6 text-left order-2 lg:order-1">
             {/* Pill Tag */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.06] border border-white/10 backdrop-blur-md">
               <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />
@@ -70,7 +70,7 @@ export default function StrategicCtaBannerSection({ initialData }: StrategicCtaB
             {/* Monumental Headline in Signature Radiant Blue & Titanium White Sheen */}
             {Boolean(data.ctaBannerTitle && data.ctaBannerTitle.trim()) && (
               <div className="w-full py-0.5 select-none">
-                <h2 className="font-oxanium text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-wide leading-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-sky-100 to-sky-400 drop-shadow-[0_4px_24px_rgba(56,189,248,0.22)]">
+                <h2 className="font-oxanium text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-black uppercase tracking-wide leading-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-sky-100 to-sky-400 drop-shadow-[0_4px_24px_rgba(56,189,248,0.22)]">
                   {data.ctaBannerTitle}
                 </h2>
               </div>
@@ -78,7 +78,7 @@ export default function StrategicCtaBannerSection({ initialData }: StrategicCtaB
 
             {/* Subtitle / Paragraph from CMS */}
             {Boolean(data.ctaBannerDesc && data.ctaBannerDesc.trim()) && (
-              <p className="text-slate-200 text-sm sm:text-base md:text-lg leading-relaxed font-normal select-none max-w-2xl">
+              <p className="text-slate-200 text-sm sm:text-base md:text-lg leading-relaxed font-normal select-none max-w-3xl">
                 {data.ctaBannerDesc}
               </p>
             )}
@@ -90,19 +90,13 @@ export default function StrategicCtaBannerSection({ initialData }: StrategicCtaB
                 {Boolean(data.ctaBannerButtonText && data.ctaBannerButtonText.trim()) && (
                   <Link
                     href={data.ctaBannerButtonLink || "/contact"}
-                    className="group relative inline-flex items-center justify-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 rounded-full bg-gradient-to-r from-[#93d5ff] via-[#5bb4f8] to-[#288ee0] hover:from-[#b6e5ff] hover:via-[#7ec8ff] hover:to-[#3ba1f3] text-slate-950 font-bold text-xs sm:text-sm tracking-wide shadow-[0_0_25px_rgba(91,180,248,0.45)] hover:shadow-[0_0_40px_rgba(147,213,255,0.8),0_0_15px_rgba(255,255,255,0.5)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 transition-all duration-300 ease-out rounded-full overflow-hidden text-center cursor-pointer border border-sky-200/50"
+                    className="group relative inline-flex items-center justify-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 rounded-full bg-gradient-to-r from-[#93d5ff] via-[#5bb4f8] to-[#288ee0] hover:brightness-105 text-slate-950 font-bold text-xs sm:text-sm tracking-wide shadow-[0_4px_16px_rgba(40,142,224,0.3)] hover:shadow-[0_6px_22px_rgba(40,142,224,0.45)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 text-center cursor-pointer border border-sky-300/40"
                   >
-                    {/* Shimmer / Light beam sweep effect on hover */}
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
-
-                    {/* Pulsing ambient radial glow */}
-                    <span className="absolute -inset-1 rounded-full bg-sky-300/30 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-
                     <span className="relative z-10 flex items-center gap-2">
-                      <span className="tracking-wide drop-shadow-[0_1px_1px_rgba(255,255,255,0.3)]">
+                      <span className="tracking-wide">
                         {data.ctaBannerButtonText}
                       </span>
-                      <ArrowRight className="w-4 h-4 text-slate-950 font-bold transition-transform duration-300 ease-out group-hover:translate-x-1.5 group-hover:scale-110 drop-shadow-[0_0_6px_rgba(0,0,0,0.3)]" />
+                      <ArrowRight className="w-4 h-4 text-slate-950 font-bold transition-transform duration-200 ease-out group-hover:translate-x-1" />
                     </span>
                   </Link>
                 )}
@@ -110,12 +104,9 @@ export default function StrategicCtaBannerSection({ initialData }: StrategicCtaB
                 {Boolean(data.ctaBannerSecondaryButtonText && data.ctaBannerSecondaryButtonText.trim()) && (
                   <Link
                     href={data.ctaBannerSecondaryButtonLink || "/capabilities"}
-                    className="group relative inline-flex items-center justify-center px-7 sm:px-8 py-3.5 sm:py-4 rounded-full bg-black/40 hover:bg-[#7ec8ff]/10 text-slate-200 hover:text-white border border-white/20 hover:border-[#7ec8ff]/90 text-xs sm:text-sm font-semibold tracking-wide hover:shadow-[0_0_30px_rgba(126,200,255,0.45),inset_0_0_15px_rgba(126,200,255,0.15)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 backdrop-blur-md transition-all duration-300 ease-out overflow-hidden text-center cursor-pointer"
+                    className="group relative inline-flex items-center justify-center px-7 sm:px-8 py-3.5 sm:py-4 rounded-full bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/15 hover:border-white/30 text-xs sm:text-sm font-semibold tracking-wide hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 text-center cursor-pointer"
                   >
-                    {/* Subtle glassy shine sweep */}
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
-
-                    <span className="relative z-10 tracking-wide transition-colors duration-300 group-hover:text-[#e0f2fe]">
+                    <span className="tracking-wide">
                       {data.ctaBannerSecondaryButtonText}
                     </span>
                   </Link>
@@ -124,15 +115,15 @@ export default function StrategicCtaBannerSection({ initialData }: StrategicCtaB
             )}
           </div>
 
-          {/* Right: Pure Transparent Robotic Arm Cutout */}
-          <div className="lg:col-span-5 flex justify-center items-center relative order-1 lg:order-2">
-            <div className="relative w-full max-w-[320px] sm:max-w-[380px] h-[380px] sm:h-[460px] md:h-[500px] flex items-center justify-center">
+          {/* Right: Pure Transparent Robotic Arm Cutout (Aligned with Contact Button) */}
+          <div className="lg:col-span-5 xl:col-span-4 flex justify-center lg:justify-end items-center relative order-1 lg:order-2">
+            <div className="relative w-full max-w-[320px] sm:max-w-[380px] md:max-w-[440px] h-[380px] sm:h-[460px] md:h-[500px] flex items-center justify-center lg:justify-end">
               <Image
                 src="/images/modular-robotic-arm-transparent.png"
                 alt="Sky Wardens Advanced Robotic Manipulator"
                 fill
-                sizes="(max-width: 768px) 100vw, 400px"
-                className="object-contain object-center drop-shadow-[0_15px_35px_rgba(0,0,0,0.8)] relative z-10"
+                sizes="(max-width: 768px) 100vw, 440px"
+                className="object-contain object-center lg:object-right drop-shadow-[0_15px_35px_rgba(0,0,0,0.8)] relative z-10"
                 priority
                 unoptimized
               />

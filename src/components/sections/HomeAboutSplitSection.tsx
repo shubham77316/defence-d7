@@ -3,56 +3,152 @@
 import React, { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useSettings } from "@/context/SettingsContext";
 
-interface CapabilityCardData {
+interface CapabilityItem {
   id: string;
-  badge: string;
-  title: string;
-  subtitle: string;
+  badge?: string;
+  headline: string;
+  desc: string;
   image: string;
 }
 
-const CAPABILITY_CARDS: CapabilityCardData[] = [
-  {
-    id: "01",
-    badge: "01 // STRATEGIC SECTORS",
-    title: "Aerospace & Multi-Domain Defence",
-    subtitle:
-      "Sovereign tactical airframes, kinetic survivability, and autonomous reconnaissance engineered for national security.",
-    image: "/images/foundation-sectors.jpg",
-  },
-  {
-    id: "02",
-    badge: "02 // OPERATIONAL MODEL",
-    title: "Direct Sovereign B2G Engagement",
-    subtitle:
-      "Chosen deliberately to partner with armed forces, tier-1 industrial conglomerates, and sovereign defence laboratories.",
-    image: "/images/foundation-model.jpg",
-  },
-  {
-    id: "03",
-    badge: "03 // LONG-TERM DIRECTION",
-    title: "Built for What Decades to Matter",
-    subtitle:
-      "Durable sovereign industrial capability, the kind that takes years to build and decades to execute.",
-    image: "/images/foundation-direction.jpg",
-  },
-];
+// Reusable Physical Pill Card Component
+function CapabilityCardContent({ item }: { item: CapabilityItem }) {
+  return (
+    <div className="relative w-full h-[490px] sm:h-[530px] md:h-[550px] rounded-[32px] sm:rounded-[38px] md:rounded-[42px] bg-[#02050e] border border-white/[0.14] pt-2.5 sm:pt-3 px-2.5 sm:px-3.5 pb-4 sm:pb-5 flex flex-col justify-between shadow-[0_24px_60px_rgba(0,0,0,0.98),0_0_0_1px_rgba(56,189,248,0.22),0_-6px_20px_rgba(0,0,0,0.85)] overflow-hidden select-none">
+      {/* Subtle cyan border accent highlight */}
+      <div className="absolute inset-0 rounded-[32px] sm:rounded-[38px] md:rounded-[42px] border border-sky-400/20 pointer-events-none" />
+
+      {/* TOP PORTION: INNER ROUNDED PHOTOGRAPH */}
+      <div className="relative w-full h-[270px] sm:h-[300px] md:h-[320px] rounded-[22px] sm:rounded-[26px] md:rounded-[30px] overflow-hidden bg-[#070d1e] shadow-[inset_0_0_24px_rgba(0,0,0,0.85)]">
+        <Image
+          src={item.image}
+          alt={item.headline}
+          fill
+          sizes="(max-width: 768px) 100vw, 520px"
+          priority
+          className="object-cover object-center filter brightness-95 contrast-105"
+        />
+        {/* Subtle atmospheric vignette */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/25 pointer-events-none" />
+      </div>
+
+      {/* BOTTOM PORTION: BOLD CENTERED STATEMENT */}
+      <div className="flex-1 flex flex-col items-center justify-center text-center px-3 sm:px-5 py-3 sm:py-4">
+        <h4 className="font-sans text-xl sm:text-2xl md:text-[24px] font-bold text-white leading-snug tracking-tight text-center drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+          {item.headline}
+        </h4>
+        <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed text-center mt-2.5 max-w-[92%]">
+          {item.desc}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// Unified Stacking Deck with scroll-driven clamped transforms:
+// Sequence on scroll:
+// 1. Card 1 (01 // SECTORS) is anchored at top: 0px.
+// 2. As you scroll, Card 2 (02 // MODEL) smoothly rises from below and docks at top: 48px.
+//    Card 1's badge "01 // SECTORS" remains 100% visible with breathing room.
+// 3. As you scroll further, Card 3 (03 // DIRECTION) smoothly rises from below and docks at top: 96px.
+//    Card 2's badge "02 // MODEL" and Card 1's badge "01 // SECTORS" both remain 100% visible,
+//    with Card 3 fully displaying its badge, photo, headline, and desc in front!
+function ScrollDeckCards({ capabilities }: { capabilities: CapabilityItem[] }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start 96px", "end end"],
+  });
+
+  // Card 2 (Model, idx 1): rises from 850px below to 0px, clamping precisely at top-[48px]
+  const card1Y = useTransform(scrollYProgress, [0.08, 0.44], [850, 0], { clamp: true });
+  const card1Opacity = useTransform(scrollYProgress, [0.06, 0.16], [0, 1], { clamp: true });
+
+  // Card 3 (Direction, idx 2): rises from 850px below to 0px, clamping precisely at top-[96px]
+  const card2Y = useTransform(scrollYProgress, [0.52, 0.88], [850, 0], { clamp: true });
+  const card2Opacity = useTransform(scrollYProgress, [0.50, 0.60], [0, 1], { clamp: true });
+
+  return (
+    <div ref={containerRef} className="relative w-full h-[240vh]">
+      {/* Pinned Sticky Stage - Stays centered below navbar */}
+      <div className="sticky top-[96px] sm:top-[104px] w-full max-w-[500px] sm:max-w-[520px] mx-auto h-[660px] flex justify-center pointer-events-none">
+        
+        {/* CARD 1 (SECTORS) - BASE LAYER at top: 0 */}
+        <div
+          className="absolute top-0 w-full flex justify-center pointer-events-auto"
+          style={{ zIndex: 10 }}
+        >
+          <CapabilityCardContent item={capabilities[0]} />
+        </div>
+
+        {/* CARD 2 (MODEL) - MIDDLE LAYER docks at top: 48px */}
+        <motion.div
+          className="absolute top-[48px] w-full flex justify-center pointer-events-auto"
+          style={{
+            y: card1Y,
+            opacity: card1Opacity,
+            zIndex: 20,
+          }}
+        >
+          <CapabilityCardContent item={capabilities[1]} />
+        </motion.div>
+
+        {/* CARD 3 (DIRECTION) - TOP LAYER docks at top: 96px */}
+        <motion.div
+          className="absolute top-[96px] w-full flex justify-center pointer-events-auto"
+          style={{
+            y: card2Y,
+            opacity: card2Opacity,
+            zIndex: 30,
+          }}
+        >
+          <CapabilityCardContent item={capabilities[2]} />
+        </motion.div>
+      </div>
+    </div>
+  );
+}
 
 export default function HomeAboutSplitSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const { settings } = useSettings();
 
+  const capabilities: CapabilityItem[] = [
+    {
+      id: "01",
+      badge: "01 // SECTORS",
+      headline: "Aerospace & defence platforms engineered for sovereign security.",
+      desc: "Next-generation kinetic, autonomous, and strategic aerospace systems designed for long-term operational superiority.",
+      image: "/images/foundation-sectors.jpg",
+    },
+    {
+      id: "02",
+      badge: "02 // MODEL",
+      headline: "Direct sovereign engagement and alliances built to outlast trends.",
+      desc: "High-level institutional alignment with defense ministries, armed forces, and global Tier-1 strategic partners.",
+      image: "/images/foundation-model.jpg",
+    },
+    {
+      id: "03",
+      badge: "03 // DIRECTION",
+      headline: "Durable industrial capability that takes years to build and decades to matter.",
+      desc: "Sovereign domestic manufacturing, deep precision engineering, and strategic deterrence designed for decades.",
+      image: "/images/foundation-direction.jpg",
+    },
+  ];
+
   return (
     <section
       ref={sectionRef}
-      className="relative pt-8 sm:pt-12 pb-10 sm:pb-14 bg-[#02050e] border-t border-white/[0.08] select-none"
+      className="relative pt-8 sm:pt-12 pb-16 sm:pb-24 bg-[#02050e] border-t border-white/[0.08] overflow-visible select-none"
     >
-      {/* Clean Solid Dark Background */}
+      {/* Clean Solid Dark Background with subtle ambient glow */}
       <div className="absolute inset-0 bg-[#02050e] pointer-events-none z-0" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-sky-500/5 rounded-full blur-[140px] pointer-events-none z-0" />
 
       {/* Main Inner Content */}
       <div className="relative w-full max-w-[1680px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 z-10">
@@ -65,7 +161,7 @@ export default function HomeAboutSplitSection() {
             <motion.div
               initial={{ y: 50, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, amount: 0.15 }}
+              viewport={{ once: false, amount: 0.15 }}
               transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
               className="flex flex-col items-center text-center space-y-3 sm:space-y-4 max-w-4xl mx-auto"
             >
@@ -106,66 +202,9 @@ export default function HomeAboutSplitSection() {
           </div>
 
           {/* ========================================================================= */}
-          {/* PINNED STACKING CARDS ON SCROLL (MATCHING REFERENCE SCREENSHOTS)          */}
+          {/* 3-CARD SCROLL STACKING DECK (EXACT REFERENCE FORMAT WITH CLAMPED TRAVEL)   */}
           {/* ========================================================================= */}
-          <div className="relative w-full max-w-[560px] mx-auto pt-4 pb-8">
-            {CAPABILITY_CARDS.map((card, idx) => {
-              // Staggered sticky top offsets so previous cards peek out from behind
-              const stickyTop = `calc(90px + ${idx * 26}px)`;
-              const isLast = idx === CAPABILITY_CARDS.length - 1;
-
-              return (
-                <div
-                  key={card.id}
-                  className={`sticky flex justify-center w-full ${
-                    isLast ? "mb-6" : "mb-28 sm:mb-36 md:mb-44"
-                  }`}
-                  style={{ top: stickyTop }}
-                >
-                  <motion.div
-                    initial={{ opacity: 0, y: 70 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.15 }}
-                    transition={{
-                      duration: 0.55,
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
-                    className="group relative w-full h-[470px] sm:h-[520px] md:h-[550px] rounded-[32px] sm:rounded-[38px] border-2 border-white/[0.14] hover:border-[#7ec8ff]/80 bg-[#030611] backdrop-blur-2xl p-3.5 sm:p-4.5 md:p-5 flex flex-col justify-between shadow-[0_24px_60px_rgba(0,0,0,0.95),0_0_40px_rgba(0,0,0,0.85)] hover:shadow-[0_24px_70px_rgba(2,132,199,0.32)] transition-all duration-300 select-none cursor-pointer overflow-hidden"
-                  >
-                    {/* Diagonal Shimmer beam sweep on hover */}
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/[0.08] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none rounded-[32px] sm:rounded-[38px] z-30" />
-
-                    {/* Top Part: High-Resolution Visual with Rounded Corners (matching Reference Image 1) */}
-                    <div className="relative w-full h-[270px] sm:h-[310px] md:h-[330px] rounded-[24px] sm:rounded-[28px] overflow-hidden border border-white/10 group-hover:border-[#7ec8ff]/40 transition-colors duration-300">
-                      <Image
-                        src={card.image}
-                        alt={card.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 540px"
-                        className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out filter brightness-95 contrast-105"
-                      />
-                      {/* Top Corner Pill Badge */}
-                      <div className="absolute top-3 left-3 z-20">
-                        <span className="font-oxanium text-[10px] sm:text-[11px] font-bold tracking-widest text-[#7ec8ff] uppercase px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-sky-400/30 shadow-md">
-                          {card.badge}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Bottom Part: Clean Centered Typography Statement (matching Reference Image 1) */}
-                    <div className="flex-1 flex flex-col items-center justify-center text-center px-3 sm:px-6 pt-3 pb-2">
-                      <h4 className="font-oxanium text-xl sm:text-2xl md:text-[25px] font-bold text-white tracking-tight leading-tight group-hover:text-[#e0f2fe] transition-colors duration-300">
-                        {card.title}
-                      </h4>
-                      <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed mt-2.5 max-w-md">
-                        {card.subtitle}
-                      </p>
-                    </div>
-                  </motion.div>
-                </div>
-              );
-            })}
-          </div>
+          <ScrollDeckCards capabilities={capabilities} />
 
           {/* ========================================================================= */}
           {/* BOTTOM SECTION: NARRATIVE & LEARN MORE ACTION                             */}
@@ -174,8 +213,8 @@ export default function HomeAboutSplitSection() {
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.15 }}
-            transition={{ duration: 0.45, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full flex flex-col items-center text-center space-y-5 -mt-2 sm:-mt-4 max-w-3xl mx-auto"
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full flex flex-col items-center text-center space-y-5 max-w-3xl mx-auto pt-4"
           >
             {/* Narrative 2-Line Text */}
             <p className="text-slate-200 text-sm sm:text-base md:text-lg leading-relaxed font-normal select-none text-center">

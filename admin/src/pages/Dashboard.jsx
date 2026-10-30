@@ -23,9 +23,14 @@ export default function Dashboard() {
   const fetchStats = async () => {
     try {
       setLoading(true);
+      setError("");
       const res = await api.getDashboardStats();
-      if (res.success) {
+      if (res?.success && res.data) {
         setStats(res.data);
+      } else if (res?.data) {
+        setStats(res.data);
+      } else if (res) {
+        setStats(res);
       }
     } catch (err) {
       setError(err.message || "Failed to load dashboard metrics.");
@@ -341,7 +346,7 @@ export default function Dashboard() {
 
                     {/* 6. Date */}
                     <td className="px-6 py-4 whitespace-nowrap text-slate-400 text-xs">
-                      {new Date(item.createdAt).toLocaleDateString()}
+                      {item.createdAt ? new Date(item.createdAt).toLocaleDateString() : "Recent"}
                     </td>
 
                     {/* 7. Action Button */}

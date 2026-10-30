@@ -50,6 +50,34 @@ const userSchema = new mongoose.Schema(
     lastLogin: {
       type: Date,
     },
+    lastLoginDetails: {
+      loginAt: { type: Date },
+      ip: { type: String, default: "127.0.0.1" },
+      device: { type: String, default: "Desktop" },
+      deviceModel: { type: String, default: "Desktop" },
+      os: { type: String, default: "Unknown OS" },
+      osName: { type: String, default: "" },
+      osVersion: { type: String, default: "" },
+      browser: { type: String, default: "Unknown Browser" },
+      browserName: { type: String, default: "" },
+      browserVersion: { type: String, default: "" },
+      userAgent: { type: String, default: "" },
+    },
+    loginHistory: [
+      {
+        loginAt: { type: Date, default: Date.now },
+        ip: { type: String, default: "127.0.0.1" },
+        device: { type: String, default: "Desktop" },
+        deviceModel: { type: String, default: "Desktop" },
+        os: { type: String, default: "Unknown OS" },
+        osName: { type: String, default: "" },
+        osVersion: { type: String, default: "" },
+        browser: { type: String, default: "Unknown Browser" },
+        browserName: { type: String, default: "" },
+        browserVersion: { type: String, default: "" },
+        userAgent: { type: String, default: "" },
+      },
+    ],
   },
   { timestamps: true }
 );

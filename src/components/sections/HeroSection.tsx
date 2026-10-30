@@ -136,20 +136,20 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
               {Boolean(data.heroCtaText && data.heroCtaText.trim()) && (
                 <Link
                   href={data.heroCtaLink || "/capabilities"}
-                  className="group relative inline-flex items-center justify-center px-6 sm:px-7 py-3 sm:py-3.5 bg-gradient-to-r from-[#1d6fa5] via-[#257dc0] to-[#5aa9f7] hover:from-[#257dc0] hover:via-[#3b8fd4] hover:to-[#70b9ff] text-white font-bold text-[11px] sm:text-xs tracking-wider uppercase transition-all duration-300 ease-out shadow-[0_0_25px_rgba(90,169,247,0.4)] hover:shadow-[0_0_40px_rgba(90,169,247,0.75),0_0_15px_rgba(255,255,255,0.4)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer border border-sky-300/30"
+                  className="group relative inline-flex items-center justify-center px-6 sm:px-7 py-3 sm:py-3.5 bg-gradient-to-r from-[#1d6fa5] via-[#257dc0] to-[#4ea0f0] hover:from-[#227cb9] hover:via-[#318dd5] hover:to-[#5eb1ff] text-white font-bold text-[11px] sm:text-xs tracking-wider uppercase transition-all duration-300 ease-out shadow-[0_4px_18px_rgba(29,111,165,0.35)] hover:shadow-[0_0_28px_rgba(56,189,248,0.55),0_0_10px_rgba(255,255,255,0.25)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer border border-sky-300/30 hover:border-sky-300/70"
                 >
-                  {/* Shimmer / Light beam sweep effect on hover */}
-                  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/35 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+                  {/* Shimmer light sweep on hover */}
+                  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
 
-                  {/* Pulsing ambient radial glow */}
-                  <span className="absolute -inset-1 rounded-full bg-sky-400/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                  {/* Controlled subtle blue edge glow on hover */}
+                  <span className="absolute -inset-0.5 rounded-full bg-sky-400/25 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
                   <span className="relative z-10 flex items-center justify-center gap-2">
-                    <span className="tracking-widest drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                    <span className="tracking-widest drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
                       {data.heroCtaText}
                     </span>
                     <svg
-                      className="w-3.5 h-3.5 transition-transform duration-300 ease-out group-hover:translate-x-1.5 group-hover:scale-110 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+                      className="w-3.5 h-3.5 transition-transform duration-300 ease-out group-hover:translate-x-1.5 drop-shadow-[0_0_6px_rgba(255,255,255,0.6)]"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"

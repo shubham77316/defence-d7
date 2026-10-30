@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const { logSecurityEvent } = require("../middleware/permissions");
+const { parseClientDevice } = require("../utils/deviceDetector");
 
 const generateToken = (id) => {
   return jwt.sign(
@@ -69,8 +70,21 @@ const login = async (req, res, next) => {
       });
     }
 
-    // Update last login
-    user.lastLogin = new Date();
+    // Parse rich client device telemetry
+    const deviceDetails = parseClientDevice(req);
+
+    // Update last login & device details
+    user.lastLogin = deviceDetails.loginAt;
+    user.lastLoginDetails = deviceDetails;
+
+    if (!Array.isArray(user.loginHistory)) {
+      user.loginHistory = [];
+    }
+    user.loginHistory.unshift(deviceDetails);
+    // Keep up to 25 recent login sessions
+    if (user.loginHistory.length > 25) {
+      user.loginHistory = user.loginHistory.slice(0, 25);
+    }
     await user.save();
 
     const token = generateToken(user._id);
@@ -79,7 +93,14 @@ const login = async (req, res, next) => {
       action: "LOGIN_SUCCESS",
       performedBy: user,
       targetUser: user,
-      details: { role: user.role },
+      details: {
+        role: user.role,
+        device: deviceDetails.device,
+        deviceModel: deviceDetails.deviceModel,
+        os: deviceDetails.os,
+        browser: deviceDetails.browser,
+        ip: deviceDetails.ip,
+      },
       req,
     });
 
@@ -96,6 +117,8 @@ const login = async (req, res, next) => {
         status: user.status || "active",
         permissions: user.permissions || [],
         lastLogin: user.lastLogin,
+        lastLoginDetails: user.lastLoginDetails,
+        loginHistory: user.loginHistory,
       },
     });
   } catch (error) {
@@ -118,6 +141,8 @@ const getMe = async (req, res) => {
       status: req.user.status || "active",
       permissions: req.user.permissions || [],
       lastLogin: req.user.lastLogin,
+      lastLoginDetails: req.user.lastLoginDetails,
+      loginHistory: req.user.loginHistory || [],
       createdAt: req.user.createdAt,
     },
   });

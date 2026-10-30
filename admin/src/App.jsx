@@ -43,7 +43,7 @@ function PermissionRoute({ module, superAdminOnly = false, children }) {
   const { user } = useAuth();
 
   // Super Admin has universal access
-  if (user?.role === "SUPER_ADMIN") {
+  if (user?.role === "SUPER_ADMIN" || user?.role === "admin") {
     return children;
   }
 
@@ -77,7 +77,23 @@ export default function App() {
         }
       >
         <Route index element={<Dashboard />} />
-        <Route path="admins" element={<Navigate to="/" replace />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route
+          path="audit-logs"
+          element={
+            <PermissionRoute module="profile">
+              <AdminMgmt />
+            </PermissionRoute>
+          }
+        />
+        <Route
+          path="admins"
+          element={
+            <PermissionRoute module="profile">
+              <AdminMgmt />
+            </PermissionRoute>
+          }
+        />
         <Route
           path="enquiries"
           element={

@@ -1,12 +1,23 @@
 import React, { useEffect } from "react";
 import { X } from "lucide-react";
 
+const sizeMap = {
+  sm: "max-w-md",
+  md: "max-w-2xl",
+  lg: "max-w-4xl",
+  xl: "max-w-5xl",
+  "2xl": "max-w-6xl",
+  "3xl": "max-w-7xl",
+  full: "max-w-[95vw]",
+};
+
 export default function Modal({
   isOpen,
   onClose,
   title,
   children,
-  maxWidth = "max-w-2xl",
+  maxWidth,
+  size,
   position = "center",
 }) {
   useEffect(() => {
@@ -18,6 +29,8 @@ export default function Modal({
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
+
+  const computedMaxWidth = maxWidth || (size ? sizeMap[size] || size : "max-w-2xl");
 
   if (position === "right") {
     return (
@@ -59,7 +72,7 @@ export default function Modal({
         aria-hidden="true"
       />
       <div
-        className={`relative w-full ${maxWidth} bg-[#080f22] border border-sky-500/25 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden z-10 my-8 animate-in fade-in zoom-in-95 duration-200`}
+        className={`relative w-full ${computedMaxWidth} bg-[#080f22] border border-sky-500/25 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden z-10 my-8 animate-in fade-in zoom-in-95 duration-200`}
       >
         {/* Modal Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#060c1c]">

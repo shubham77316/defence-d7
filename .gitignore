@@ -6,6 +6,7 @@ node_modules/
 admin/node_modules/
 server/node_modules/
 admin/dist/
+dist/
 /.pnp
 .pnp.*
 
@@ -19,15 +20,23 @@ admin/dist/
 /coverage
 
 # next.js
+.next/
 /.next/
+admin/.next/
 /out/
 
 # production
 /build
 
+# duplicates & archives
+*.zip
+frontend-only/
+only front-end/
+
 # misc
 .DS_Store
 *.pem
+*.log
 
 # debug
 npm-debug.log*

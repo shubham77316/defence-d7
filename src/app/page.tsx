@@ -3,7 +3,6 @@ import HeroSection from "@/components/sections/HeroSection";
 import PartnerMarqueeSection from "@/components/sections/PartnerMarqueeSection";
 import HomeAboutSplitSection from "@/components/sections/HomeAboutSplitSection";
 import BusinessesSection from "@/components/sections/BusinessesSection";
-import PlatformShowcaseSection from "@/components/sections/PlatformShowcaseSection";
 import PartnershipsSection from "@/components/sections/PartnershipsSection";
 import NewsInsightsSection from "@/components/sections/NewsInsightsSection";
 import StrategicCtaBannerSection from "@/components/sections/StrategicCtaBannerSection";
@@ -34,7 +33,7 @@ export default async function HomePage() {
   const homepageData = await getHomepageData();
 
   return (
-    <div className="flex flex-col w-full overflow-hidden">
+    <div className="flex flex-col w-full overflow-x-clip">
       {/* 1. Flagship 3D Hero Section */}
       <HeroSection initialData={homepageData} />
 
@@ -47,8 +46,6 @@ export default async function HomePage() {
       {/* 4. Core Businesses Section */}
       <BusinessesSection />
 
-      {/* 4. Featured Platform Showcase */}
-      <PlatformShowcaseSection initialData={homepageData} />
 
       {/* 5. Affiliations / Partnerships */}
       <PartnershipsSection />

@@ -1,9 +1,38 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, MotionValue } from "framer-motion";
+
+const AEROSPACE_LETTERS = ["A", "E", "R", "O", "S", "P", "A", "C", "E"];
+
+function AerospaceScrollLetter({
+  char,
+  index,
+  total,
+  progress,
+}: {
+  char: string;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+}) {
+  const start = 0.04 + index * 0.085;
+  const end = Math.min(start + 0.16, 0.94);
+
+  const x = useTransform(progress, [start, end], ["65vw", "0vw"], { clamp: true });
+  const opacity = useTransform(progress, [start, start + 0.04, end], [0, 0.75, 1], { clamp: true });
+
+  return (
+    <motion.span
+      style={{ x, opacity }}
+      className="inline-block bg-gradient-to-b from-[#e0f2fe] via-[#7ec8ff] to-[#38bdf8] bg-clip-text text-transparent will-change-transform"
+    >
+      {char}
+    </motion.span>
+  );
+}
 import {
   Scale,
   Gauge,
@@ -1087,41 +1116,85 @@ export default function BusinessesPage() {
     }
   };
 
+  const heroTrackRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroTrackRef,
+    offset: ["start start", "end end"],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 140,
+    damping: 24,
+    restDelta: 0.001,
+  });
+
+  const scrollHintOpacity = useTransform(smoothProgress, [0, 0.06], [1, 0], { clamp: true });
+
   return (
-    <div id="aerospace" className="relative min-h-screen pt-28 sm:pt-36 pb-24 bg-[#030712] overflow-x-clip text-white selection:bg-sky-500/30 selection:text-sky-200">
-      {/* Precision Engineering Grid Background */}
-      <div 
-        className="absolute inset-0 pointer-events-none z-0 opacity-35"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(56, 189, 248, 0.07) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(56, 189, 248, 0.07) 1px, transparent 1px)
-          `,
-          backgroundSize: "64px 64px"
-        }}
-      />
+    <div id="aerospace" className="relative min-h-screen bg-[#030712] overflow-x-clip text-white selection:bg-sky-500/30 selection:text-sky-200">
+      
+      {/* ========================================================================= */}
+      {/* CINEMATIC STICKY SCROLL HERO TRACK (Letter-By-Letter Right Slide Reveal)  */}
+      {/* ========================================================================= */}
+      <div ref={heroTrackRef} className="relative w-full h-[240vh] select-none">
+        <div className="sticky top-0 h-screen w-full flex flex-col justify-between pt-20 sm:pt-28 overflow-hidden select-none">
+          
+          {/* Tactical Drone Dusk City Background Image */}
+          <div className="absolute inset-0 pointer-events-none z-0">
+            <Image
+              src="/images/aerospace-drone-city-hero.jpg"
+              alt="Aerospace Tactical UAV Platform"
+              fill
+              priority
+              className="object-cover object-center brightness-95 contrast-105"
+              sizes="100vw"
+            />
+            {/* Subtle Top Gradient for Navbar legibility & Dark Bottom Vignette */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#030712]/75 via-transparent to-[#030712] pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#030712]/60 via-transparent to-[#030712]/60 pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#030712] via-[#030712]/80 to-transparent pointer-events-none" />
+          </div>
 
-      {/* Subtle Radial Blue Glow */}
-      <div className="absolute top-24 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-sky-600/10 blur-[180px] pointer-events-none rounded-full" />
+          {/* Top Spacer to let the Drone be prominent in center with Scroll Hint */}
+          <div className="relative z-10 w-full flex-1 flex flex-col items-center justify-end pb-8">
+            <motion.div
+              style={{ opacity: scrollHintOpacity }}
+              className="pointer-events-none flex flex-col items-center gap-2 select-none"
+            >
+              <span className="text-[10px] sm:text-xs font-mono font-medium tracking-[0.3em] uppercase text-sky-300/80 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+                Scroll to Reveal
+              </span>
+              <div className="w-5 h-8 rounded-full border border-sky-400/40 flex items-start justify-center p-1 bg-black/30 backdrop-blur-sm">
+                <motion.div
+                  animate={{ y: [0, 10, 0] }}
+                  transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                  className="w-1.5 h-1.5 rounded-full bg-sky-300"
+                />
+              </div>
+            </motion.div>
+          </div>
 
-      <div className="relative z-10 max-w-[1540px] mx-auto px-4 sm:px-6 md:px-10 lg:px-14 space-y-10 sm:space-y-12">
-        
-        {/* ========================================================================= */}
-        {/* MAIN PAGE HEADER: AEROSPACE + SUBTITLE                                    */}
-        {/* ========================================================================= */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="space-y-3"
-        >
-          <h1 className="font-oxanium text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white tracking-tight leading-none">
-            AEROSPACE
-          </h1>
-          <p className="text-slate-300 text-sm sm:text-base md:text-[17px] font-normal max-w-3xl leading-relaxed">
-            Mission-ready UAV systems for surveillance, strike, loitering, and autonomous tactical support.
-          </p>
-        </motion.div>
+          {/* Lower Content Block: Monumental AEROSPACE Letters Assembled from Right on Scroll */}
+          <div className="relative z-10 w-full max-w-[1540px] mx-auto px-4 sm:px-6 md:px-10 lg:px-14 flex flex-col items-center justify-end text-center pb-0 sm:pb-2 overflow-visible">
+            <h1
+              className="font-anton font-black uppercase text-[17.5vw] sm:text-[18.5vw] md:text-[19.5vw] lg:text-[20.5vw] xl:text-[21vw] tracking-[-0.015em] sm:tracking-[-0.02em] leading-[0.78] text-center drop-shadow-[0_15px_45px_rgba(0,0,0,0.95)] whitespace-nowrap mx-auto w-full select-none pointer-events-none -mb-3 sm:-mb-5 md:-mb-7 lg:-mb-9 block overflow-visible"
+            >
+              {AEROSPACE_LETTERS.map((char, index) => (
+                <AerospaceScrollLetter
+                  key={index}
+                  char={char}
+                  index={index}
+                  total={AEROSPACE_LETTERS.length}
+                  progress={smoothProgress}
+                />
+              ))}
+            </h1>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content Area */}
+      <div className="relative z-10 max-w-[1540px] mx-auto px-4 sm:px-6 md:px-10 lg:px-14 pt-12 sm:pt-16 pb-24 space-y-12 sm:space-y-16">
 
         {/* ========================================================================= */}
         {/* MAIN CONTENT GRID: 2 COLUMNS (LEFT: CONTINUOUS SECTIONS, RIGHT: SIDEBAR)   */}
@@ -1195,11 +1268,7 @@ export default function BusinessesPage() {
                             setModalProduct(product);
                             setModalSection(section);
                           }}
-                          className={`inline-block px-5 py-1.5 rounded-full text-xs font-semibold tracking-wider transition-all duration-200 cursor-pointer ${
-                            secIdx === 0 && idx === 0
-                              ? "bg-[#00d2ff] hover:bg-[#38bdf8] text-slate-950 font-bold shadow-[0_0_15px_rgba(0,210,255,0.4)] hover:scale-105"
-                              : "bg-transparent hover:bg-sky-500/15 border border-sky-400/40 text-sky-300 hover:text-white font-semibold"
-                          }`}
+                          className="inline-block px-5 py-1.5 rounded-full text-xs font-semibold tracking-wider transition-all duration-200 cursor-pointer bg-transparent hover:bg-sky-500/15 border border-sky-400/40 text-sky-300 hover:text-white hover:border-sky-300 shadow-[0_0_10px_rgba(56,189,248,0.08)] hover:shadow-[0_0_15px_rgba(56,189,248,0.25)]"
                         >
                           View Details
                         </button>

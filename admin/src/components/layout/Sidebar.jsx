@@ -13,6 +13,7 @@ import {
   Building2,
   UserCheck,
   ShieldCheck,
+  History,
   ExternalLink,
   ChevronRight,
 } from "lucide-react";
@@ -44,7 +45,7 @@ const NAV_SECTIONS = [
   {
     title: "MEDIA & COMMS",
     items: [
-      { label: "Product", href: "/news", icon: Newspaper, module: "news" },
+      { label: "News & Insights", href: "/news", icon: Newspaper, module: "news" },
     ],
   },
   {
@@ -52,9 +53,9 @@ const NAV_SECTIONS = [
     items: [
       { label: "Enquiries", href: "/enquiries", icon: Inbox, module: "enquiries", badge: "Live", badgeType: "danger" },
       { label: "Website Settings", href: "/settings", icon: Settings, module: "settings" },
+      { label: "Audit Logs", href: "/audit-logs", icon: History, module: "profile" },
       { label: "Admin Profile", href: "/profile", icon: UserCheck, module: "profile" },
     ],
-    
   },
 ];
 
@@ -62,7 +63,7 @@ export default function Sidebar({ isOpen, onClose }) {
   const location = useLocation();
   const { user } = useAuth();
 
-  const isSuperAdmin = user?.role === "SUPER_ADMIN";
+  const isSuperAdmin = user?.role === "SUPER_ADMIN" || user?.role === "admin";
 
   // Filter sections and their items based on role and granular permissions
   const filteredSections = NAV_SECTIONS.map((section) => {
@@ -137,7 +138,7 @@ export default function Sidebar({ isOpen, onClose }) {
                 const Icon = item.icon;
                 const isActive =
                   item.href === "/"
-                    ? location.pathname === "/"
+                    ? location.pathname === "/" || location.pathname === "/dashboard"
                     : location.pathname.startsWith(item.href);
 
                 return (

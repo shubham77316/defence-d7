@@ -980,7 +980,7 @@ export default function NewsMgmt() {
         isOpen={subcatModalOpen}
         onClose={() => setSubcatModalOpen(false)}
         title={`Subcategory & Equipment Manager — ${targetArticleForSubcat?.title || ''}`}
-        size="lg"
+        maxWidth="max-w-5xl"
       >
         <div className="space-y-6">
           <div className="p-3.5 rounded-xl bg-sky-950/40 border border-sky-500/20 text-xs text-slate-300 flex items-start gap-3">
@@ -995,9 +995,9 @@ export default function NewsMgmt() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Left Column: Subcategories list & creator */}
-            <div className="md:col-span-5 space-y-4 border-r border-white/10 pr-0 md:pr-4">
+            <div className="lg:col-span-5 space-y-4 border-b lg:border-b-0 lg:border-r border-white/10 pb-5 lg:pb-0 pr-0 lg:pr-5">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono uppercase text-slate-300 font-bold">
                   Subcategories ({subcategoriesList.length})
@@ -1005,7 +1005,7 @@ export default function NewsMgmt() {
               </div>
 
               {/* Subcategories list */}
-              <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
+              <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
                 {subcategoriesList.length === 0 ? (
                   <div className="p-4 text-center border border-dashed border-white/10 rounded-xl text-slate-500 text-xs">
                     No subcategories yet. Create your first one below!
@@ -1080,7 +1080,7 @@ export default function NewsMgmt() {
             </div>
 
             {/* Right Column: Items under currently active subcategory */}
-            <div className="md:col-span-7 space-y-4">
+            <div className="lg:col-span-7 space-y-4">
               {subcategoriesList.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center p-8 border border-dashed border-white/10 rounded-xl text-slate-500 text-xs">
                   <Box className="w-8 h-8 mb-2 text-slate-600" />
@@ -1103,7 +1103,7 @@ export default function NewsMgmt() {
                   </div>
 
                   {/* Items List */}
-                  <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                  <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
                     {(!subcategoriesList[activeSubcatIdx].items || subcategoriesList[activeSubcatIdx].items.length === 0) ? (
                       <div className="p-3 text-center bg-white/[0.02] border border-dashed border-white/10 rounded-lg text-slate-500 text-xs">
                         No equipment items in this subcategory yet. Add one below!
@@ -1159,7 +1159,7 @@ export default function NewsMgmt() {
                           placeholder="Image URL or Browse ->"
                           value={newItem.image}
                           onChange={(e) => setNewItem({ ...newItem, image: e.target.value })}
-                          className="flex-1 px-3 py-1.5 bg-slate-950 border border-white/10 rounded text-xs text-white focus:outline-none focus:border-sky-400"
+                          className="flex-1 min-w-0 px-3 py-1.5 bg-slate-950 border border-white/10 rounded text-xs text-white focus:outline-none focus:border-sky-400"
                         />
                         <label className="px-2.5 py-1.5 bg-white/10 hover:bg-white/20 text-white text-[11px] font-mono uppercase rounded cursor-pointer transition-all flex items-center gap-1 shrink-0">
                           <Upload size={12} />
