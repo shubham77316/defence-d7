@@ -1,9 +1,37 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, MotionValue } from "framer-motion";
 import { ArrowLeft, Globe } from "lucide-react";
+
+const AFFILIATIONS_LETTERS = ["A", "F", "F", "I", "L", "I", "A", "T", "I", "O", "N", "S"];
+
+function AffiliationScrollLetter({
+  char,
+  index,
+  progress,
+}: {
+  char: string;
+  index: number;
+  progress: MotionValue<number>;
+}) {
+  const start = 0.04 + index * 0.068;
+  const end = Math.min(start + 0.15, 0.96);
+
+  const y = useTransform(progress, [start, end], ["70vh", "0vh"], { clamp: true });
+  const opacity = useTransform(progress, [start, start + 0.03, end], [0, 0.75, 1], { clamp: true });
+
+  return (
+    <motion.span
+      style={{ y, opacity }}
+      className="inline-block bg-gradient-to-b from-[#e0f2fe] via-[#7ec8ff] to-[#38bdf8] bg-clip-text text-transparent will-change-transform"
+    >
+      {char}
+    </motion.span>
+  );
+}
 
 // --- Vector Logos matching the reference aesthetic ---
 function LogoIafCrest() {
@@ -144,6 +172,21 @@ function LogoVigyanlabs() {
 }
 
 export default function PartnershipsPage() {
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end end"],
+  });
+
+  const scrollYProgressSpring = useSpring(scrollYProgress, {
+    stiffness: 80,
+    damping: 22,
+    restDelta: 0.001,
+  });
+
+  const scrollHintOpacity = useTransform(scrollYProgressSpring, [0, 0.08], [1, 0]);
+
   const partnerLogos = [
     { name: "Indian Air Force", component: LogoIafCrest },
     { name: "Indian Army", component: LogoArmyCrest },
@@ -197,410 +240,270 @@ export default function PartnershipsPage() {
   ];
 
   return (
-    <div className="relative min-h-screen bg-[#010309] text-white pt-24 pb-28 overflow-hidden">
-      
-      {/* High-End Animated Defense Cyber Wireframe & Laser Canvas */}
-      <div className="absolute top-0 inset-x-0 h-[750px] overflow-hidden pointer-events-none flex items-center justify-center">
-        {/* Dynamic Breathing Ambient Auroras */}
-        <motion.div 
-          animate={{
-            scale: [1, 1.15, 1],
-            opacity: [0.12, 0.22, 0.12],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute top-16 w-[1000px] h-[480px] bg-gradient-to-b from-cyan-500/20 via-sky-600/10 to-transparent blur-[160px] rounded-full" 
-        />
-        <motion.div 
-          animate={{
-            scale: [1, 1.25, 0.95, 1],
-            opacity: [0.10, 0.20, 0.08, 0.10],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1
-          }}
-          className="absolute top-36 w-[650px] h-[340px] bg-red-600/15 blur-[140px] rounded-full" 
-        />
+    <div className="relative min-h-screen bg-[#010309] text-white overflow-hidden">
 
-        {/* Tactical HUD Coordinate Grid Elements */}
-        <div className="absolute top-8 left-8 text-[9px] font-mono text-cyan-400/40 tracking-widest hidden lg:block select-none">
-          <div>[GEO-LATTICE // 44.02° N : 77.20° E]</div>
-          <div>[ORBIT-SYNC // 32.4 GHz CARRIER]</div>
+      {/* ── STICKY HERO SECTION ── */}
+      <div ref={heroRef} className="relative h-[210vh] w-full">
+        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between">
+
+          {/* Background Image — fixed behind everything */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/images/news-strategic-alliances.jpg"
+              alt="Strategic Alliances"
+              fill
+              priority
+              className="object-cover object-center brightness-[0.82] contrast-[1.08]"
+              sizes="100vw"
+            />
+            {/* Dark overlay top */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#010309]/75 via-transparent to-[#010309]" />
+            {/* Bottom fade into page */}
+            <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-[#010309] to-transparent" />
+          </div>
+
+          {/* HUD corner labels */}
+          <div className="absolute top-24 left-8 text-[9px] font-mono text-cyan-400/40 tracking-widest hidden lg:block select-none z-10">
+            <div>[GEO-LATTICE // 44.02° N : 77.20° E]</div>
+            <div>[ORBIT-SYNC // 32.4 GHz CARRIER]</div>
+          </div>
+          <div className="absolute top-24 right-8 text-[9px] font-mono text-red-400/40 tracking-widest text-right hidden lg:block select-none z-10">
+            <div>[TARGETING LASERS // NOMINAL]</div>
+            <div>[SEC-CLEARANCE // ACTIVE]</div>
+          </div>
+
+          {/* Scroll hint */}
+          <div className="relative z-10 flex-1 flex flex-col items-center justify-end pb-10">
+            <motion.div
+              style={{ opacity: scrollHintOpacity }}
+              className="flex flex-col items-center gap-2"
+            >
+              <span className="text-[10px] font-mono text-cyan-400/60 tracking-widest uppercase">Scroll</span>
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+                className="w-px h-8 bg-gradient-to-b from-cyan-400/60 to-transparent"
+              />
+            </motion.div>
+          </div>
+
+          {/* AFFILIATIONS letters — right side, bottom, animate bottom→top */}
+          <div className="relative z-10 w-full px-10 flex justify-end pb-0 -mb-8 overflow-visible">
+            <h1 className="font-anton font-black uppercase text-[10.5vw] leading-none tracking-tight text-right whitespace-nowrap select-none overflow-visible">
+              {AFFILIATIONS_LETTERS.map((char, i) => (
+                <AffiliationScrollLetter
+                  key={i}
+                  char={char}
+                  index={i}
+                  progress={scrollYProgressSpring}
+                />
+              ))}
+            </h1>
+          </div>
+
         </div>
-        <div className="absolute top-8 right-8 text-[9px] font-mono text-red-400/40 tracking-widest text-right hidden lg:block select-none">
-          <div>[TARGETING LASERS // NOMINAL]</div>
-          <div>[SEC-CLEARANCE // ACTIVE]</div>
-        </div>
-
-        {/* 3D Wireframe Geodesic Globe Canvas with Motion Animations */}
-        <svg viewBox="0 0 1000 600" className="w-full max-w-[1300px] h-full opacity-60">
-          <defs>
-            {/* Pulsing Red Laser Gradient */}
-            <linearGradient id="laserRedAnimated" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#ef4444" stopOpacity="0.95" />
-              <stop offset="50%" stopColor="#dc2626" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="#991b1b" stopOpacity="0" />
-            </linearGradient>
-
-            {/* Glowing Cyan Wireframe Grid Gradient */}
-            <linearGradient id="wireGridAnimated" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.6" />
-              <stop offset="50%" stopColor="#0284c7" stopOpacity="0.25" />
-              <stop offset="100%" stopColor="#082f49" stopOpacity="0.05" />
-            </linearGradient>
-
-            {/* Subtle Cyan Glow Filter */}
-            <filter id="glowCyan" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="2.5" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-
-            {/* Red Laser Glow Filter */}
-            <filter id="glowRed" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-
-          {/* Rotating Equatorial Orbit Ring */}
-          <motion.ellipse
-            cx="500"
-            cy="300"
-            rx="460"
-            ry="255"
-            fill="none"
-            stroke="url(#wireGridAnimated)"
-            strokeWidth="1.5"
-            strokeDasharray="8 6"
-            animate={{
-              strokeDashoffset: [0, -200],
-              opacity: [0.4, 0.7, 0.4]
-            }}
-            transition={{
-              strokeDashoffset: { duration: 25, repeat: Infinity, ease: "linear" },
-              opacity: { duration: 6, repeat: Infinity, ease: "easeInOut" }
-            }}
-          />
-
-          {/* Inner Latitude Arcs */}
-          <ellipse cx="500" cy="300" rx="410" ry="185" fill="none" stroke="url(#wireGridAnimated)" strokeWidth="1.2" />
-          <ellipse cx="500" cy="300" rx="320" ry="115" fill="none" stroke="url(#wireGridAnimated)" strokeWidth="1" strokeDasharray="5 5" />
-          <ellipse cx="500" cy="300" rx="180" ry="48" fill="none" stroke="url(#wireGridAnimated)" strokeWidth="0.9" />
-
-          {/* Longitude Meridians */}
-          <ellipse cx="500" cy="300" rx="150" ry="255" fill="none" stroke="url(#wireGridAnimated)" strokeWidth="1.2" />
-          <ellipse cx="500" cy="300" rx="300" ry="255" fill="none" stroke="url(#wireGridAnimated)" strokeWidth="1.2" />
-          <line x1="40" y1="300" x2="960" y2="300" stroke="url(#wireGridAnimated)" strokeWidth="1.2" />
-          <line x1="500" y1="45" x2="500" y2="555" stroke="url(#wireGridAnimated)" strokeWidth="1.2" />
-
-          {/* Dynamic Laser Beams with Pulse Animations */}
-          {/* Main Apex Red Beam */}
-          <motion.line
-            x1="500"
-            y1="300"
-            x2="500"
-            y2="10"
-            stroke="url(#laserRedAnimated)"
-            strokeWidth="2.8"
-            filter="url(#glowRed)"
-            animate={{
-              opacity: [0.6, 1, 0.6],
-              strokeWidth: [2.2, 3.2, 2.2]
-            }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          />
-
-          {/* Secondary Red Beams */}
-          <motion.line
-            x1="492"
-            y1="300"
-            x2="480"
-            y2="30"
-            stroke="url(#laserRedAnimated)"
-            strokeWidth="1.8"
-            animate={{ opacity: [0.3, 0.9, 0.3] }}
-            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-          />
-          <motion.line
-            x1="508"
-            y1="300"
-            x2="520"
-            y2="30"
-            stroke="url(#laserRedAnimated)"
-            strokeWidth="1.8"
-            animate={{ opacity: [0.3, 0.9, 0.3] }}
-            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
-          />
-
-          {/* Sweeping Angled Laser Vectors */}
-          <motion.line
-            x1="500"
-            y1="300"
-            x2="240"
-            y2="110"
-            stroke="url(#laserRedAnimated)"
-            strokeWidth="2.2"
-            filter="url(#glowRed)"
-            animate={{
-              opacity: [0.4, 0.95, 0.4],
-              x2: [230, 250, 230],
-              y2: [100, 120, 100]
-            }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.line
-            x1="500"
-            y1="300"
-            x2="760"
-            y2="110"
-            stroke="url(#laserRedAnimated)"
-            strokeWidth="2.2"
-            filter="url(#glowRed)"
-            animate={{
-              opacity: [0.4, 0.95, 0.4],
-              x2: [770, 750, 770],
-              y2: [100, 120, 100]
-            }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-          />
-
-          <motion.line
-            x1="500"
-            y1="300"
-            x2="140"
-            y2="210"
-            stroke="url(#laserRedAnimated)"
-            strokeWidth="1.6"
-            animate={{ opacity: [0.2, 0.8, 0.2] }}
-            transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-          />
-          <motion.line
-            x1="500"
-            y1="300"
-            x2="860"
-            y2="210"
-            stroke="url(#laserRedAnimated)"
-            strokeWidth="1.6"
-            animate={{ opacity: [0.2, 0.8, 0.2] }}
-            transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 1.1 }}
-          />
-
-          {/* Lower Trajectory Beams */}
-          <line x1="500" y1="300" x2="330" y2="490" stroke="url(#laserRedAnimated)" strokeWidth="1.4" opacity="0.4" />
-          <line x1="500" y1="300" x2="670" y2="490" stroke="url(#laserRedAnimated)" strokeWidth="1.4" opacity="0.4" />
-
-          {/* Glowing Pulse Rings around Critical Coordinates */}
-          <motion.circle
-            cx="500"
-            cy="45"
-            r="8"
-            fill="none"
-            stroke="#ef4444"
-            strokeWidth="1.5"
-            animate={{
-              r: [4, 18],
-              opacity: [0.9, 0],
-            }}
-            transition={{
-              duration: 2.2,
-              repeat: Infinity,
-              ease: "easeOut"
-            }}
-          />
-          <circle cx="500" cy="45" r="4" fill="#ef4444" filter="url(#glowRed)" />
-
-          <motion.circle
-            cx="240"
-            cy="110"
-            r="6"
-            fill="none"
-            stroke="#38bdf8"
-            strokeWidth="1.2"
-            animate={{
-              r: [3, 14],
-              opacity: [0.8, 0],
-            }}
-            transition={{
-              duration: 2.6,
-              repeat: Infinity,
-              ease: "easeOut",
-              delay: 0.4
-            }}
-          />
-          <circle cx="240" cy="110" r="3.5" fill="#38bdf8" filter="url(#glowCyan)" />
-
-          <motion.circle
-            cx="760"
-            cy="110"
-            r="6"
-            fill="none"
-            stroke="#38bdf8"
-            strokeWidth="1.2"
-            animate={{
-              r: [3, 14],
-              opacity: [0.8, 0],
-            }}
-            transition={{
-              duration: 2.6,
-              repeat: Infinity,
-              ease: "easeOut",
-              delay: 0.8
-            }}
-          />
-          <circle cx="760" cy="110" r="3.5" fill="#38bdf8" filter="url(#glowCyan)" />
-
-          <circle cx="140" cy="210" r="3" fill="#38bdf8" opacity="0.7" />
-          <circle cx="860" cy="210" r="3" fill="#38bdf8" opacity="0.7" />
-          <circle cx="500" cy="300" r="4.5" fill="#ffffff" filter="url(#glowCyan)" />
-        </svg>
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        
-        {/* Navigation Breadcrumb / Back Button */}
-        <div className="flex items-center justify-between pt-2">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-xs sm:text-sm font-mono text-cyan-400 hover:text-white uppercase tracking-wider transition-colors py-1.5 px-3 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400/40"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>BACK TO HOME</span>
-          </Link>
-        </div>
+      {/* ── MAIN CONTENT ── */}
+      <div className="relative z-10 pt-16 pb-28 overflow-hidden">
 
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="space-y-4"
-        >
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-            <span className="text-xs sm:text-sm font-mono font-bold tracking-[0.25em] text-cyan-400 uppercase">
-              AFFILIATIONS
-            </span>
-          </div>
-
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight leading-none">
-            INDUSTRIAL RELATIONSHIPS. <br />
-            GLOBAL CAPABILITY.
-          </h1>
-        </motion.div>
-
-        {/* Logo Affiliations Row - Infinite Smooth Rightward Marquee */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="relative py-4 border-y border-white/10 bg-[#060a14]/75 backdrop-blur-md rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.6)]"
-        >
-          {/* Left & Right Gradient Fade Masks */}
-          <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-r from-[#010309] via-[#010309]/80 to-transparent z-20 pointer-events-none rounded-l-2xl" />
-          <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-l from-[#010309] via-[#010309]/80 to-transparent z-20 pointer-events-none rounded-r-2xl" />
-
-          {/* Continuous Infinite Marquee Track Moving to RIGHT (->) */}
-          <div className="flex overflow-hidden select-none">
-            <motion.div
-              className="flex items-center gap-10 sm:gap-16 flex-nowrap"
-              animate={{
-                x: ["-50%", "0%"]
-              }}
-              transition={{
-                duration: 48,
-                ease: "linear",
-                repeat: Infinity
-              }}
-            >
-              {[...partnerLogos, ...partnerLogos, ...partnerLogos, ...partnerLogos].map((p, idx) => {
-                const Comp = p.component;
-                return (
-                  <div key={`marquee-${idx}`} className="flex-shrink-0">
-                    <Comp />
-                  </div>
-                );
-              })}
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Strategic Dossier Cards matching Image 2 and Image 3 */}
-        <div className="space-y-8 pt-4">
-          {strategicDossiers.map((dossier, idx) => (
-            <motion.div
-              key={dossier.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.8, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
-              className="relative rounded-3xl bg-[#060a14]/90 border border-white/10 hover:border-cyan-400/40 p-6 sm:p-10 backdrop-blur-2xl transition-all duration-300 shadow-[0_16px_50px_rgba(0,0,0,0.8)] overflow-hidden group"
-            >
-              {/* Top Accent Gradient Runner Line */}
-              <div className="absolute top-0 inset-x-8 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent opacity-75 group-hover:opacity-100 group-hover:via-cyan-300 transition-all duration-300" />
-
-              {/* Ambient Radiant Glow on Hover */}
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 relative z-10">
-                
-                {/* Left Column: Title */}
-                <div className="lg:col-span-4 flex flex-col justify-start">
-                  <div className="inline-block">
-                    <span className="text-[10px] font-mono font-bold tracking-widest text-cyan-400 uppercase bg-cyan-950/60 px-2.5 py-1 rounded border border-cyan-500/30 mb-3 inline-block">
-                      PROGRAM 0{idx + 1}
-                    </span>
-                    <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight group-hover:text-cyan-300 transition-colors">
-                      {dossier.title}
-                    </h2>
-                  </div>
-                </div>
-
-                {/* Right Column: In-depth Descriptive Paragraphs */}
-                <div className="lg:col-span-8 space-y-4 text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed font-normal">
-                  {dossier.paragraphs.map((p, pIdx) => (
-                    <p key={pIdx} className="text-slate-300/95 leading-relaxed">
-                      {p}
-                    </p>
-                  ))}
-                </div>
-
-              </div>
-            </motion.div>
-          ))}
-
-          {/* Affiliations Update Elegant Banner */}
+        {/* Animated Defence Cyber Wireframe Background */}
+        <div className="absolute top-0 inset-x-0 h-[750px] overflow-hidden pointer-events-none flex items-center justify-center">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="relative rounded-2xl border border-white/10 bg-[#070e1c]/60 backdrop-blur-xl px-6 py-7 sm:px-10 sm:py-8 text-center shadow-[0_8px_32px_rgba(0,0,0,0.4)] mt-6"
-          >
-            {/* Subtle Softer Corner Accents */}
-            <div className="absolute top-2.5 left-2.5 w-3 h-3 border-t border-l border-sky-400/30" />
-            <div className="absolute bottom-2.5 right-2.5 w-3 h-3 border-b border-r border-sky-400/30" />
+            animate={{ scale: [1, 1.15, 1], opacity: [0.12, 0.22, 0.12] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-16 w-[1000px] h-[480px] bg-gradient-to-b from-cyan-500/20 via-sky-600/10 to-transparent blur-[160px] rounded-full"
+          />
+          <motion.div
+            animate={{ scale: [1, 1.25, 0.95, 1], opacity: [0.10, 0.20, 0.08, 0.10] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute top-36 w-[650px] h-[340px] bg-red-600/15 blur-[140px] rounded-full"
+          />
 
-            <div className="text-xs sm:text-[13px] font-sans font-semibold tracking-wider text-[#7ec8ff] uppercase mb-2.5">
-              AFFILIATIONS UPDATE
-            </div>
-            <p className="text-slate-300 font-sans text-xs sm:text-[13.5px] md:text-sm font-normal tracking-wide uppercase max-w-3xl mx-auto leading-relaxed">
-              NEW PRODUCTS WITH OUR VARIOUS PARTNERS (ALL TYPES OF INSTITUTIONS LISTED) ARE CURRENTLY UNDER DESIGN &amp; EVALUATION, AND WILL BE ADDED AS THEY ARE CLEARED FOR RELEASE.
-            </p>
-          </motion.div>
+          <svg viewBox="0 0 1000 600" className="w-full max-w-[1300px] h-full opacity-60">
+            <defs>
+              <linearGradient id="laserRedAnimated2" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#ef4444" stopOpacity="0.95" />
+                <stop offset="50%" stopColor="#dc2626" stopOpacity="0.6" />
+                <stop offset="100%" stopColor="#991b1b" stopOpacity="0" />
+              </linearGradient>
+              <linearGradient id="wireGridAnimated2" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.6" />
+                <stop offset="50%" stopColor="#0284c7" stopOpacity="0.25" />
+                <stop offset="100%" stopColor="#082f49" stopOpacity="0.05" />
+              </linearGradient>
+              <filter id="glowCyan2" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="2.5" result="blur" />
+                <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+              </filter>
+              <filter id="glowRed2" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+              </filter>
+            </defs>
+
+            <motion.ellipse cx="500" cy="300" rx="460" ry="255" fill="none" stroke="url(#wireGridAnimated2)" strokeWidth="1.5" strokeDasharray="8 6"
+              animate={{ strokeDashoffset: [0, -200], opacity: [0.4, 0.7, 0.4] }}
+              transition={{ strokeDashoffset: { duration: 25, repeat: Infinity, ease: "linear" }, opacity: { duration: 6, repeat: Infinity, ease: "easeInOut" } }}
+            />
+            <ellipse cx="500" cy="300" rx="410" ry="185" fill="none" stroke="url(#wireGridAnimated2)" strokeWidth="1.2" />
+            <ellipse cx="500" cy="300" rx="320" ry="115" fill="none" stroke="url(#wireGridAnimated2)" strokeWidth="1" strokeDasharray="5 5" />
+            <ellipse cx="500" cy="300" rx="180" ry="48" fill="none" stroke="url(#wireGridAnimated2)" strokeWidth="0.9" />
+            <ellipse cx="500" cy="300" rx="150" ry="255" fill="none" stroke="url(#wireGridAnimated2)" strokeWidth="1.2" />
+            <ellipse cx="500" cy="300" rx="300" ry="255" fill="none" stroke="url(#wireGridAnimated2)" strokeWidth="1.2" />
+            <line x1="40" y1="300" x2="960" y2="300" stroke="url(#wireGridAnimated2)" strokeWidth="1.2" />
+            <line x1="500" y1="45" x2="500" y2="555" stroke="url(#wireGridAnimated2)" strokeWidth="1.2" />
+
+            <motion.line x1="500" y1="300" x2="500" y2="10" stroke="url(#laserRedAnimated2)" strokeWidth="2.8" filter="url(#glowRed2)"
+              animate={{ opacity: [0.6, 1, 0.6], strokeWidth: [2.2, 3.2, 2.2] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.line x1="500" y1="300" x2="240" y2="110" stroke="url(#laserRedAnimated2)" strokeWidth="2.2" filter="url(#glowRed2)"
+              animate={{ opacity: [0.4, 0.95, 0.4], x2: [230, 250, 230], y2: [100, 120, 100] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.line x1="500" y1="300" x2="760" y2="110" stroke="url(#laserRedAnimated2)" strokeWidth="2.2" filter="url(#glowRed2)"
+              animate={{ opacity: [0.4, 0.95, 0.4], x2: [770, 750, 770], y2: [100, 120, 100] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+            />
+            <motion.circle cx="500" cy="45" r="8" fill="none" stroke="#ef4444" strokeWidth="1.5"
+              animate={{ r: [4, 18], opacity: [0.9, 0] }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
+            />
+            <circle cx="500" cy="45" r="4" fill="#ef4444" filter="url(#glowRed2)" />
+            <motion.circle cx="240" cy="110" r="6" fill="none" stroke="#38bdf8" strokeWidth="1.2"
+              animate={{ r: [3, 14], opacity: [0.8, 0] }}
+              transition={{ duration: 2.6, repeat: Infinity, ease: "easeOut", delay: 0.4 }}
+            />
+            <circle cx="240" cy="110" r="3.5" fill="#38bdf8" filter="url(#glowCyan2)" />
+            <motion.circle cx="760" cy="110" r="6" fill="none" stroke="#38bdf8" strokeWidth="1.2"
+              animate={{ r: [3, 14], opacity: [0.8, 0] }}
+              transition={{ duration: 2.6, repeat: Infinity, ease: "easeOut", delay: 0.8 }}
+            />
+            <circle cx="760" cy="110" r="3.5" fill="#38bdf8" filter="url(#glowCyan2)" />
+            <circle cx="500" cy="300" r="4.5" fill="#ffffff" filter="url(#glowCyan2)" />
+          </svg>
         </div>
 
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+
+          {/* Navigation Breadcrumb / Back Button */}
+          <div className="flex items-center justify-between pt-2">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-xs sm:text-sm font-mono text-cyan-400 hover:text-white uppercase tracking-wider transition-colors py-1.5 px-3 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400/40"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>BACK TO HOME</span>
+            </Link>
+          </div>
+
+          {/* Section Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="space-y-4"
+          >
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+              <span className="text-xs sm:text-sm font-mono font-bold tracking-[0.25em] text-cyan-400 uppercase">
+                AFFILIATIONS
+              </span>
+            </div>
+
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight leading-none">
+              INDUSTRIAL RELATIONSHIPS. <br />
+              GLOBAL CAPABILITY.
+            </h1>
+          </motion.div>
+
+          {/* Logo Affiliations Row - Infinite Smooth Rightward Marquee */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            className="relative py-4 border-y border-white/10 bg-[#060a14]/75 backdrop-blur-md rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.6)]"
+          >
+            <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-r from-[#010309] via-[#010309]/80 to-transparent z-20 pointer-events-none rounded-l-2xl" />
+            <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-l from-[#010309] via-[#010309]/80 to-transparent z-20 pointer-events-none rounded-r-2xl" />
+
+            <div className="flex overflow-hidden select-none">
+              <motion.div
+                className="flex items-center gap-10 sm:gap-16 flex-nowrap"
+                animate={{ x: ["-50%", "0%"] }}
+                transition={{ duration: 48, ease: "linear", repeat: Infinity }}
+              >
+                {[...partnerLogos, ...partnerLogos, ...partnerLogos, ...partnerLogos].map((p, idx) => {
+                  const Comp = p.component;
+                  return (
+                    <div key={`marquee-${idx}`} className="flex-shrink-0">
+                      <Comp />
+                    </div>
+                  );
+                })}
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* Strategic Dossier Cards */}
+          <div className="space-y-8 pt-4">
+            {strategicDossiers.map((dossier, idx) => (
+              <motion.div
+                key={dossier.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.8, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                className="relative rounded-3xl bg-[#060a14]/90 border border-white/10 hover:border-cyan-400/40 p-6 sm:p-10 backdrop-blur-2xl transition-all duration-300 shadow-[0_16px_50px_rgba(0,0,0,0.8)] overflow-hidden group"
+              >
+                <div className="absolute top-0 inset-x-8 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent opacity-75 group-hover:opacity-100 group-hover:via-cyan-300 transition-all duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 relative z-10">
+                  <div className="lg:col-span-4 flex flex-col justify-start">
+                    <div className="inline-block">
+                      <span className="text-[10px] font-mono font-bold tracking-widest text-cyan-400 uppercase bg-cyan-950/60 px-2.5 py-1 rounded border border-cyan-500/30 mb-3 inline-block">
+                        PROGRAM 0{idx + 1}
+                      </span>
+                      <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight group-hover:text-cyan-300 transition-colors">
+                        {dossier.title}
+                      </h2>
+                    </div>
+                  </div>
+
+                  <div className="lg:col-span-8 space-y-4 text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed font-normal">
+                    {dossier.paragraphs.map((p, pIdx) => (
+                      <p key={pIdx} className="text-slate-300/95 leading-relaxed">
+                        {p}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+
+            {/* Affiliations Update Banner */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="relative rounded-2xl border border-white/10 bg-[#070e1c]/60 backdrop-blur-xl px-6 py-7 sm:px-10 sm:py-8 text-center shadow-[0_8px_32px_rgba(0,0,0,0.4)] mt-6"
+            >
+              <div className="absolute top-2.5 left-2.5 w-3 h-3 border-t border-l border-sky-400/30" />
+              <div className="absolute bottom-2.5 right-2.5 w-3 h-3 border-b border-r border-sky-400/30" />
+
+              <div className="text-xs sm:text-[13px] font-sans font-semibold tracking-wider text-[#7ec8ff] uppercase mb-2.5">
+                AFFILIATIONS UPDATE
+              </div>
+              <p className="text-slate-300 font-sans text-xs sm:text-[13.5px] md:text-sm font-normal tracking-wide uppercase max-w-3xl mx-auto leading-relaxed">
+                NEW PRODUCTS WITH OUR VARIOUS PARTNERS (ALL TYPES OF INSTITUTIONS LISTED) ARE CURRENTLY UNDER DESIGN &amp; EVALUATION, AND WILL BE ADDED AS THEY ARE CLEARED FOR RELEASE.
+              </p>
+            </motion.div>
+          </div>
+
+        </div>
       </div>
     </div>
   );
