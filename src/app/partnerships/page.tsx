@@ -17,11 +17,11 @@ function AffiliationScrollLetter({
   index: number;
   progress: MotionValue<number>;
 }) {
-  const start = 0.04 + index * 0.068;
-  const end = Math.min(start + 0.15, 0.96);
+  const start = 0.01 + index * 0.06;
+  const end = Math.min(start + 0.14, 0.96);
 
-  const y = useTransform(progress, [start, end], ["70vh", "0vh"], { clamp: true });
-  const opacity = useTransform(progress, [start, start + 0.03, end], [0, 0.75, 1], { clamp: true });
+  const y = useTransform(progress, [start, end], ["110vh", "0vh"], { clamp: true });
+  const opacity = useTransform(progress, [start, start + 0.03, end], [0, 1, 1], { clamp: true });
 
   return (
     <motion.span
@@ -243,7 +243,7 @@ export default function PartnershipsPage() {
     <div className="relative min-h-screen bg-[#010309] text-white overflow-hidden">
 
       {/* ── STICKY HERO SECTION ── */}
-      <div ref={heroRef} className="relative h-[210vh] w-full">
+      <div ref={heroRef} className="relative h-[170vh] w-full">
         <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between">
 
           {/* Background Image — fixed behind everything */}
@@ -288,8 +288,8 @@ export default function PartnershipsPage() {
           </div>
 
           {/* AFFILIATIONS letters — right side, bottom, animate bottom→top */}
-          <div className="relative z-10 w-full px-10 flex justify-end pb-0 -mb-8 overflow-visible">
-            <h1 className="font-anton font-black uppercase text-[10.5vw] leading-none tracking-tight text-right whitespace-nowrap select-none overflow-visible">
+          <div className="relative z-10 w-full px-10 flex justify-end pb-0">
+            <h1 className="font-anton font-black uppercase text-[10.5vw] leading-none tracking-tight text-right whitespace-nowrap select-none">
               {AFFILIATIONS_LETTERS.map((char, i) => (
                 <AffiliationScrollLetter
                   key={i}
