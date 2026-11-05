@@ -305,12 +305,12 @@ export default function CapabilitiesPage() {
       {/* SCROLL-DRIVEN ENTRANCE & DOCKING HERO TRACK              */}
       {/* ======================================================== */}
             {/* ========================================================================= */}
-      {/* 1. MOBILE RESPONSIVE HERO (sm:hidden - Exact match to Defence format)     */}
+      {/* 1. MOBILE RESPONSIVE HERO (sm:hidden - Clean Tactical Hero matching Image 2) */}
       {/* ========================================================================= */}
-      <div ref={mobileTrackRef} className="sm:hidden relative w-full h-[240vh] select-none">
-        <div className="sticky top-14 z-30 w-full flex flex-col justify-start items-center pt-2 px-2 overflow-hidden select-none">
-          {/* Tactical Image Box matching Defence exact layout */}
-          <div className="relative w-full max-w-[420px] mx-auto">
+      <div className="sm:hidden relative w-full pt-16 pb-2 px-2.5 select-none overflow-x-clip">
+        <div className="w-full flex flex-col justify-start items-center select-none">
+          {/* Tactical Image Box matching Defence exact layout & height */}
+          <div className="relative w-full max-w-[420px] mx-auto rounded-xl overflow-hidden border border-white/10 shadow-[0_10px_35px_rgba(0,0,0,0.85)] bg-[#040814]">
             {/* Responsive Only: Back to Home Button at Top-Left of Image */}
             <div className="absolute top-2.5 left-2.5 z-40 pointer-events-auto">
               <Link
@@ -322,36 +322,25 @@ export default function CapabilitiesPage() {
               </Link>
             </div>
 
-            <Image
-              src="/images/capabilities-aircraft-poster.jpg"
-              alt="Strategic Aerospace Transport Aircraft"
-              width={900}
-              height={600}
-              priority
-              className="w-full h-auto object-cover filter contrast-[1.08] brightness-[1.05] rounded-sm"
-              sizes="(max-width: 640px) 100vw"
-            />
-
-            {/* Tactical Caption Badge at bottom of image */}
-            <div className="absolute bottom-2 inset-x-2 z-10 flex justify-center pointer-events-none">
-              <span className="text-[9px] font-mono tracking-wider text-[#7ec8ff] bg-[#030915]/90 px-2.5 py-0.5 rounded-full border border-[#7ec8ff]/40 backdrop-blur-sm truncate">
-                SOVEREIGN AEROSPACE &bull; STRATEGIC AIRLIFT
-              </span>
+            {/* Tactical Image Container with sleek 16:10 aspect ratio matching second image */}
+            <div className="relative w-full aspect-[16/10] overflow-hidden">
+              <Image
+                src="/images/capabilities-aircraft-poster.jpg"
+                alt="Strategic Aerospace Transport Aircraft"
+                fill
+                priority
+                className="object-cover object-[center_42%] filter contrast-[1.08] brightness-[1.05]"
+                sizes="(max-width: 640px) 100vw"
+              />
+              <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/65 to-transparent pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/85 via-black/40 to-transparent pointer-events-none" />
             </div>
 
-            {/* CAPABILITIES Letters Over The Image (Assemble one by one during scroll) */}
-            <div className="absolute bottom-0 inset-x-0 z-20 flex items-center justify-center text-center overflow-visible pointer-events-none translate-y-[10%]">
-              <h1 className="font-anton font-black uppercase text-[13.5vw] xs:text-[14.5vw] tracking-[-0.01em] leading-none text-center drop-shadow-[0_10px_35px_rgba(0,0,0,0.98)] whitespace-nowrap mx-auto w-full select-none block overflow-visible">
-                {CAPABILITIES_LETTERS.map((char, index) => (
-                  <CapabilitiesMobileScrollLetter
-                    key={index}
-                    char={char}
-                    index={index}
-                    total={CAPABILITIES_LETTERS.length}
-                    progress={mobileProgress}
-                  />
-                ))}
-              </h1>
+            {/* Tactical Caption Badge at bottom of image - Clean and clear with no overlapping text */}
+            <div className="absolute bottom-2.5 inset-x-2 z-10 flex justify-center pointer-events-none">
+              <span className="text-[9px] xs:text-[9.5px] font-mono font-medium tracking-wider text-[#7ec8ff] bg-[#030915]/90 px-3 py-1 rounded-full border border-[#7ec8ff]/40 backdrop-blur-md truncate shadow-lg">
+                SOVEREIGN AEROSPACE &bull; STRATEGIC AIRLIFT
+              </span>
             </div>
           </div>
         </div>
