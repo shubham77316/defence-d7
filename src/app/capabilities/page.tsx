@@ -3,7 +3,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
+import { motion, useScroll, useTransform, useSpring, MotionValue } from "framer-motion";
 
 interface SectorCard {
   id: string;
@@ -119,6 +120,35 @@ const DEFAULT_SECTORS: SectorCard[] = [
   },
 ];
 
+const CAPABILITIES_LETTERS = ["C", "A", "P", "A", "B", "I", "L", "I", "T", "I", "E", "S"];
+
+function CapabilitiesMobileScrollLetter({
+  char,
+  index,
+  total,
+  progress,
+}: {
+  char: string;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+}) {
+  const start = 0.04 + index * 0.075;
+  const end = Math.min(start + 0.18, 0.94);
+
+  const x = useTransform(progress, [start, end], ["65vw", "0vw"], { clamp: true });
+  const opacity = useTransform(progress, [start, start + 0.04, end], [0, 0.75, 1], { clamp: true });
+
+  return (
+    <motion.span
+      style={{ x, opacity }}
+      className="inline-block bg-gradient-to-b from-[#e0f2fe] via-[#7ec8ff] to-[#38bdf8] bg-clip-text text-transparent will-change-transform pb-2"
+    >
+      {char}
+    </motion.span>
+  );
+}
+
 export default function CapabilitiesPage() {
   const [hoveredSector, setHoveredSector] = useState<string | null>(null);
   const [sectors, setSectors] = useState<SectorCard[]>(DEFAULT_SECTORS);
@@ -212,6 +242,16 @@ export default function CapabilitiesPage() {
 
   // Scroll Container Ref for the kinetic heading & docking cards animation
   const heroTrackRef = useRef<HTMLDivElement>(null);
+  const mobileTrackRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: mobileScrollYProgress } = useScroll({
+    target: mobileTrackRef,
+    offset: ["start start", "end end"],
+  });
+  const mobileProgress = useSpring(mobileScrollYProgress, {
+    stiffness: 140,
+    damping: 24,
+    restDelta: 0.001,
+  });
   const { scrollYProgress } = useScroll({
     target: heroTrackRef,
     offset: ["start start", "end end"],
@@ -264,7 +304,106 @@ export default function CapabilitiesPage() {
       {/* ======================================================== */}
       {/* SCROLL-DRIVEN ENTRANCE & DOCKING HERO TRACK              */}
       {/* ======================================================== */}
-      <div ref={heroTrackRef} className="relative h-[230vh]">
+            {/* ========================================================================= */}
+      {/* 1. MOBILE RESPONSIVE HERO (sm:hidden - Clean Tactical Hero matching Image 2) */}
+      {/* ========================================================================= */}
+      <div className="sm:hidden relative w-full pt-16 pb-2 px-2.5 select-none overflow-x-clip">
+        <div className="w-full flex flex-col justify-start items-center select-none">
+          {/* Tactical Image Box matching Defence exact layout & height */}
+          <div className="relative w-full max-w-[420px] mx-auto rounded-xl overflow-hidden border border-white/10 shadow-[0_10px_35px_rgba(0,0,0,0.85)] bg-[#040814]">
+            {/* Responsive Only: Back to Home Button at Top-Left of Image */}
+            <div className="absolute top-2.5 left-2.5 z-40 pointer-events-auto">
+              <Link
+                href="/"
+                className="inline-flex items-center justify-center gap-1.5 h-7 px-2.5 text-[10px] xs:text-[10.5px] font-mono text-cyan-300 hover:text-white uppercase tracking-wider transition-all duration-300 rounded-lg bg-[#040814]/90 hover:bg-[#071329] border border-cyan-400/40 backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.8)] group select-auto whitespace-nowrap"
+              >
+                <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-0.5 text-cyan-400" />
+                <span>BACK TO HOME</span>
+              </Link>
+            </div>
+
+            {/* Tactical Image Container with sleek 16:10 aspect ratio matching second image */}
+            <div className="relative w-full aspect-[16/10] overflow-hidden">
+              <Image
+                src="/images/capabilities-aircraft-poster.jpg"
+                alt="Strategic Aerospace Transport Aircraft"
+                fill
+                priority
+                className="object-cover object-[center_42%] filter contrast-[1.08] brightness-[1.05]"
+                sizes="(max-width: 640px) 100vw"
+              />
+              <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/65 to-transparent pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/85 via-black/40 to-transparent pointer-events-none" />
+            </div>
+
+            {/* Tactical Caption Badge at bottom of image - Clean and clear with no overlapping text */}
+            <div className="absolute bottom-2.5 inset-x-2 z-10 flex justify-center pointer-events-none">
+              <span className="text-[9px] xs:text-[9.5px] font-mono font-medium tracking-wider text-[#7ec8ff] bg-[#030915]/90 px-3 py-1 rounded-full border border-[#7ec8ff]/40 backdrop-blur-md truncate shadow-lg">
+                SOVEREIGN AEROSPACE &bull; STRATEGIC AIRLIFT
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── MOBILE CONTENT FLOW (sm:hidden) ── */}
+      <div className="sm:hidden relative z-10 px-3.5 pt-2 pb-3 space-y-4">
+        <div className="space-y-2">
+          <div className="text-[#7ec8ff] font-mono text-[11px] font-semibold tracking-[0.25em] uppercase flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#7ec8ff] animate-pulse" />
+            <span>PRODUCTS &bull; SOVEREIGN CAPABILITY</span>
+          </div>
+          <h1 className="font-oxanium text-2xl font-black uppercase tracking-tight text-white leading-tight">
+            STRATEGIC CAPABILITY ACROSS CORE INDUSTRIAL SECTORS
+          </h1>
+          <p className="text-slate-300 text-xs leading-relaxed">
+            Explore Sky Wardens&apos; product and capability portfolio across aerospace, defence, and advanced sovereign sectors.
+          </p>
+        </div>
+
+        {/* Sector Cards Mobile Grid */}
+        <div className="grid grid-cols-1 gap-3.5">
+          {sectors.map((sector) => (
+            <Link
+              key={sector.id}
+              href={sector.href}
+              className={`group relative h-[290px] xs:h-[310px] rounded-2xl overflow-hidden border ${sector.normalBorder} shadow-[0_16px_45px_rgba(0,0,0,0.85)] flex flex-col justify-between p-4 xs:p-5 transition-all duration-300`}
+            >
+              <div className="absolute inset-0 z-0 overflow-hidden">
+                {sector.bgImage && (
+                  <Image
+                    src={sector.bgImage}
+                    alt={`${sector.title} backdrop`}
+                    fill
+                    priority
+                    className="object-cover object-center brightness-[0.65] contrast-[1.15]"
+                  />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#02050f] via-[#02050f]/60 to-[#02050f]/85" />
+              </div>
+              <div className="relative z-10 space-y-1">
+                <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-[#7ec8ff] uppercase block">
+                  {sector.number}
+                </span>
+                <h3 className="text-xl font-black text-white tracking-wider font-oxanium uppercase">
+                  {sector.title}
+                </h3>
+                <p className="text-xs text-slate-300 leading-relaxed font-normal line-clamp-2">
+                  {sector.desc}
+                </p>
+              </div>
+              <div className="relative z-10 flex items-center justify-center my-auto py-2">
+                {sector.renderLogo()}
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* ======================================================== */}
+      {/* 2. DESKTOP SCROLL-DRIVEN ENTRANCE & DOCKING (hidden sm:block) */}
+      {/* ======================================================== */}
+      <div ref={heroTrackRef} className="hidden sm:block relative h-[185vh]">
         <div className="sticky top-0 h-screen w-full overflow-hidden">
           
           {/* ======================================================== */}
@@ -372,7 +511,7 @@ export default function CapabilitiesPage() {
                 y: cardsY,
                 opacity: cardsOpacity,
               }}
-              className={`grid gap-6 sm:gap-8 mx-auto mt-6 sm:mt-8 w-full relative z-20 pointer-events-auto ${
+              className={`grid gap-5 md:gap-6 lg:gap-7 mx-auto mt-4 sm:mt-6 w-full relative z-20 pointer-events-auto ${
                 sectors.length === 1
                   ? "max-w-md grid-cols-1"
                   : sectors.length === 2
@@ -395,9 +534,9 @@ export default function CapabilitiesPage() {
                     onBlur={() => setHoveredSector(null)}
                     className={`group relative ${
                       sectors.length > 2
-                        ? "h-[340px] sm:h-[370px] md:h-[390px] lg:h-[410px]"
-                        : "h-[360px] sm:h-[400px] md:h-[420px] lg:h-[440px]"
-                    } rounded-2xl sm:rounded-3xl overflow-hidden border shadow-[0_16px_45px_rgba(0,0,0,0.85)] flex flex-col justify-between p-5 sm:p-7 transition-all duration-500 block cursor-pointer select-none ${
+                        ? "h-[330px] sm:h-[350px] md:h-[370px] lg:h-[390px]"
+                        : "h-[350px] sm:h-[380px] md:h-[400px] lg:h-[420px]"
+                    } rounded-2xl sm:rounded-3xl overflow-hidden border shadow-[0_16px_45px_rgba(0,0,0,0.85)] flex flex-col justify-between p-5 sm:p-6 transition-all duration-500 block cursor-pointer select-none ${
                       isHovered
                         ? `${sector.hoverBorder} shadow-[0_22px_65px_rgba(0,0,0,0.95)] -translate-y-1`
                         : `${sector.normalBorder}`
@@ -467,7 +606,7 @@ export default function CapabilitiesPage() {
       {/* ======================================================== */}
       {/* LOWER CONTENT: BANNERS & ACCORDIONS (Normal Page Flow)   */}
       {/* ======================================================== */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 sm:pb-32 z-20">
+      <div className="relative max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pb-3 sm:pb-5 z-20 mt-3 sm:-mt-[22vh] md:-mt-[26vh] lg:-mt-[30vh]">
 
         {/* ========================================== */}
         {/* E-SHOP BANNER (Explore Tactical Gear Store) */}
@@ -476,7 +615,7 @@ export default function CapabilitiesPage() {
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-14 sm:mt-16 max-w-4xl mx-auto relative rounded-3xl overflow-hidden border border-sky-500/30 hover:border-[#7ec8ff]/60 bg-gradient-to-r from-[#030a18] via-[#051329] to-[#040c1d] p-7 sm:p-9 lg:p-11 shadow-[0_16px_50px_rgba(2,132,199,0.18)] transition-all duration-500 group"
+          className="mt-0 max-w-5xl mx-auto relative rounded-2xl sm:rounded-3xl overflow-hidden border border-sky-500/30 hover:border-[#7ec8ff]/60 bg-gradient-to-r from-[#030a18] via-[#051329] to-[#040c1d] p-5 sm:p-7 lg:p-8 shadow-[0_16px_50px_rgba(2,132,199,0.18)] transition-all duration-500 group"
         >
           {/* Subtle Radiant Logo-Blue Ambient Glows */}
           <div className="absolute top-0 left-0 w-96 h-full bg-[radial-gradient(ellipse_at_top_left,rgba(126,200,255,0.18)_0%,transparent_70%)] pointer-events-none" />
@@ -517,7 +656,7 @@ export default function CapabilitiesPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-6 sm:mt-8 max-w-4xl mx-auto relative rounded-2xl sm:rounded-3xl border border-sky-500/25 hover:border-[#7ec8ff]/40 bg-[#030916]/85 backdrop-blur-xl px-6 py-7 sm:px-10 sm:py-9 text-center shadow-[0_12px_40px_rgba(0,0,0,0.7)] transition-all duration-500 overflow-hidden"
+          className="mt-3 sm:mt-4 max-w-5xl mx-auto relative rounded-xl sm:rounded-2xl border border-sky-500/25 hover:border-[#7ec8ff]/40 bg-[#030916]/85 backdrop-blur-xl px-4 py-4 sm:px-8 sm:py-5 text-center shadow-[0_12px_40px_rgba(0,0,0,0.7)] transition-all duration-500 overflow-hidden"
         >
           {/* Subtle Ambient Center Glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-16 bg-sky-500/10 blur-3xl pointer-events-none" />
