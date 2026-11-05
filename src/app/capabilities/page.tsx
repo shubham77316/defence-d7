@@ -617,7 +617,7 @@ export default function CapabilitiesPage() {
       {/* ======================================================== */}
       {/* LOWER CONTENT: BANNERS & ACCORDIONS (Normal Page Flow)   */}
       {/* ======================================================== */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 sm:pb-32 z-20">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-12 z-20">
 
         {/* ========================================== */}
         {/* E-SHOP BANNER (Explore Tactical Gear Store) */}
@@ -626,7 +626,7 @@ export default function CapabilitiesPage() {
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-14 sm:mt-16 max-w-4xl mx-auto relative rounded-3xl overflow-hidden border border-sky-500/30 hover:border-[#7ec8ff]/60 bg-gradient-to-r from-[#030a18] via-[#051329] to-[#040c1d] p-7 sm:p-9 lg:p-11 shadow-[0_16px_50px_rgba(2,132,199,0.18)] transition-all duration-500 group"
+          className="mt-6 sm:mt-8 max-w-5xl mx-auto relative rounded-3xl overflow-hidden border border-sky-500/30 hover:border-[#7ec8ff]/60 bg-gradient-to-r from-[#030a18] via-[#051329] to-[#040c1d] p-6 sm:p-8 lg:p-10 shadow-[0_16px_50px_rgba(2,132,199,0.18)] transition-all duration-500 group"
         >
           {/* Subtle Radiant Logo-Blue Ambient Glows */}
           <div className="absolute top-0 left-0 w-96 h-full bg-[radial-gradient(ellipse_at_top_left,rgba(126,200,255,0.18)_0%,transparent_70%)] pointer-events-none" />
@@ -667,7 +667,7 @@ export default function CapabilitiesPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-6 sm:mt-8 max-w-4xl mx-auto relative rounded-2xl sm:rounded-3xl border border-sky-500/25 hover:border-[#7ec8ff]/40 bg-[#030916]/85 backdrop-blur-xl px-6 py-7 sm:px-10 sm:py-9 text-center shadow-[0_12px_40px_rgba(0,0,0,0.7)] transition-all duration-500 overflow-hidden"
+          className="mt-4 sm:mt-5 max-w-5xl mx-auto relative rounded-2xl sm:rounded-3xl border border-sky-500/25 hover:border-[#7ec8ff]/40 bg-[#030916]/85 backdrop-blur-xl px-6 py-6 sm:px-10 sm:py-8 text-center shadow-[0_12px_40px_rgba(0,0,0,0.7)] transition-all duration-500 overflow-hidden"
         >
           {/* Subtle Ambient Center Glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-16 bg-sky-500/10 blur-3xl pointer-events-none" />
