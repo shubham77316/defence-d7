@@ -60,7 +60,7 @@ export default async function HomePage() {
       <StrategicConversationFaqSection />
 
       {/* 9. Live Breaking News / Spotlight Ticker */}
-      <BreakingNewsTickerSection initialItems={homepageData?.tickerItems} />
+      <BreakingNewsTickerSection />
     </div>
   );
 }
