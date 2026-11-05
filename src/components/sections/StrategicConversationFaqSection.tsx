@@ -172,7 +172,7 @@ export default function StrategicConversationFaqSection() {
           
           {/* LEFT: Heading */}
           <div className="lg:col-span-5">
-            <h3 className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-white leading-[1.15]">
+            <h3 className="translate-x-2 font-display text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-white leading-[1.15]">
               FREQUENTLY ASKED <br />
               QUESTIONS
             </h3>

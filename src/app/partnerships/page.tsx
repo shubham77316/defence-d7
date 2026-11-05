@@ -11,14 +11,16 @@ const AFFILIATIONS_LETTERS = ["A", "F", "F", "I", "L", "I", "A", "T", "I", "O", 
 function AffiliationScrollLetter({
   char,
   index,
+  total,
   progress,
 }: {
   char: string;
   index: number;
+  total: number;
   progress: MotionValue<number>;
 }) {
-  const start = 0.01 + index * 0.06;
-  const end = Math.min(start + 0.14, 0.96);
+  const start = 0.04 + index * 0.075;
+  const end = Math.min(start + 0.18, 0.94);
 
   const x = useTransform(progress, [start, end], ["65vw", "0vw"], { clamp: true });
   const opacity = useTransform(progress, [start, start + 0.04, end], [0, 0.75, 1], { clamp: true });
@@ -26,9 +28,41 @@ function AffiliationScrollLetter({
   return (
     <motion.span
       style={{ x, opacity }}
-      className="inline-block bg-gradient-to-b from-[#e0f2fe] via-[#7ec8ff] to-[#38bdf8] bg-clip-text text-transparent will-change-transform"
+      className="inline-block bg-gradient-to-b from-[#e0f2fe] via-[#7ec8ff] to-[#38bdf8] bg-clip-text text-transparent will-change-transform pb-2"
     >
       {char}
+    </motion.span>
+  );
+}
+
+function RevealWord({
+  text,
+  range,
+  progress,
+}: {
+  text: string;
+  range: [number, number];
+  progress: MotionValue<number>;
+}) {
+  const color = useTransform(
+    progress,
+    [range[0] - 0.05, range[0], range[1]],
+    ["rgba(255, 255, 255, 0.28)", "rgba(255, 255, 255, 0.28)", "rgba(255, 255, 255, 1)"],
+    { clamp: true }
+  );
+  const opacity = useTransform(
+    progress,
+    [range[0] - 0.05, range[0], range[1]],
+    [0.35, 0.35, 1],
+    { clamp: true }
+  );
+
+  return (
+    <motion.span
+      style={{ color, opacity }}
+      className="inline-block transition-colors will-change-transform"
+    >
+      {text}
     </motion.span>
   );
 }
@@ -178,10 +212,31 @@ export default function PartnershipsPage() {
     target: heroRef,
     offset: ["start start", "end end"],
   });
-
   const scrollYProgressSpring = useSpring(scrollYProgress, {
-    stiffness: 80,
-    damping: 22,
+    stiffness: 140,
+    damping: 24,
+    restDelta: 0.001,
+  });
+
+  const mobileTrackRef = useRef<HTMLDivElement>(null);
+  const headingRevealRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: headingRevealProgress } = useScroll({
+    target: headingRevealRef,
+    offset: ["start 80%", "end 45%"],
+  });
+  const smoothHeadingProgress = useSpring(headingRevealProgress, {
+    stiffness: 140,
+    damping: 24,
+    restDelta: 0.001,
+  });
+
+  const { scrollYProgress: mobileScrollYProgress } = useScroll({
+    target: mobileTrackRef,
+    offset: ["start start", "end end"],
+  });
+  const mobileProgress = useSpring(mobileScrollYProgress, {
+    stiffness: 140,
+    damping: 24,
     restDelta: 0.001,
   });
 
@@ -204,6 +259,7 @@ export default function PartnershipsPage() {
     {
       id: "gov-aligned",
       title: "Government Aligned Strategic Program",
+      image: "/images/tactical-defense-operator.jpg",
       paragraphs: [
         "Sky Wardens works in alignment with government entities, national bodies, and mission-critical sectors to ensure that every capability we support is relevant, dependable, and operationally meaningful. Our engagement model is shaped around sovereign requirements, regional priorities, and the practical demands of modern defence and security environments.",
         "We support programs where performance, reliability, and deployment relevance are non-negotiable. This includes collaboration across strategic segments tied to national defence preparedness, force modernisation, infrastructure protection, and long-term capability development. Our role is defined by disciplined execution, confidentiality, and an understanding that defence systems must ultimately serve real operational needs under demanding conditions.",
@@ -213,6 +269,7 @@ export default function PartnershipsPage() {
     {
       id: "industrial-capability",
       title: "Industrial Capability Partnerships",
+      image: "/images/industrial-proving-grounds.jpg",
       paragraphs: [
         "Sky Wardens maintains industrial technology collaborations and alliances with leading engineering companies operating across advanced defence and strategic manufacturing domains. Through these partnerships, we engage in the development, integration, and advancement of capabilities across a focused set of mission areas.",
         "These areas include artillery and missile systems, AI-enabled guided shells, drones and loitering munitions, and battlefield mapping supported by predictive AI frameworks. Our collaboration model brings together industrial engineering depth, systems integration experience, and technology specialization to support scalable and future-relevant defence capability.",
@@ -222,6 +279,7 @@ export default function PartnershipsPage() {
     {
       id: "aerospace-advanced",
       title: "Aerospace and Advanced System Alliances",
+      image: "/images/stealth-fighter-hangar.jpg",
       paragraphs: [
         "Sky Wardens works with specialized engineering and technology partners across aerospace and airborne systems, supporting advanced capability domains where stability, sensing, targeting, and processing performance are critical.",
         "Our aerospace-aligned engagements include aircraft systems such as optical electronic systems, stabilized guided weapons, image processing modules, air target lock-on and tracking modules, and stabilized suspension systems for radar antennas used on helicopters and UAV platforms. In parallel, our broader systems exposure also extends into naval and cross-domain defence technologies, including remote weapon station architectures, optical electronic systems, radar channel antenna posts, instrument TOI, visual observation channels, GPAP hardware and software systems, angular deformation measurement systems, and TAD-configured subsystems.",
@@ -231,6 +289,7 @@ export default function PartnershipsPage() {
     {
       id: "global-capability",
       title: "Global Capability Integration",
+      image: "/images/news-advanced-systems.jpg",
       paragraphs: [
         "Sky Wardens operates with active status in India, West Africa, and the Middle East, with further expansion planned as we continue to develop strategic relationships across emerging and established defence markets. This presence enables us to engage across multiple operational environments, understand diverse security requirements, and align capability development with regional realities.",
         "Our international posture is not defined by scale alone, but by selective integration with the right institutional, industrial, and technical ecosystems. This allows Sky Wardens to connect local requirement understanding with broader engineering collaboration, industrial partnerships, and advanced capability access.",
@@ -242,70 +301,122 @@ export default function PartnershipsPage() {
   return (
     <div className="relative min-h-screen bg-[#010309] text-white">
 
-      {/* ── STICKY HERO SECTION ── */}
-      <div ref={heroRef} className="relative h-[170vh] w-full overflow-x-hidden">
-        <div className="sticky top-0 h-screen w-full flex flex-col justify-between">
-
-          {/* Background Image — fixed behind everything */}
-          <div className="absolute inset-0 z-0">
+      {/* ── 1. MOBILE RESPONSIVE HERO (sm:hidden - Pinned while fonts assemble one by one) ── */}
+      <div ref={mobileTrackRef} className="sm:hidden relative w-full h-[240vh] select-none">
+        <div className="sticky top-14 z-30 w-full flex flex-col justify-start items-center pt-2 px-2 overflow-hidden select-none">
+          {/* Tactical Image Box matching Defence and Aerospace exact layout */}
+          <div className="relative w-full max-w-[420px] mx-auto">
+            {/* Responsive Only: Back to Home Button at Top-Left of Image */}
+            <div className="absolute top-2.5 left-2.5 z-40 pointer-events-auto">
+              <Link
+                href="/"
+                className="inline-flex items-center justify-center gap-1.5 h-7 px-2.5 text-[10px] xs:text-[10.5px] font-mono text-cyan-300 hover:text-white uppercase tracking-wider transition-all duration-300 rounded-lg bg-[#040814]/90 hover:bg-[#071329] border border-cyan-400/40 backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.8)] group select-auto whitespace-nowrap"
+              >
+                <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-0.5 text-cyan-400" />
+                <span>BACK TO HOME</span>
+              </Link>
+            </div>
             <Image
               src="/images/news-strategic-alliances.jpg"
-              alt="Strategic Alliances"
+              alt="Strategic Alliances & Affiliations"
+              width={900}
+              height={600}
+              priority
+              className="w-full h-auto object-cover filter contrast-[1.08] brightness-[1.05] rounded-sm"
+              sizes="(max-width: 640px) 100vw"
+            />
+
+            {/* AFFILIATIONS Letters Over The Image (Centered exactly where image ends, like Defence) */}
+            <div className="absolute bottom-0 inset-x-0 z-20 flex items-center justify-center text-center overflow-visible pointer-events-none translate-y-[28%]">
+              <h1 className="font-anton font-black uppercase text-[15.5vw] xs:text-[16.5vw] tracking-[-0.01em] leading-none text-center drop-shadow-[0_10px_35px_rgba(0,0,0,0.98)] whitespace-nowrap mx-auto w-full select-none block overflow-visible">
+                {AFFILIATIONS_LETTERS.map((char, index) => (
+                  <AffiliationScrollLetter
+                    key={index}
+                    char={char}
+                    index={index}
+                    total={AFFILIATIONS_LETTERS.length}
+                    progress={mobileProgress}
+                  />
+                ))}
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* 2. DESKTOP CINEMATIC STICKY SCROLL TRACK (hidden sm:block - Same as Defence) */}
+      {/* ========================================================================= */}
+      <div ref={heroRef} className="hidden sm:block relative w-full h-[180vh] select-none">
+        <div className="sticky top-0 h-screen w-full flex flex-col justify-between pt-20 sm:pt-28 overflow-hidden select-none">
+          
+          {/* Tactical Operator & Alliances Background Image */}
+          <div className="absolute inset-0 pointer-events-none z-0">
+            <Image
+              src="/images/news-strategic-alliances.jpg"
+              alt="Strategic Alliances & Affiliations"
               fill
               priority
-              className="object-cover object-center brightness-[0.82] contrast-[1.08]"
+              className="object-cover object-center brightness-95 contrast-105"
               sizes="100vw"
             />
-            {/* Dark overlay top */}
-            <div className="absolute inset-0 bg-gradient-to-b from-[#010309]/75 via-transparent to-[#010309]" />
-            {/* Bottom fade into page */}
-            <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-[#010309] to-transparent" />
+            {/* Subtle Top Gradient for Navbar legibility & Dark Bottom Vignette */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#030712]/75 via-transparent to-[#030712] pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#030712]/50 via-transparent to-[#030712]/50 pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#030712] via-[#030712]/85 to-transparent pointer-events-none" />
           </div>
 
-          {/* HUD corner labels */}
-          <div className="absolute top-24 left-8 text-[9px] font-mono text-cyan-400/40 tracking-widest hidden lg:block select-none z-10">
-            <div>[GEO-LATTICE // 44.02° N : 77.20° E]</div>
-            <div>[ORBIT-SYNC // 32.4 GHz CARRIER]</div>
-          </div>
-          <div className="absolute top-24 right-8 text-[9px] font-mono text-red-400/40 tracking-widest text-right hidden lg:block select-none z-10">
-            <div>[TARGETING LASERS // NOMINAL]</div>
-            <div>[SEC-CLEARANCE // ACTIVE]</div>
+          {/* Desktop Back to Home Button */}
+          <div className="absolute top-20 sm:top-24 left-4 sm:left-6 md:left-8 lg:left-12 xl:left-14 z-30 pointer-events-auto">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-xs sm:text-sm font-mono text-cyan-300 hover:text-white uppercase tracking-wider transition-all duration-300 py-1.5 px-3.5 rounded-lg bg-[#040814]/80 hover:bg-[#071329] border border-cyan-400/30 hover:border-cyan-300/60 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.6)] group"
+            >
+              <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-cyan-400" />
+              <span>BACK TO HOME</span>
+            </Link>
           </div>
 
-          {/* Scroll hint */}
-          <div className="relative z-10 flex-1 flex flex-col items-center justify-end pb-10">
+          {/* Top Spacer with Scroll Hint exactly like Defence */}
+          <div className="relative z-10 w-full flex-1 flex flex-col items-center justify-end pb-8">
             <motion.div
               style={{ opacity: scrollHintOpacity }}
-              className="flex flex-col items-center gap-2"
+              className="pointer-events-none flex flex-col items-center gap-2 select-none"
             >
-              <span className="text-[10px] font-mono text-cyan-400/60 tracking-widest uppercase">Scroll</span>
-              <motion.div
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-                className="w-px h-8 bg-gradient-to-b from-cyan-400/60 to-transparent"
-              />
+              <span className="text-xs font-mono font-medium tracking-[0.3em] uppercase text-sky-300/80 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+                Scroll to Reveal
+              </span>
+              <div className="w-5 h-8 rounded-full border border-sky-400/40 flex items-start justify-center p-1 bg-black/30 backdrop-blur-sm">
+                <motion.div
+                  animate={{ y: [0, 10, 0] }}
+                  transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                  className="w-1.5 h-1.5 rounded-full bg-sky-300"
+                />
+              </div>
             </motion.div>
           </div>
 
-          {/* AFFILIATIONS letters — right side, bottom, animate bottom→top */}
-          <div className="relative z-10 w-full px-10 flex justify-end pb-0">
-            <h1 className="font-anton font-black uppercase text-[10.5vw] leading-none tracking-tight text-right whitespace-nowrap select-none">
-              {AFFILIATIONS_LETTERS.map((char, i) => (
+          {/* Lower Content Block: Monumental AFFILIATIONS Letters Assembled from Right on Scroll */}
+          <div className="relative z-10 w-full max-w-[1540px] mx-auto px-6 md:px-10 lg:px-14 flex flex-col items-center justify-end text-center pb-2 sm:pb-3 overflow-visible">
+            <h1
+              className="font-anton font-black uppercase text-[15vw] md:text-[16vw] lg:text-[16.5vw] xl:text-[17vw] tracking-[-0.015em] sm:tracking-[-0.02em] leading-[0.80] text-center drop-shadow-[0_15px_45px_rgba(0,0,0,0.95)] whitespace-nowrap mx-auto w-full select-none pointer-events-none -mb-3 sm:-mb-4 md:-mb-5 lg:-mb-6 block overflow-visible"
+            >
+              {AFFILIATIONS_LETTERS.map((char, index) => (
                 <AffiliationScrollLetter
-                  key={i}
+                  key={index}
                   char={char}
-                  index={i}
+                  index={index}
+                  total={AFFILIATIONS_LETTERS.length}
                   progress={scrollYProgressSpring}
                 />
               ))}
             </h1>
           </div>
-
         </div>
       </div>
 
       {/* ── MAIN CONTENT ── */}
-      <div className="relative z-10 pt-16 pb-28 overflow-x-hidden">
+      <div className="relative z-10 pt-2 sm:pt-16 pb-6 sm:pb-12 overflow-x-hidden">
 
         {/* Animated Defence Cyber Wireframe Background */}
         <div className="absolute top-0 inset-x-0 h-[750px] overflow-hidden pointer-events-none flex items-center justify-center">
@@ -385,99 +496,70 @@ export default function PartnershipsPage() {
           </svg>
         </div>
 
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="relative z-10 w-full max-w-[1660px] mx-auto px-2.5 sm:px-5 space-y-4 sm:space-y-12">
 
-          {/* Navigation Breadcrumb / Back Button */}
-          <div className="flex items-center justify-between pt-2">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-xs sm:text-sm font-mono text-cyan-400 hover:text-white uppercase tracking-wider transition-colors py-1.5 px-3 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400/40"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span>BACK TO HOME</span>
-            </Link>
-          </div>
-
-          {/* Section Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="space-y-4"
-          >
-            <div className="flex items-center gap-2">
+          {/* Section Header with Word-by-Word Scroll Reveal and Centered Layout */}
+          <div ref={headingRevealRef} className="space-y-3 sm:space-y-4 text-center flex flex-col items-center justify-center pt-1 pb-1 sm:pb-4">
+            <div className="flex items-center justify-center gap-2">
               <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
               <span className="text-xs sm:text-sm font-mono font-bold tracking-[0.25em] text-cyan-400 uppercase">
                 AFFILIATIONS
               </span>
             </div>
 
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight leading-none">
-              INDUSTRIAL RELATIONSHIPS. <br />
-              GLOBAL CAPABILITY.
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-tight select-none">
+              <div className="flex items-center justify-center gap-3 flex-wrap">
+                <RevealWord text="INDUSTRIAL" range={[0.05, 0.35]} progress={smoothHeadingProgress} />
+                <RevealWord text="RELATIONSHIPS." range={[0.25, 0.55]} progress={smoothHeadingProgress} />
+              </div>
+              <div className="flex items-center justify-center gap-3 flex-wrap mt-1">
+                <RevealWord text="GLOBAL" range={[0.50, 0.75]} progress={smoothHeadingProgress} />
+                <RevealWord text="CAPABILITY." range={[0.70, 0.95]} progress={smoothHeadingProgress} />
+              </div>
             </h1>
-          </motion.div>
+          </div>
 
-          {/* Logo Affiliations Row - Infinite Smooth Rightward Marquee */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="relative py-4 border-y border-white/10 bg-[#060a14]/75 backdrop-blur-md rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.6)]"
-          >
-            <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-r from-[#010309] via-[#010309]/80 to-transparent z-20 pointer-events-none rounded-l-2xl" />
-            <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-l from-[#010309] via-[#010309]/80 to-transparent z-20 pointer-events-none rounded-r-2xl" />
-
-            <div className="flex overflow-hidden select-none">
-              <motion.div
-                className="flex items-center gap-10 sm:gap-16 flex-nowrap"
-                animate={{ x: ["-50%", "0%"] }}
-                transition={{ duration: 48, ease: "linear", repeat: Infinity }}
-              >
-                {[...partnerLogos, ...partnerLogos, ...partnerLogos, ...partnerLogos].map((p, idx) => {
-                  const Comp = p.component;
-                  return (
-                    <div key={`marquee-${idx}`} className="flex-shrink-0">
-                      <Comp />
-                    </div>
-                  );
-                })}
-              </motion.div>
-            </div>
-          </motion.div>
-
-          {/* Strategic Dossier Cards */}
-          <div className="space-y-8 pt-4">
+          {/* Strategic Dossier Cards - Large Prominent Image & Balanced Data (Matching Second Image) */}
+          <div className="space-y-6 sm:space-y-12 lg:space-y-16 pt-0 sm:pt-6">
             {strategicDossiers.map((dossier, idx) => (
               <motion.div
                 key={dossier.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.8, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
-                className="relative rounded-3xl bg-[#060a14]/90 border border-white/10 hover:border-cyan-400/40 p-6 sm:p-10 backdrop-blur-2xl transition-all duration-300 shadow-[0_16px_50px_rgba(0,0,0,0.8)] overflow-hidden group"
+                transition={{ duration: 0.8, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="relative pb-6 sm:pb-12 lg:pb-16 border-b border-white/10 group last:border-b-0"
               >
-                <div className="absolute top-0 inset-x-8 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent opacity-75 group-hover:opacity-100 group-hover:via-cyan-300 transition-all duration-300" />
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 relative z-10">
-                  <div className="lg:col-span-4 flex flex-col justify-start">
-                    <div className="inline-block">
-                      <span className="text-[10px] font-mono font-bold tracking-widest text-cyan-400 uppercase bg-cyan-950/60 px-2.5 py-1 rounded border border-cyan-500/30 mb-3 inline-block">
-                        PROGRAM 0{idx + 1}
-                      </span>
-                      <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight group-hover:text-cyan-300 transition-colors">
-                        {dossier.title}
-                      </h2>
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 sm:gap-6 lg:gap-14 items-start relative z-10">
+                  {/* Left Column: Big Prominent Image */}
+                  <div className="lg:col-span-6 relative">
+                    <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-[#08101e] border border-white/12 shadow-[0_20px_60px_rgba(0,0,0,0.8)] group-hover:border-cyan-400/50 transition-all duration-500">
+                      <Image
+                        src={dossier.image}
+                        alt={dossier.title}
+                        fill
+                        className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#060a14]/70 via-transparent to-transparent pointer-events-none" />
                     </div>
                   </div>
 
-                  <div className="lg:col-span-8 space-y-4 text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed font-normal">
-                    {dossier.paragraphs.map((p, pIdx) => (
-                      <p key={pIdx} className="text-slate-300/95 leading-relaxed">
-                        {p}
-                      </p>
-                    ))}
+                  {/* Right Column: Title + Paragraphs (Proper Data Spacing) */}
+                  <div className="lg:col-span-6 flex flex-col justify-start space-y-3 sm:space-y-5 lg:pl-2">
+                    <div>
+                      <h2 className="text-xl sm:text-3xl lg:text-[34px] font-bold tracking-tight leading-tight text-white">
+                        {dossier.title}
+                      </h2>
+                    </div>
+
+                    <div className="space-y-2.5 sm:space-y-4 text-slate-300 text-xs sm:text-[15px] lg:text-base leading-relaxed font-normal">
+                      {dossier.paragraphs.map((p, pIdx) => (
+                        <p key={pIdx} className="text-slate-300/95 leading-relaxed">
+                          {p}
+                        </p>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </motion.div>

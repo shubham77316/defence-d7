@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowLeft } from "lucide-react";
 import { useSettings } from "@/context/SettingsContext";
 
 export default function AboutContent() {
@@ -123,7 +123,7 @@ export default function AboutContent() {
   });
 
   return (
-    <div className="relative min-h-screen pb-24 bg-[#030712] overflow-x-clip text-white selection:bg-sky-500/30 selection:text-sky-200">
+    <div className="relative min-h-screen pb-6 sm:pb-12 bg-[#030712] overflow-x-clip text-white selection:bg-sky-500/30 selection:text-sky-200">
       {/* Precision Engineering Grid Background */}
       <div 
         className="absolute inset-0 pointer-events-none z-0 opacity-40"
@@ -141,6 +141,16 @@ export default function AboutContent() {
       {/* ========================================================================= */}
       <div ref={heroTrackRef} className="relative w-full h-[450vh]">
         <div className="sticky top-0 h-screen w-full flex flex-col justify-center items-center overflow-x-clip pt-16 sm:pt-20 pb-4 px-2.5 sm:px-6 md:px-8 lg:px-12 xl:px-14">
+          {/* Back to Home Button */}
+          <div className="absolute top-20 sm:top-24 left-4 sm:left-6 md:left-8 lg:left-12 xl:left-14 z-30 pointer-events-auto">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-xs sm:text-sm font-mono text-cyan-300 hover:text-white uppercase tracking-wider transition-all duration-300 py-1.5 px-3.5 rounded-lg bg-[#040814]/80 hover:bg-[#071329] border border-cyan-400/30 hover:border-cyan-300/60 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.6)] group"
+            >
+              <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-cyan-400" />
+              <span>BACK TO HOME</span>
+            </Link>
+          </div>
           
           {/* Giant Monumental Background Typography: ABOUT US */}
           <div className="w-full flex justify-center items-center select-none pointer-events-none pb-2 sm:pb-4 overflow-visible">
@@ -196,7 +206,7 @@ export default function AboutContent() {
                 </div>
 
                 {/* RIGHT HALF: Stealth Jet Visual Image */}
-                <div className="lg:col-span-5 relative min-h-[280px] sm:min-h-[340px] lg:min-h-full overflow-hidden bg-[#030917]">
+                <div className="hidden lg:block lg:col-span-5 relative min-h-[280px] sm:min-h-[340px] lg:min-h-full overflow-hidden bg-[#030917]">
                   <Image
                     src="/images/footer-stealth-jet.jpg"
                     alt="Sky Wardens Tactical Defence"
@@ -224,7 +234,7 @@ export default function AboutContent() {
               <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch h-full">
                 
                 {/* Visual Panel: Image on Left */}
-                <div className="order-2 lg:order-1 lg:col-span-5 relative min-h-[240px] sm:min-h-[280px] lg:min-h-full overflow-hidden bg-[#030917]">
+                <div className="hidden lg:block order-2 lg:order-1 lg:col-span-5 relative min-h-[240px] sm:min-h-[280px] lg:min-h-full overflow-hidden bg-[#030917]">
                   <Image
                     src="/images/about-defense-portal.jpg"
                     alt="Sky Wardens Precision Defence"
@@ -336,7 +346,7 @@ export default function AboutContent() {
                 </div>
 
                 {/* Visual Panel: Tactical Operator Image on Right */}
-                <div className="lg:col-span-5 relative min-h-[260px] sm:min-h-[300px] lg:min-h-full overflow-hidden bg-[#030917]">
+                <div className="hidden lg:block lg:col-span-5 relative min-h-[260px] sm:min-h-[300px] lg:min-h-full overflow-hidden bg-[#030917]">
                   <Image
                     src="/images/tactical-defense-operator.jpg"
                     alt="Indigenous Defence Solutions"
@@ -364,7 +374,7 @@ export default function AboutContent() {
               <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch h-full">
                 
                 {/* Visual Panel: Stealth Fighter Hangar Image on Left */}
-                <div className="order-2 lg:order-1 lg:col-span-5 relative min-h-[260px] sm:min-h-[300px] lg:min-h-full overflow-hidden bg-[#030917]">
+                <div className="hidden lg:block order-2 lg:order-1 lg:col-span-5 relative min-h-[260px] sm:min-h-[300px] lg:min-h-full overflow-hidden bg-[#030917]">
                   <Image
                     src="/images/stealth-fighter-hangar.jpg"
                     alt="Innovation & Strategic Partnerships"
@@ -424,12 +434,12 @@ export default function AboutContent() {
       {/* ========================================================================= */}
       {/* CONTENT: Split Layout, Cards, Mission/Vision, Group of Sectors            */}
       {/* ========================================================================= */}
-      <div className="relative z-10 max-w-[1520px] mx-auto px-4 sm:px-6 md:px-10 lg:px-14 space-y-12 sm:space-y-16 mt-8 sm:mt-14">
+      <div className="relative z-10 w-full max-w-[1660px] mx-auto px-2.5 sm:px-5 space-y-8 sm:space-y-16 mt-4 sm:mt-14">
 
         {/* ========================================================================= */}
         {/* SECTION: MISSION & VISION                                                 */}
         {/* ========================================================================= */}
-        <div id="mission" className="pt-6 sm:pt-10 space-y-8 sm:space-y-10 scroll-mt-28">
+        <div id="mission" className="pt-4 sm:pt-8 space-y-4 sm:space-y-6 scroll-mt-28">
           
           {/* Editorial Split Header & Description (Clean - No Outer Box) */}
           <motion.div
@@ -437,7 +447,7 @@ export default function AboutContent() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full pt-4 pb-6 sm:py-6"
+            className="w-full pt-2 sm:pt-4 pb-2 sm:pb-3"
           >
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
               
@@ -461,7 +471,7 @@ export default function AboutContent() {
               </div>
 
               {/* Right Column: Description aligned with bottom */}
-              <div className="lg:col-span-5 space-y-4 max-w-xl pb-1 sm:pb-2">
+              <div className="lg:col-span-5 space-y-4 w-full pb-1 sm:pb-2">
                 <h3 className="font-sans font-bold text-lg sm:text-xl md:text-2xl text-white tracking-tight leading-snug">
                   Protection Engineered for the Frontlines
                 </h3>
@@ -521,7 +531,7 @@ export default function AboutContent() {
         {/* ========================================================================= */}
         {/* SECTION: GROUP OF COMPANIES / OUR BUSINESSES (Exact 3 Columns Requested)  */}
         {/* ========================================================================= */}
-        <div id="group" className="pt-6 sm:pt-10 space-y-8 sm:space-y-10 scroll-mt-28 max-w-5xl xl:max-w-[1140px] mx-auto w-full">
+        <div id="group" className="pt-2 sm:pt-10 space-y-5 sm:space-y-10 scroll-mt-28 w-full">
           
           {/* Centered Heading */}
           <motion.div

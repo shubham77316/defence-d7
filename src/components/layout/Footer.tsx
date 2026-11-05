@@ -192,7 +192,7 @@ export default function Footer() {
   }));
 
   return (
-    <footer className="w-full bg-[#03060d] text-slate-300 border-t border-white/10 pt-10 sm:pt-14 pb-2 sm:pb-4">
+    <footer className="w-full bg-[#03060d] text-slate-300 border-t border-white/10 pt-3 sm:pt-8 pb-2 sm:pb-4">
       {/* Hidden Global SVG Gradient Definition for Social Icons */}
       <svg width="0" height="0" className="absolute pointer-events-none w-0 h-0" aria-hidden="true">
         <defs>
@@ -212,10 +212,10 @@ export default function Footer() {
         <div className="w-full">
           
           {/* TOP ROW: 3 Distinct Columns */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-12 py-4 sm:py-6">
+          <div className="grid grid-cols-2 lg:grid-cols-12 gap-x-4 sm:gap-x-8 gap-y-8 lg:gap-12 pt-1 sm:pt-3 pb-4 sm:pb-6">
             
             {/* Box 1 (Top Left): Make In India Lion + Trajectory Statement */}
-            <div className="sm:col-span-2 lg:col-span-6 flex flex-col justify-between space-y-6 sm:space-y-8">
+            <div className="col-span-2 lg:col-span-6 flex flex-col justify-between space-y-6 sm:space-y-8">
               <Image
                 src="/images/make-in-india-lion.png"
                 alt="Make in India — Mechanical Lion"

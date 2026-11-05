@@ -148,6 +148,12 @@ export default function BlueParticleTrail() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, width, height);
 
+      // Do not render tactical HUD reticle over open modals or mobile drawers
+      if (typeof document !== "undefined" && document.body.style.overflow === "hidden") {
+        animId = requestAnimationFrame(render);
+        return;
+      }
+
       if (isVisible && targetX >= 0 && targetY >= 0) {
         // High-precision smooth follow (spring lerp)
         const lerpFactor = isHovering ? 0.3 : 0.22;

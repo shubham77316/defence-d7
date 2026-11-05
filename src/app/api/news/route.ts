@@ -7,24 +7,34 @@ const BACKEND_API_URL = process.env.CMS_API_URL || "http://localhost:5000/api";
 
 const FALLBACK_NEWS = [
   {
-    id: "aerospace-highlights",
-    title: "Aerospace highlights and autonomous program positioning",
-    category: "AEROSPACE",
-    date: "MARCH 2026",
+    id: "lorem-ipsum",
+    title: "Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit",
+    category: "Company News",
+    meta: "2 min read",
     description:
-      "Precision-engineered sovereign airframes, autonomous flight trials, and tactical unmanned aerial surveillance milestones.",
-    image: "/images/stealth-fighter-hangar.jpg",
-    href: "/news/aerospace-highlights",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim.",
+    image: "/images/aerospace-stealth-hangar.jpg",
+    href: "/news/lorem-ipsum",
   },
   {
-    id: "defence-systems",
-    title: "Defence systems, protective platforms, and readiness updates",
-    category: "DEFENCE",
-    date: "FEBRUARY 2026",
+    id: "sed-do-eiusmod",
+    title: "Sed Do Eiusmod Tempor Incididunt Ut Labore Et Dolore Magna",
+    category: "Partner News",
+    meta: "2 min read",
     description:
-      "Multi-layered tactical air defence architectures, kinetic perimeter shields, and next-generation sovereign interception platforms.",
-    image: "/images/defence-systems-radar.jpg",
-    href: "/news/defence-systems",
+      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident.",
+    image: "/images/tactical-defense-operator.jpg",
+    href: "/news/sed-do-eiusmod",
+  },
+  {
+    id: "quis-nostrud",
+    title: "Quis Nostrud Exercitation Ullamco Laboris Nisi Ut Aliquip",
+    category: "Company News",
+    meta: "3 min read",
+    description:
+      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit.",
+    image: "/images/news-advanced-systems.jpg",
+    href: "/news/quis-nostrud",
   },
 ];
 
@@ -42,7 +52,7 @@ export async function GET() {
           id: item.slug || item._id,
           slug: item.slug || item._id,
           title: item.title,
-          category: item.category?.toUpperCase() || "DEFENCE",
+          category: (item.category ? (item.category.charAt(0).toUpperCase() + item.category.slice(1).toLowerCase()) : "Defence"),
           date: item.date ? new Date(item.date).toLocaleDateString("en-US", { month: "long", year: "numeric" }).toUpperCase() : "RECENT",
           description: item.excerpt || item.description || (item.content ? item.content[0] : ""),
           excerpt: item.excerpt || item.description || "",

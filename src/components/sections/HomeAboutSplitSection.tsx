@@ -18,12 +18,12 @@ interface CapabilityItem {
 // Reusable Physical Pill Card Component
 function CapabilityCardContent({ item }: { item: CapabilityItem }) {
   return (
-    <div className="relative w-full h-[490px] sm:h-[530px] md:h-[550px] rounded-[32px] sm:rounded-[38px] md:rounded-[42px] bg-[#02050e] border border-white/[0.14] pt-2.5 sm:pt-3 px-2.5 sm:px-3.5 pb-4 sm:pb-5 flex flex-col justify-between shadow-[0_24px_60px_rgba(0,0,0,0.98),0_0_0_1px_rgba(56,189,248,0.22),0_-6px_20px_rgba(0,0,0,0.85)] overflow-hidden select-none">
+    <div className="relative w-full h-[470px] sm:h-[530px] md:h-[550px] rounded-[32px] sm:rounded-[38px] md:rounded-[42px] bg-[#02050e] border border-white/[0.14] pt-2.5 sm:pt-3 px-2.5 sm:px-3.5 pb-4 sm:pb-5 flex flex-col justify-between shadow-[0_24px_60px_rgba(0,0,0,0.98),0_0_0_1px_rgba(56,189,248,0.22),0_-6px_20px_rgba(0,0,0,0.85)] overflow-hidden select-none">
       {/* Subtle cyan border accent highlight */}
       <div className="absolute inset-0 rounded-[32px] sm:rounded-[38px] md:rounded-[42px] border border-sky-400/20 pointer-events-none" />
 
       {/* TOP PORTION: INNER ROUNDED PHOTOGRAPH */}
-      <div className="relative w-full h-[270px] sm:h-[300px] md:h-[320px] rounded-[22px] sm:rounded-[26px] md:rounded-[30px] overflow-hidden bg-[#070d1e] shadow-[inset_0_0_24px_rgba(0,0,0,0.85)]">
+      <div className="relative w-full h-[255px] sm:h-[300px] md:h-[320px] rounded-[22px] sm:rounded-[26px] md:rounded-[30px] overflow-hidden bg-[#070d1e] shadow-[inset_0_0_24px_rgba(0,0,0,0.85)]">
         <Image
           src={item.image}
           alt={item.headline}
@@ -73,9 +73,9 @@ function ScrollDeckCards({ capabilities }: { capabilities: CapabilityItem[] }) {
   const card2Opacity = useTransform(scrollYProgress, [0.50, 0.60], [0, 1], { clamp: true });
 
   return (
-    <div ref={containerRef} className="relative w-full h-[240vh]">
+    <div ref={containerRef} className="relative w-full h-[185vh] sm:h-[225vh]">
       {/* Pinned Sticky Stage - Stays centered below navbar */}
-      <div className="sticky top-[96px] sm:top-[104px] w-full max-w-[500px] sm:max-w-[520px] mx-auto h-[660px] flex justify-center pointer-events-none">
+      <div className="sticky top-[88px] sm:top-[104px] w-full max-w-[490px] sm:max-w-[520px] mx-auto h-[555px] sm:h-[635px] md:h-[650px] flex justify-center pointer-events-none">
         
         {/* CARD 1 (SECTORS) - BASE LAYER at top: 0 */}
         <div
@@ -87,7 +87,7 @@ function ScrollDeckCards({ capabilities }: { capabilities: CapabilityItem[] }) {
 
         {/* CARD 2 (MODEL) - MIDDLE LAYER docks at top: 48px */}
         <motion.div
-          className="absolute top-[48px] w-full flex justify-center pointer-events-auto"
+          className="absolute top-[38px] sm:top-[48px] w-full flex justify-center pointer-events-auto"
           style={{
             y: card1Y,
             opacity: card1Opacity,
@@ -99,7 +99,7 @@ function ScrollDeckCards({ capabilities }: { capabilities: CapabilityItem[] }) {
 
         {/* CARD 3 (DIRECTION) - TOP LAYER docks at top: 96px */}
         <motion.div
-          className="absolute top-[96px] w-full flex justify-center pointer-events-auto"
+          className="absolute top-[76px] sm:top-[96px] w-full flex justify-center pointer-events-auto"
           style={{
             y: card2Y,
             opacity: card2Opacity,
@@ -144,7 +144,7 @@ export default function HomeAboutSplitSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative pt-8 sm:pt-12 pb-16 sm:pb-24 bg-[#02050e] border-t border-white/[0.08] overflow-visible select-none"
+      className="relative pt-8 sm:pt-12 pb-12 sm:pb-20 bg-[#02050e] border-t border-white/[0.08] overflow-visible select-none"
     >
       {/* Clean Solid Dark Background with subtle ambient glow */}
       <div className="absolute inset-0 bg-[#02050e] pointer-events-none z-0" />
@@ -152,7 +152,7 @@ export default function HomeAboutSplitSection() {
 
       {/* Main Inner Content */}
       <div className="relative w-full max-w-[1680px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 z-10">
-        <div className="flex flex-col items-center justify-center space-y-8 sm:space-y-12">
+        <div className="flex flex-col items-center justify-center space-y-5 sm:space-y-8">
           
           {/* ========================================================================= */}
           {/* TOP SECTION: ABOUT US HERO (PERFECTLY CENTER ALIGNED)                     */}
@@ -214,7 +214,7 @@ export default function HomeAboutSplitSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.15 }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full flex flex-col items-center text-center space-y-5 max-w-3xl mx-auto pt-4"
+            className="w-full flex flex-col items-center text-center space-y-4 sm:space-y-5 max-w-3xl mx-auto pt-1 sm:pt-2"
           >
             {/* Narrative 2-Line Text */}
             <p className="text-slate-200 text-sm sm:text-base md:text-lg leading-relaxed font-normal select-none text-center">
