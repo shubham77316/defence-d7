@@ -1,9 +1,39 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, MotionValue } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
+
+const AEROSPACE_LETTERS = ["A", "E", "R", "O", "S", "P", "A", "C", "E"];
+
+function AerospaceScrollLetter({
+  char,
+  index,
+  total,
+  progress,
+}: {
+  char: string;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+}) {
+  const start = 0.04 + index * 0.085;
+  const end = Math.min(start + 0.16, 0.94);
+
+  const x = useTransform(progress, [start, end], ["65vw", "0vw"], { clamp: true });
+  const opacity = useTransform(progress, [start, start + 0.04, end], [0, 0.75, 1], { clamp: true });
+
+  return (
+    <motion.span
+      style={{ x, opacity }}
+      className="inline-block bg-gradient-to-b from-[#e0f2fe] via-[#7ec8ff] to-[#38bdf8] bg-clip-text text-transparent will-change-transform"
+    >
+      {char}
+    </motion.span>
+  );
+}
 import {
   Scale,
   Gauge,
@@ -1087,41 +1117,152 @@ export default function BusinessesPage() {
     }
   };
 
+  const heroTrackRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroTrackRef,
+    offset: ["start start", "end end"],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 140,
+    damping: 24,
+    restDelta: 0.001,
+  });
+
+  const mobileTrackRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: mobileScrollYProgress } = useScroll({
+    target: mobileTrackRef,
+    offset: ["start start", "end end"],
+  });
+  const mobileProgress = useSpring(mobileScrollYProgress, {
+    stiffness: 140,
+    damping: 24,
+    restDelta: 0.001,
+  });
+
+  const scrollHintOpacity = useTransform(smoothProgress, [0, 0.06], [1, 0], { clamp: true });
+
   return (
-    <div id="aerospace" className="relative min-h-screen pt-28 sm:pt-36 pb-24 bg-[#030712] overflow-x-clip text-white selection:bg-sky-500/30 selection:text-sky-200">
-      {/* Precision Engineering Grid Background */}
-      <div 
-        className="absolute inset-0 pointer-events-none z-0 opacity-35"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(56, 189, 248, 0.07) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(56, 189, 248, 0.07) 1px, transparent 1px)
-          `,
-          backgroundSize: "64px 64px"
-        }}
-      />
+    <div id="aerospace" className="relative min-h-screen bg-[#030712]  text-white selection:bg-sky-500/30 selection:text-sky-200">
+      
+      {/* ========================================================================= */}
+      {/* 1. MOBILE RESPONSIVE HERO (sm:hidden - Pinned while fonts assemble one by one) */}
+      {/* ========================================================================= */}
+      <div ref={mobileTrackRef} className="sm:hidden relative w-full h-[240vh] select-none">
+        <div className="sticky top-14 z-30 w-full flex flex-col justify-start items-center pt-2 px-2 overflow-hidden select-none">
+          {/* Tactical Image Box */}
+          <div className="relative w-full max-w-[420px] mx-auto">
+            {/* Responsive Only: Back to Home Button at Top-Left of Image */}
+            <div className="absolute top-2.5 left-2.5 z-40 pointer-events-auto">
+              <Link
+                href="/"
+                className="inline-flex items-center justify-center gap-1.5 h-7 px-2.5 text-[10px] xs:text-[10.5px] font-mono text-cyan-300 hover:text-white uppercase tracking-wider transition-all duration-300 rounded-lg bg-[#040814]/90 hover:bg-[#071329] border border-cyan-400/40 backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.8)] group select-auto whitespace-nowrap"
+              >
+                <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-0.5 text-cyan-400" />
+                <span>BACK TO HOME</span>
+              </Link>
+            </div>
+            <Image
+              src="/images/aerospace-drone-city-hero.jpg"
+              alt="Aerospace Tactical UAV Platform"
+              width={900}
+              height={600}
+              priority
+              className="w-full h-auto object-cover filter contrast-[1.08] brightness-[1.05] rounded-sm"
+              sizes="(max-width: 640px) 100vw"
+            />
 
-      {/* Subtle Radial Blue Glow */}
-      <div className="absolute top-24 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-sky-600/10 blur-[180px] pointer-events-none rounded-full" />
+            {/* AEROSPACE Letters Over The Image (Assemble one by one during scroll) */}
+            <div className="absolute bottom-0 inset-x-0 z-20 flex items-center justify-center text-center overflow-visible pointer-events-none translate-y-[10%]">
+              <h1 className="font-anton font-black uppercase text-[15.5vw] xs:text-[16.5vw] tracking-[-0.01em] leading-none text-center drop-shadow-[0_10px_35px_rgba(0,0,0,0.98)] whitespace-nowrap mx-auto w-full select-none block overflow-visible">
+                {AEROSPACE_LETTERS.map((char, index) => (
+                  <AerospaceScrollLetter
+                    key={index}
+                    char={char}
+                    index={index}
+                    total={AEROSPACE_LETTERS.length}
+                    progress={mobileProgress}
+                  />
+                ))}
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <div className="relative z-10 max-w-[1540px] mx-auto px-4 sm:px-6 md:px-10 lg:px-14 space-y-10 sm:space-y-12">
-        
-        {/* ========================================================================= */}
-        {/* MAIN PAGE HEADER: AEROSPACE + SUBTITLE                                    */}
-        {/* ========================================================================= */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="space-y-3"
-        >
-          <h1 className="font-oxanium text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white tracking-tight leading-none">
-            AEROSPACE
-          </h1>
-          <p className="text-slate-300 text-sm sm:text-base md:text-[17px] font-normal max-w-3xl leading-relaxed">
-            Mission-ready UAV systems for surveillance, strike, loitering, and autonomous tactical support.
-          </p>
-        </motion.div>
+      {/* ========================================================================= */}
+      {/* 2. DESKTOP CINEMATIC STICKY SCROLL TRACK (hidden sm:block)                */}
+      {/* ========================================================================= */}
+      <div ref={heroTrackRef} className="hidden sm:block relative w-full h-[180vh] select-none">
+        <div className="sticky top-0 h-screen w-full flex flex-col justify-between pt-20 sm:pt-28 overflow-hidden select-none">
+          
+          {/* Tactical Drone Dusk City Background Image */}
+          <div className="absolute inset-0 pointer-events-none z-0">
+            <Image
+              src="/images/aerospace-drone-city-hero.jpg"
+              alt="Aerospace Tactical UAV Platform"
+              fill
+              priority
+              className="object-cover object-center brightness-95 contrast-105"
+              sizes="100vw"
+            />
+            {/* Subtle Top Gradient for Navbar legibility & Dark Bottom Vignette */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#030712]/75 via-transparent to-[#030712] pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#030712]/50 via-transparent to-[#030712]/50 pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#030712] via-[#030712]/85 to-transparent pointer-events-none" />
+          </div>
+
+          {/* Desktop Back to Home Button */}
+          <div className="absolute top-20 sm:top-24 left-4 sm:left-6 md:left-8 lg:left-12 xl:left-14 z-30 pointer-events-auto">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-xs sm:text-sm font-mono text-cyan-300 hover:text-white uppercase tracking-wider transition-all duration-300 py-1.5 px-3.5 rounded-lg bg-[#040814]/80 hover:bg-[#071329] border border-cyan-400/30 hover:border-cyan-300/60 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.6)] group"
+            >
+              <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-cyan-400" />
+              <span>BACK TO HOME</span>
+            </Link>
+          </div>
+
+          {/* Top Spacer to let the Drone be prominent in center with Scroll Hint */}
+          <div className="relative z-10 w-full flex-1 flex flex-col items-center justify-end pb-8">
+            <motion.div
+              style={{ opacity: scrollHintOpacity }}
+              className="pointer-events-none flex flex-col items-center gap-2 select-none"
+            >
+              <span className="text-xs font-mono font-medium tracking-[0.3em] uppercase text-sky-300/80 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+                Scroll to Reveal
+              </span>
+              <div className="w-5 h-8 rounded-full border border-sky-400/40 flex items-start justify-center p-1 bg-black/30 backdrop-blur-sm">
+                <motion.div
+                  animate={{ y: [0, 10, 0] }}
+                  transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                  className="w-1.5 h-1.5 rounded-full bg-sky-300"
+                />
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Lower Content Block: Monumental AEROSPACE Letters Assembled from Right on Scroll */}
+          <div className="relative z-10 w-full max-w-[1540px] mx-auto px-6 md:px-10 lg:px-14 flex flex-col items-center justify-end text-center pb-2 overflow-visible">
+            <h1
+              className="font-anton font-black uppercase text-[17.5vw] sm:text-[18.5vw] md:text-[19.5vw] lg:text-[20.5vw] xl:text-[21vw] tracking-[-0.015em] sm:tracking-[-0.02em] leading-[0.78] text-center drop-shadow-[0_15px_45px_rgba(0,0,0,0.95)] whitespace-nowrap mx-auto w-full select-none pointer-events-none -mb-5 md:-mb-7 lg:-mb-9 block overflow-visible"
+            >
+              {AEROSPACE_LETTERS.map((char, index) => (
+                <AerospaceScrollLetter
+                  key={index}
+                  char={char}
+                  index={index}
+                  total={AEROSPACE_LETTERS.length}
+                  progress={smoothProgress}
+                />
+              ))}
+            </h1>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content Area */}
+      <div className="relative z-10 max-w-[1540px] mx-auto px-4 sm:px-6 md:px-10 lg:px-14 pt-3 sm:pt-16 pb-4 sm:pb-12 lg:pb-20 space-y-12 sm:space-y-16">
 
         {/* ========================================================================= */}
         {/* MAIN CONTENT GRID: 2 COLUMNS (LEFT: CONTINUOUS SECTIONS, RIGHT: SIDEBAR)   */}
@@ -1129,13 +1270,13 @@ export default function BusinessesPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           
           {/* Left Column: All Continuous Sections Rendered in Sequence */}
-          <div className="lg:col-span-8 xl:col-span-9 space-y-14 sm:space-y-16">
+          <div className="lg:col-span-8 xl:col-span-9 space-y-8 sm:space-y-14">
             
             {sections.map((section, secIdx) => (
               <div
                 key={section.id}
                 id={section.id}
-                className="scroll-mt-32 space-y-6 sm:space-y-8"
+                className="scroll-mt-16 sm:scroll-mt-24 lg:scroll-mt-28 space-y-4 sm:space-y-8"
               >
                 {/* Category Header */}
                 <div className="space-y-1.5">
@@ -1195,11 +1336,7 @@ export default function BusinessesPage() {
                             setModalProduct(product);
                             setModalSection(section);
                           }}
-                          className={`inline-block px-5 py-1.5 rounded-full text-xs font-semibold tracking-wider transition-all duration-200 cursor-pointer ${
-                            secIdx === 0 && idx === 0
-                              ? "bg-[#00d2ff] hover:bg-[#38bdf8] text-slate-950 font-bold shadow-[0_0_15px_rgba(0,210,255,0.4)] hover:scale-105"
-                              : "bg-transparent hover:bg-sky-500/15 border border-sky-400/40 text-sky-300 hover:text-white font-semibold"
-                          }`}
+                          className="inline-block px-5 py-1.5 rounded-full text-xs font-semibold tracking-wider transition-all duration-200 cursor-pointer bg-transparent hover:bg-sky-500/15 border border-sky-400/40 text-sky-300 hover:text-white hover:border-sky-300 shadow-[0_0_10px_rgba(56,189,248,0.08)] hover:shadow-[0_0_15px_rgba(56,189,248,0.25)]"
                         >
                           View Details
                         </button>
@@ -1211,7 +1348,7 @@ export default function BusinessesPage() {
 
                 {/* Distinct Divider Line between Sections */}
                 {secIdx < sections.length - 1 && (
-                  <div className="pt-8 sm:pt-10">
+                  <div className="pt-4 sm:pt-8">
                     <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-white/15 to-transparent" />
                   </div>
                 )}
@@ -1276,7 +1413,7 @@ export default function BusinessesPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
+            className="fixed inset-0 z-[100000] bg-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
             onClick={() => setModalProduct(null)}
           >
             <motion.div

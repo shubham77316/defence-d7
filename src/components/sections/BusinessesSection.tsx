@@ -21,6 +21,25 @@ interface SectorCard {
   renderLogo: () => React.ReactNode;
 }
 
+interface SectorNewsItem {
+  slug?: string;
+  id?: string;
+  _id?: string;
+  title?: string;
+  description?: string;
+  excerpt?: string;
+  image?: string;
+}
+
+const isSectorNewsItem = (item: unknown): item is SectorNewsItem => {
+  if (typeof item !== "object" || item === null || Array.isArray(item)) return false;
+
+  const record = item as Record<string, unknown>;
+  return ["slug", "id", "_id", "title", "description", "excerpt", "image"].every(
+    (key) => record[key] === undefined || typeof record[key] === "string",
+  );
+};
+
 const renderAerospaceLogo = () => (
   <div className="relative flex items-center justify-center py-2">
     <svg
@@ -107,23 +126,8 @@ const renderGenericLogo = (title: string) => (
 
 const DEFAULT_SECTORS: SectorCard[] = [
   {
-    id: "defence-systems",
-    number: "01",
-    title: "DEFENCE",
-    tagline: "Tactical & Protective Warfare",
-    desc: "Protective gear and tactical equipment for the field.",
-    linkText: "Explore Defence",
-    href: "/defence",
-    bgImage: "/images/defence-card-bg.jpg",
-    glowClass: "bg-lime-500/25",
-    accentBorder: "border-lime-500/30 group-hover:border-lime-400/80",
-    accentText: "text-lime-400 group-hover:text-white",
-    logoGlow: "drop-shadow-[0_0_35px_rgba(163,230,53,0.7)]",
-    renderLogo: renderDefenceLogo,
-  },
-  {
     id: "jio",
-    number: "02",
+    number: "03",
     title: "JIO",
     tagline: "Specialized Defence Sector",
     desc: "Tactical communications and sovereign systems.",
@@ -138,7 +142,7 @@ const DEFAULT_SECTORS: SectorCard[] = [
   },
   {
     id: "petro",
-    number: "03",
+    number: "04",
     title: "PETRO",
     tagline: "Energy & Strategic Materials",
     desc: "Strategic fuels, composite materials, and defence logistics.",
@@ -153,7 +157,7 @@ const DEFAULT_SECTORS: SectorCard[] = [
   },
   {
     id: "bisto",
-    number: "04",
+    number: "05",
     title: "BISTO",
     tagline: "Tactical Operations",
     desc: "Specialized sovereign systems and equipment.",
@@ -168,7 +172,7 @@ const DEFAULT_SECTORS: SectorCard[] = [
   },
   {
     id: "aerospace-highlights",
-    number: "05",
+    number: "01",
     title: "AEROSPACE",
     tagline: "Autonomous Aerial & Space Systems",
     desc: "UAV platforms and aerial surveillance systems.",
@@ -181,6 +185,21 @@ const DEFAULT_SECTORS: SectorCard[] = [
     logoGlow: "drop-shadow-[0_0_35px_rgba(56,189,248,0.7)]",
     renderLogo: renderAerospaceLogo,
   },
+  {
+    id: "defence-systems",
+    number: "02",
+    title: "DEFENCE",
+    tagline: "Tactical & Protective Warfare",
+    desc: "Protective gear and tactical equipment for the field.",
+    linkText: "Explore Defence",
+    href: "/defence",
+    bgImage: "/images/defence-card-bg.jpg",
+    glowClass: "bg-lime-500/25",
+    accentBorder: "border-lime-500/30 group-hover:border-lime-400/80",
+    accentText: "text-lime-400 group-hover:text-white",
+    logoGlow: "drop-shadow-[0_0_35px_rgba(163,230,53,0.7)]",
+    renderLogo: renderDefenceLogo,
+  },
 ];
 
 export default function BusinessesSection() {
@@ -191,33 +210,27 @@ export default function BusinessesSection() {
     try {
       const res = await fetch("/api/news", { cache: "no-store" });
       if (res.ok) {
-        const json = await res.json();
-        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
-          const mappedCards: SectorCard[] = json.data.map((item: any, idx: number) => {
+        const json: { success?: boolean; data?: unknown } = await res.json();
+        const newsItems = json.data;
+        if (json.success && Array.isArray(newsItems) && newsItems.length > 0) {
+          const findSector = (sectorName: string) =>
+            newsItems.find((item: unknown): item is SectorNewsItem => {
+              if (!isSectorNewsItem(item)) return false;
+              const slug = (item.slug || item.id || item._id || "").toLowerCase();
+              const titleUpper = (item.title || "").toUpperCase();
+              return slug.includes(sectorName) || titleUpper.includes(sectorName.toUpperCase());
+            });
+          const sectorItems = [findSector("aerospace"), findSector("defence")].filter(
+            (item): item is SectorNewsItem => item !== undefined,
+          );
+
+          if (sectorItems.length !== 2) return;
+
+          const mappedCards: SectorCard[] = sectorItems.map((item, idx) => {
             const num = String(idx + 1).padStart(2, "0");
             const slug = (item.slug || item.id || item._id || "").toLowerCase();
             const titleUpper = (item.title || "SECTOR").toUpperCase();
 
-            // Match Defence Card
-            if (slug.includes("defence") || titleUpper.includes("DEFENCE")) {
-              return {
-                id: slug || "defence-systems",
-                number: num,
-                title: "DEFENCE",
-                tagline: "Tactical & Protective Warfare",
-                desc: item.description || item.excerpt || "Protective gear and tactical equipment for the field.",
-                linkText: "Explore Defence",
-                href: "/defence",
-                bgImage: item.image || "/images/defence-card-bg.jpg",
-                glowClass: "bg-lime-500/25",
-                accentBorder: "border-lime-500/30 group-hover:border-lime-400/80",
-                accentText: "text-lime-400 group-hover:text-white",
-                logoGlow: "drop-shadow-[0_0_35px_rgba(163,230,53,0.7)]",
-                renderLogo: renderDefenceLogo,
-              };
-            }
-
-            // Match Aerospace Card
             if (slug.includes("aerospace") || titleUpper.includes("AEROSPACE")) {
               return {
                 id: slug || "aerospace-highlights",
@@ -236,21 +249,20 @@ export default function BusinessesSection() {
               };
             }
 
-            // Dynamic sector for other items (e.g. JIO, PETRO, BISTO)
             return {
-              id: slug || `sector-${idx}`,
+              id: slug || "defence-systems",
               number: num,
-              title: titleUpper,
-              tagline: item.category || "Specialized Sector",
-              desc: item.excerpt || item.description || "Strategic industrial capability and engineering operations.",
-              linkText: `Explore ${item.title}`,
-              href: `/news/${slug}`,
-              bgImage: (item.image && typeof item.image === "string") ? item.image.trim() : "",
-              glowClass: "bg-cyan-500/25",
-              accentBorder: "border-cyan-500/40 group-hover:border-cyan-300/90",
-              accentText: "text-cyan-400 group-hover:text-white",
-              logoGlow: "drop-shadow-[0_0_35px_rgba(6,182,212,0.7)]",
-              renderLogo: () => renderGenericLogo(titleUpper),
+              title: "DEFENCE",
+              tagline: "Tactical & Protective Warfare",
+              desc: item.description || item.excerpt || "Protective gear and tactical equipment for the field.",
+              linkText: "Explore Defence",
+              href: "/defence",
+              bgImage: item.image || "/images/defence-card-bg.jpg",
+              glowClass: "bg-lime-500/25",
+              accentBorder: "border-lime-500/30 group-hover:border-lime-400/80",
+              accentText: "text-lime-400 group-hover:text-white",
+              logoGlow: "drop-shadow-[0_0_35px_rgba(163,230,53,0.7)]",
+              renderLogo: renderDefenceLogo,
             };
           });
 
@@ -277,10 +289,10 @@ export default function BusinessesSection() {
       {/* Background Ambience Spotlight */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1100px] h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(56,189,248,0.1)_0%,transparent_65%)] blur-3xl pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
+      <div className="relative w-full max-w-[1660px] mx-auto px-4 sm:px-6 lg:px-5 space-y-6 sm:space-y-8">
         
         {/* Centered Header matching exact ABOUT US SVG Wordmark Typography */}
-        <div className="flex flex-col items-center text-center space-y-2.5 sm:space-y-3 max-w-5xl mx-auto select-none">
+        <div className="flex w-full flex-col items-center text-center space-y-2.5 sm:space-y-3 select-none">
           {/* Clean Modern White Tag */}
           <div className="flex items-center justify-center space-x-3 select-none">
             <span className="w-10 sm:w-16 h-[1px] bg-gradient-to-r from-transparent to-white/30" />
@@ -349,7 +361,7 @@ export default function BusinessesSection() {
             </svg>
           </div>
 
-          <p className="text-slate-200 text-sm sm:text-base md:text-lg leading-relaxed font-normal select-none text-center max-w-2xl">
+          <p className="w-full max-w-2xl self-start text-left text-slate-200 text-sm sm:text-base md:text-lg leading-relaxed font-normal select-none">
             Sky Wardens operates in sectors where the stakes are too high for anything less than full commitment.
           </p>
 
@@ -359,13 +371,13 @@ export default function BusinessesSection() {
         <div
           className={`grid grid-cols-1 ${
             sectors.length === 2
-              ? "md:grid-cols-2 max-w-4xl"
+              ? "md:grid-cols-2 max-w-4xl ml-0"
               : sectors.length === 3
               ? "md:grid-cols-2 lg:grid-cols-3 max-w-6xl"
               : sectors.length === 4
               ? "md:grid-cols-2 lg:grid-cols-4 max-w-7xl"
               : "md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 max-w-[1440px]"
-          } gap-6 sm:gap-8 mx-auto`}
+          } gap-6 sm:gap-8 ${sectors.length === 2 ? "" : "mx-auto"}`}
         >
           {sectors.map((sector) => (
             <motion.div

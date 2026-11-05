@@ -50,11 +50,36 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    if (!activeDropdown) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest("[data-nav-dropdown]")) {
+        setActiveDropdown(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [activeDropdown]);
+
   // Close mobile menu on route change
   useEffect(() => {
     setMobileMenuOpen(false);
     setActiveDropdown(null);
   }, [pathname]);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
 
   const activeNavLinks = navLinks && navLinks.length > 0 ? navLinks : NAV_LINKS;
   const contactItem = activeNavLinks.find((item) => item.label.trim().toLowerCase() === "contact");
@@ -62,13 +87,13 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 ${mobileMenuOpen ? "z-[100000]" : "z-40"} transition-all duration-300 ${
         isScrolled
           ? "bg-slate-950/85 backdrop-blur-xl border-b border-sky-400/20 shadow-[0_4px_30px_rgba(0,0,0,0.8)] py-2 sm:py-3"
           : "bg-gradient-to-b from-slate-950/90 via-slate-950/50 to-transparent py-2.5 sm:py-5"
       }`}
     >
-      <div className="w-full px-2.5 sm:px-6 md:px-8 lg:px-12 xl:px-14 flex items-center justify-between gap-1.5 sm:gap-4">
+      <div className="w-full max-w-[1660px] mx-auto px-2.5 sm:px-5 flex items-center justify-between gap-1.5 sm:gap-4">
         {/* Brand Logo */}
         <Logo size="md" showSectorsList />
 
@@ -87,9 +112,8 @@ export default function Navbar() {
                 return (
                   <div
                     key={itemKey}
-                    className="relative group"
-                    onMouseEnter={() => setActiveDropdown(item.label)}
-                    onMouseLeave={() => setActiveDropdown(null)}
+                    className="relative"
+                    data-nav-dropdown="true"
                   >
                     <button
                       type="button"
@@ -104,7 +128,7 @@ export default function Navbar() {
                           {item.badge}
                         </span>
                       )}
-                      <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-hover:text-sky-300 group-hover:rotate-180 transition-transform duration-200" />
+                      <ChevronDown className="w-3.5 h-3.5 text-slate-400 transition-transform duration-200" />
                     </button>
 
                     {/* Dropdown Card */}
@@ -205,14 +229,14 @@ export default function Navbar() {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-[60px] bottom-0 bg-slate-950/98 backdrop-blur-2xl border-t border-slate-800 p-6 overflow-y-auto flex flex-col justify-between animate-in fade-in duration-200">
-          <div className="space-y-4">
+        <div className="lg:hidden fixed inset-x-0 top-14 sm:top-16 bottom-0 z-50 bg-[#02050f]/98 backdrop-blur-3xl border-t border-sky-400/20 px-4 py-4 sm:px-6 sm:py-5 overflow-y-auto overscroll-contain animate-in fade-in duration-200">
+          <div className="space-y-4 pb-36">
             <div className="text-[10px] font-mono tracking-widest uppercase text-slate-400 border-b border-slate-800 pb-2 flex items-center justify-between">
               <span>Sovereign Tactical Navigation</span>
               <span className="text-sky-300 font-mono">SYS-ONLINE</span>
             </div>
 
-            <nav className="space-y-2">
+            <nav className="space-y-1 sm:space-y-2">
               {activeNavLinks.map((item, idx) => {
                 const targetHref = normalizeHref(item.href);
                 const isExternal = checkIsExternal(item);
@@ -225,7 +249,7 @@ export default function Navbar() {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={() => setMobileMenuOpen(false)}
-                        className="flex items-center justify-between py-2 text-base font-medium text-slate-200 hover:text-sky-300"
+                        className="flex items-center justify-between py-1.5 text-[15px] sm:text-base font-medium text-slate-200 hover:text-sky-300 transition-colors"
                       >
                         <span className="flex items-center gap-2">
                           <span>{item.label}</span>
@@ -241,7 +265,7 @@ export default function Navbar() {
                       <Link
                         href={targetHref}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="flex items-center justify-between py-2 text-base font-medium text-slate-200 hover:text-sky-300"
+                        className="flex items-center justify-between py-1.5 text-[15px] sm:text-base font-medium text-slate-200 hover:text-sky-300 transition-colors"
                       >
                         <span className="flex items-center gap-2">
                           <span>{item.label}</span>
@@ -256,13 +280,13 @@ export default function Navbar() {
                     )}
 
                     {item.children && item.children.length > 0 && (
-                      <div className="pl-4 mt-1 space-y-1.5 border-l border-sky-400/20">
+                      <div className="pl-4 mt-1 space-y-1 border-l border-sky-400/20">
                         {item.children.map((child) => (
                           <Link
                             key={child.label}
                             href={normalizeHref(child.href)}
                             onClick={() => setMobileMenuOpen(false)}
-                            className="block text-xs text-slate-400 hover:text-sky-300 py-1"
+                            className="block text-xs text-slate-400 hover:text-sky-300 py-1 transition-colors"
                           >
                             {child.label}
                           </Link>
@@ -273,24 +297,24 @@ export default function Navbar() {
                 );
               })}
             </nav>
-          </div>
 
-          <div className="pt-6 border-t border-slate-800 space-y-3">
-            <Button
-              href="/contact"
-              variant="primary"
-              size="md"
-              className="w-full justify-center"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Contact Sky Wardens
-            </Button>
-            <div className="text-center text-[10px] text-slate-400 font-mono tracking-wider">
-              B2G &bull; DEFENCE &bull; AEROSPACE &bull; STRATEGIC CAPABILITY
+            <div className="pt-5 border-t border-slate-800/80 space-y-3">
+              <Button
+                href="/contact"
+                variant="primary"
+                size="md"
+                className="w-full justify-center"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Contact Sky Wardens
+              </Button>
+              <div className="text-center text-[10px] text-slate-400 font-mono tracking-wider">
+                B2G &bull; DEFENCE &bull; AEROSPACE &bull; STRATEGIC CAPABILITY
+              </div>
             </div>
           </div>
         </div>
       )}
-    </header>
+      </header>
   );
 }

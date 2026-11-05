@@ -1,0 +1,52 @@
+<svg viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="exactSysBlueGrad" x1="120" y1="14" x2="120" y2="220" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#1e72aa" />
+      <stop offset="30%" stopColor="#145887" />
+      <stop offset="70%" stopColor="#0d3f63" />
+      <stop offset="100%" stopColor="#092c47" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Triangle Frame -->
+  <polygon
+    points="120,16 16,220 224,220"
+    stroke="url(#exactSysBlueGrad)"
+    strokeWidth="12"
+    strokeLinejoin="round"
+  />
+
+  <!-- Inner Chevron A-Frame Arch -->
+  <polyline
+    points="74,220 120,132 166,220"
+    stroke="url(#exactSysBlueGrad)"
+    strokeWidth="12"
+    strokeLinejoin="round"
+  />
+
+  <!-- Main Continuous Circuit Trace with Terminal Nodes -->
+  <polyline
+    points="82,168 128,76 178,172"
+    stroke="url(#exactSysBlueGrad)"
+    strokeWidth="12"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+  <circle cx="82" cy="168" r="11" fill="url(#exactSysBlueGrad)" />
+  <circle cx="178" cy="172" r="11" fill="url(#exactSysBlueGrad)" />
+
+  <!-- Parallel Inner Circuit Trace with Terminal Node -->
+  <line
+    x1="138"
+    y1="172"
+    x2="162"
+    y2="216"
+    stroke="url(#exactSysBlueGrad)"
+    strokeWidth="12"
+    strokeLinecap="round"
+  />
+  <circle cx="138" cy="172" r="10.5" fill="url(#exactSysBlueGrad)" />
+
+  <!-- Central Solid Delta Triangle Core -->
+  <polygon points="120,188 134,216 106,216" fill="url(#exactSysBlueGrad)" />
+</svg>

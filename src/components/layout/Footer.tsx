@@ -192,7 +192,7 @@ export default function Footer() {
   }));
 
   return (
-    <footer className="w-full bg-[#03060d] text-slate-300 border-t border-white/10 pt-10 sm:pt-14 pb-2 sm:pb-4">
+    <footer className="w-full bg-[#03060d] text-slate-300 border-t border-white/10 pt-3 sm:pt-8 pb-2 sm:pb-4">
       {/* Hidden Global SVG Gradient Definition for Social Icons */}
       <svg width="0" height="0" className="absolute pointer-events-none w-0 h-0" aria-hidden="true">
         <defs>
@@ -207,15 +207,15 @@ export default function Footer() {
 
       <div className="w-full px-3.5 sm:px-6 md:px-8 lg:px-12 xl:px-14">
         {/* ========================================================= */}
-        {/* ARCHITECTURAL BOXED GRID FRAME (Matching Reference Style) */}
+        {/* CLEAN OPEN GRID FOOTER (Boxes and Divider Lines Removed)  */}
         {/* ========================================================= */}
-        <div className="w-full border border-white/15 bg-[#050914]/80 backdrop-blur-md">
+        <div className="w-full">
           
-          {/* TOP ROW: 3 Distinct Compartment Boxes */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12">
+          {/* TOP ROW: 3 Distinct Columns */}
+          <div className="grid grid-cols-2 lg:grid-cols-12 gap-x-4 sm:gap-x-8 gap-y-8 lg:gap-12 pt-1 sm:pt-3 pb-4 sm:pb-6">
             
             {/* Box 1 (Top Left): Make In India Lion + Trajectory Statement */}
-            <div className="sm:col-span-2 lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col justify-between space-y-8">
+            <div className="col-span-2 lg:col-span-6 flex flex-col justify-between space-y-6 sm:space-y-8">
               <Image
                 src="/images/make-in-india-lion.png"
                 alt="Make in India — Mechanical Lion"
@@ -237,7 +237,7 @@ export default function Footer() {
             </div>
 
             {/* Box 2 (Top Middle): NAVIGATION Column */}
-            <div className="sm:col-span-1 lg:col-span-3 border-t sm:border-t lg:border-t-0 lg:border-l border-white/15 p-6 sm:p-8 lg:p-10 flex flex-col justify-between space-y-6">
+            <div className="sm:col-span-1 lg:col-span-3 flex flex-col justify-start space-y-6">
               <div className="space-y-4">
                 <h4 className="text-[10px] font-mono font-semibold tracking-[0.3em] uppercase text-slate-500">
                   NAVIGATION
@@ -257,8 +257,8 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Box 3 (Top Right): FOCUS */}
-            <div className="sm:col-span-1 lg:col-span-3 border-t sm:border-t lg:border-t-0 sm:border-l border-white/15 p-6 sm:p-8 lg:p-10 flex flex-col justify-between space-y-6">
+            {/* Box 3 (Top Right): FOCUS & SOCIAL */}
+            <div className="sm:col-span-1 lg:col-span-3 flex flex-col justify-start space-y-6">
               <div className="space-y-4">
                 <h4 className="text-[10px] font-mono font-semibold tracking-[0.3em] uppercase text-slate-500">
                   FOCUS
@@ -276,55 +276,37 @@ export default function Footer() {
                   ))}
                 </ul>
               </div>
-            </div>
 
-          </div>
-
-          {/* BOTTOM ROW: Symmetrical 2-Compartment Row (Social on Left, Inquiries on Right) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 border-t border-white/15">
-            
-            {/* Box 4 (Bottom Left): Social Icons Compartment */}
-            <div className="lg:col-span-6 px-6 py-4 sm:px-8 sm:py-5 lg:px-10 lg:py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-              <span className="text-[10px] font-mono font-semibold tracking-[0.25em] uppercase text-slate-500">
-                SOCIAL
-              </span>
-              <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
-                {socialLinks.map((item) => (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={item.label}
-                    title={item.label}
-                    className="transition-all duration-300 hover:scale-125 hover:brightness-125 cursor-pointer select-none shrink-0 p-0.5"
-                  >
-                    {item.icon}
-                  </a>
-                ))}
+              {/* SOCIAL (Moved directly under FOCUS) */}
+              <div className="space-y-3 pt-2">
+                <h4 className="text-[10px] font-mono font-semibold tracking-[0.3em] uppercase text-slate-500">
+                  SOCIAL
+                </h4>
+                <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
+                  {socialLinks.map((item) => (
+                    <a
+                      key={item.label}
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={item.label}
+                      title={item.label}
+                      className="transition-all duration-300 hover:scale-125 hover:brightness-125 cursor-pointer select-none shrink-0 p-0.5"
+                    >
+                      {item.icon}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Box 5 (Bottom Right): Inquiries Email Compartment */}
-            <div className="border-t lg:border-t-0 lg:border-l border-white/15 lg:col-span-6 px-6 py-4 sm:px-8 sm:py-5 lg:px-10 lg:py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-              <span className="text-[10px] font-mono font-semibold tracking-[0.25em] uppercase text-slate-500">
-                INQUIRIES
-              </span>
-              <a
-                href={`mailto:${footerData?.inquiriesEmail || settings.inquiriesEmail || "contact@skywardens.in"}`}
-                className="text-xs sm:text-sm font-mono text-slate-300 hover:text-white transition-colors duration-200"
-              >
-                {footerData?.inquiriesEmail || settings.inquiriesEmail || "contact@skywardens.in"}
-              </a>
-            </div>
-
           </div>
 
-        </div>
+          {/* BOTTOM ROW: Copyright (Above the line) */}
+          <div className="pt-4 sm:pt-6 pb-3 border-b border-white/5 text-[10px] sm:text-xs font-mono uppercase tracking-[0.15em] text-slate-500 text-right">
+            COPYRIGHT &copy; {new Date().getFullYear()} {footerData?.copyrightText || settings.copyrightText || settings.companyName || "SKY WARDENS ALLIANCE PVT. LTD."}
+          </div>
 
-        {/* Bottom Copyright */}
-        <div className="pt-4 sm:pt-6 pb-0 text-[10px] sm:text-xs font-mono uppercase tracking-[0.15em] text-slate-500 text-center sm:text-left">
-          COPYRIGHT &copy; {new Date().getFullYear()} {footerData?.copyrightText || settings.copyrightText || settings.companyName || "SKY WARDENS ALLIANCE PVT. LTD."}
         </div>
       </div>
 

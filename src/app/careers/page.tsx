@@ -1,7 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion, useScroll, useTransform, useSpring, MotionValue } from "framer-motion";
 import {
+  ArrowLeft,
   MapPin,
   Clock,
   Briefcase,
@@ -12,6 +16,58 @@ import {
   Send,
   Upload,
 } from "lucide-react";
+
+const CAREERS_LETTERS = ["C", "A", "R", "E", "E", "R", "S"];
+
+function CareerScrollLetter({
+  char,
+  index,
+  progress,
+}: {
+  char: string;
+  index: number;
+  progress: MotionValue<number>;
+}) {
+  const start = 0.01 + index * 0.1;
+  const end = Math.min(start + 0.18, 0.96);
+  const y = useTransform(progress, [start, end], ["110vh", "0vh"], { clamp: true });
+  const opacity = useTransform(progress, [start, start + 0.04, end], [0, 1, 1], { clamp: true });
+  return (
+    <motion.span
+      style={{ y, opacity }}
+      className="inline-block font-anton font-black uppercase text-[14vh] sm:text-[15.5vh] md:text-[17vh] lg:text-[19vh] xl:text-[20.5vh] leading-[0.63] tracking-tight text-center bg-gradient-to-b from-[#e0f2fe] via-[#7ec8ff] to-[#38bdf8] bg-clip-text text-transparent will-change-transform drop-shadow-[0_10px_30px_rgba(0,0,0,0.95)] select-none"
+    >
+      {char}
+    </motion.span>
+  );
+}
+
+function CareerMobileScrollLetter({
+  char,
+  index,
+  total,
+  progress,
+}: {
+  char: string;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+}) {
+  const start = 0.04 + index * 0.11;
+  const end = Math.min(start + 0.18, 0.94);
+
+  const x = useTransform(progress, [start, end], ["65vw", "0vw"], { clamp: true });
+  const opacity = useTransform(progress, [start, start + 0.04, end], [0, 0.75, 1], { clamp: true });
+
+  return (
+    <motion.span
+      style={{ x, opacity }}
+      className="inline-block bg-gradient-to-b from-[#e0f2fe] via-[#7ec8ff] to-[#38bdf8] bg-clip-text text-transparent will-change-transform"
+    >
+      {char}
+    </motion.span>
+  );
+}
 
 interface CareerPosition {
   id: string;
@@ -46,6 +102,7 @@ const CAREER_POSITIONS: CareerPosition[] = [
       "ARINC 429",
     ],
     responsibilitiesTitle: "CORE RESPONSIBILITIES",
+    
     responsibilities: [
       "Architect high-integrity fly-by-wire flight control software and redundant telemetry architectures compliant with mission-critical defense standards.",
       "Direct hardware-in-the-loop (HIL) testing, sensor calibration, and optical tracking integration on full-scale flight simulators.",
@@ -122,8 +179,49 @@ const CAREER_POSITIONS: CareerPosition[] = [
 ];
 
 export default function CareersPage() {
+  const heroTrackRef = useRef<HTMLDivElement>(null);
+  const mobileTrackRef = useRef<HTMLDivElement>(null);
   const [expandedRole, setExpandedRole] = useState<string | null>(null);
+
+  const { scrollYProgress: heroProgress } = useScroll({
+    target: heroTrackRef,
+    offset: ["start start", "end end"],
+  });
+  const smoothProgress = useSpring(heroProgress, {
+    stiffness: 100,
+    damping: 22,
+    restDelta: 0.001,
+  });
+
+  const { scrollYProgress: mobileScrollYProgress } = useScroll({
+    target: mobileTrackRef,
+    offset: ["start start", "end end"],
+  });
+  const mobileProgress = useSpring(mobileScrollYProgress, {
+    stiffness: 140,
+    damping: 24,
+    restDelta: 0.001,
+  });
+  const scrollHintOpacity = useTransform(smoothProgress, [0, 0.06], [1, 0], { clamp: true });
+  const careerHeadingRef = useRef<HTMLHeadingElement>(null);
+  const { scrollYProgress: careerHeadingProgress } = useScroll({
+    target: careerHeadingRef,
+    offset: ["start 85%", "end 40%"],
+  });
+  const careerHeadingBrightness = useTransform(careerHeadingProgress, [0, 1], [0, 1]);
   const [applyModalRole, setApplyModalRole] = useState<CareerPosition | null>(null);
+
+  // Lock body scroll when application modal is open
+  useEffect(() => {
+    if (applyModalRole) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [applyModalRole]);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -187,52 +285,178 @@ export default function CareersPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#020408] text-slate-100 pt-28 pb-24 relative overflow-hidden">
-      {/* Background Ambience & Subtle Grid */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-sky-900/15 rounded-full blur-[150px] pointer-events-none" />
-      <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{
-          backgroundImage: `radial-gradient(rgba(148, 163, 184, 0.4) 1px, transparent 1px)`,
-          backgroundSize: "36px 36px",
-        }}
-      />
+    <div className="relative min-h-screen bg-[#030712] overflow-x-clip text-white selection:bg-sky-500/30 selection:text-sky-200">
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header Section (Exactly matching user screenshot) */}
-        <div className="max-w-4xl mb-12 sm:mb-14">
+      {/* ========================================================================= */}
+      {/* 1. MOBILE RESPONSIVE HERO (sm:hidden - Exact same format/margin as Defence) */}
+      {/* ========================================================================= */}
+      <div ref={mobileTrackRef} className="sm:hidden relative w-full h-[240vh] select-none">
+        <div className="sticky top-14 z-30 w-full flex flex-col justify-start items-center pt-2 px-2 overflow-hidden select-none">
+          {/* Tactical Image Box matching Defence exact layout */}
+          <div className="relative w-full max-w-[420px] mx-auto">
+            {/* Responsive Only: Back to Home Button at Top-Left of Image */}
+            <div className="absolute top-2.5 left-2.5 z-40 pointer-events-auto">
+              <Link
+                href="/"
+                className="inline-flex items-center justify-center gap-1.5 h-7 px-2.5 text-[10px] xs:text-[10.5px] font-mono text-cyan-300 hover:text-white uppercase tracking-wider transition-all duration-300 rounded-lg bg-[#040814]/90 hover:bg-[#071329] border border-cyan-400/40 backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.8)] group select-auto whitespace-nowrap"
+              >
+                <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-0.5 text-cyan-400" />
+                <span>BACK TO HOME</span>
+              </Link>
+            </div>
+            <Image
+              src="/images/tactical-defense-operator.jpg"
+              alt="Careers at Sky Wardens"
+              width={900}
+              height={600}
+              priority
+              className="w-full h-auto object-cover filter contrast-[1.08] brightness-[1.05] rounded-sm"
+              sizes="(max-width: 640px) 100vw"
+            />
+
+            {/* CAREERS Letters Over The Image (Assemble one by one during scroll like Defence) */}
+            <div className="absolute bottom-0 inset-x-0 z-20 flex items-center justify-center text-center overflow-visible pointer-events-none translate-y-[10%]">
+              <h1 className="font-anton font-black uppercase text-[18vw] xs:text-[19vw] tracking-[-0.01em] leading-none text-center drop-shadow-[0_10px_35px_rgba(0,0,0,0.98)] whitespace-nowrap mx-auto w-full select-none block overflow-visible">
+                {CAREERS_LETTERS.map((char, index) => (
+                  <CareerMobileScrollLetter
+                    key={index}
+                    char={char}
+                    index={index}
+                    total={CAREERS_LETTERS.length}
+                    progress={mobileProgress}
+                  />
+                ))}
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* 2. DESKTOP CINEMATIC STICKY SCROLL HERO (hidden sm:block)                  */}
+      {/* ========================================================================= */}
+      <div ref={heroTrackRef} className="hidden sm:block relative w-full h-[220vh] select-none">
+        <div className="sticky top-0 h-screen w-full flex flex-col justify-between pt-20 sm:pt-28 overflow-hidden select-none">
+
+          {/* Background Image */}
+          <div className="absolute inset-0 pointer-events-none z-0">
+            <Image
+              src="/images/tactical-defense-operator.jpg"
+              alt="Careers at Sky Wardens"
+              fill
+              priority
+              className="object-cover object-center brightness-90 contrast-110"
+              sizes="100vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#030712]/70 via-transparent to-[#030712] pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#030712]/55 via-transparent to-[#030712]/55 pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#030712] via-[#030712]/80 to-transparent pointer-events-none" />
+          </div>
+
+          {/* Back to Home Button */}
+          <div className="absolute top-20 sm:top-24 left-4 sm:left-6 md:left-8 lg:left-12 xl:left-14 z-30 pointer-events-auto">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-xs sm:text-sm font-mono text-cyan-300 hover:text-white uppercase tracking-wider transition-all duration-300 py-1.5 px-3.5 rounded-lg bg-[#040814]/80 hover:bg-[#071329] border border-cyan-400/30 hover:border-cyan-300/60 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.6)] group"
+            >
+              <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-cyan-400" />
+              <span>BACK TO HOME</span>
+            </Link>
+          </div>
+
+          {/* Scroll hint */}
+          <div className="relative z-10 w-full flex-1 flex flex-col items-center justify-end pb-8">
+            <motion.div
+              style={{ opacity: scrollHintOpacity }}
+              className="pointer-events-none flex flex-col items-center gap-2 select-none"
+            >
+              <span className="text-[10px] sm:text-xs font-mono font-medium tracking-[0.3em] uppercase text-sky-300/80 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+                Scroll to Reveal
+              </span>
+              <div className="w-5 h-8 rounded-full border border-sky-400/40 flex items-start justify-center p-1 bg-black/30 backdrop-blur-sm">
+                <motion.div
+                  animate={{ y: [0, 10, 0] }}
+                  transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                  className="w-1.5 h-1.5 rounded-full bg-sky-300"
+                />
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Vertical CAREERS letters column */}
+          <div className="absolute right-4 sm:right-6 md:right-8 lg:right-10 xl:right-14 top-18 sm:top-20 lg:top-22 z-20 flex flex-col items-center pointer-events-none select-none">
+            <h1 aria-label="CAREERS" className="flex flex-col items-center select-none pointer-events-none">
+              {CAREERS_LETTERS.map((char, index) => (
+                <CareerScrollLetter
+                  key={index}
+                  char={char}
+                  index={index}
+                  progress={smoothProgress}
+                />
+              ))}
+            </h1>
+          </div>
+
+        </div>
+      </div>
+
+
+      {/* ── MAIN CAREERS CONTENT ── */}
+      <div className="relative z-10 pt-4 sm:pt-16 pb-3 sm:pb-12 lg:pb-20 overflow-x-hidden">
+        <div className="relative z-10 w-full max-w-[1660px] mx-auto px-2.5 sm:px-5">
+
+        {/* Header Section */}
+        <div className="max-w-4xl mb-3.5 sm:mb-8 lg:mb-12 text-left">
           {/* Top Tag */}
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-center justify-start gap-2 mb-3 sm:mb-4">
             <span className="w-4 h-[2px] bg-sky-400 inline-block" />
             <span className="text-xs sm:text-sm font-mono tracking-widest text-sky-400 font-semibold uppercase">
-              OPPORTUNITIES & GROWTH
+              OPPORTUNITIES &amp; GROWTH
             </span>
           </div>
 
           {/* Main Title */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white uppercase font-sans leading-[1.08] mb-6">
+          <h2
+            ref={careerHeadingRef}
+            className="relative text-2xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-600 uppercase font-sans leading-[1.08] mb-4 sm:mb-6 text-left"
+          >
             ADVANCING DEFENCE <br />
-            & YOUR CAREER
-          </h1>
+            &amp; YOUR CAREER
+            <motion.span
+              aria-hidden="true"
+              style={{ opacity: careerHeadingBrightness }}
+              className="pointer-events-none absolute inset-0 text-slate-100"
+            >
+              ADVANCING DEFENCE <br />
+              &amp; YOUR CAREER
+            </motion.span>
+          </h2>
 
-          {/* Subtitle Paragraph */}
-          <p className="text-sm sm:text-base text-slate-300 font-normal leading-relaxed max-w-3xl">
-            Anuvyom is designed as a long term industrial platform focused on aerospace & defence
-            sector. We are interested in working with individuals who value
-            technical excellence, long term thinking, and meaningful industrial impact.
+          {/* Subtitle */}
+          <p className="max-w-3xl text-xs sm:text-base text-slate-300 font-normal leading-relaxed">
+            Sky Wardens is building long-term sovereign capability in aerospace &amp; defence. We work
+            with individuals who value technical excellence, long-term thinking, and meaningful
+            industrial impact.
           </p>
         </div>
 
-        {/* Exact 2 Job Cards Grid (Matching screenshot precisely) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+        {/* Job Cards Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-6 lg:gap-8">
           
           {CAREER_POSITIONS.map((pos) => {
             const isExpanded = expandedRole === pos.id;
+            const isFullWidth = pos.id === "lead-avionics";
 
             return (
-              <div
+              <motion.div
                 key={pos.id}
-                className="bg-[#050c1c]/90 border border-slate-800/90 hover:border-[#1a4a75]/80 rounded-2xl p-6 sm:p-7 transition-all duration-300 shadow-[0_12px_35px_rgba(0,0,0,0.6)] flex flex-col justify-between group"
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                className={`bg-[#050c1c]/90 border border-slate-800/90 hover:border-[#1a4a75]/80 rounded-2xl p-4.5 sm:p-6 lg:p-7 transition-colors duration-300 shadow-[0_12px_35px_rgba(0,0,0,0.6)] flex flex-col justify-between group ${
+                  isFullWidth ? "lg:col-span-2 w-full" : ""
+                }`}
               >
                 <div>
                   {/* Top Tags Row */}
@@ -262,12 +486,16 @@ export default function CareersPage() {
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight mb-3 group-hover:text-sky-200 transition-colors">
+                  <h3 className={`font-bold text-white tracking-tight mb-3 group-hover:text-sky-200 transition-colors ${
+                    isFullWidth ? "text-xl sm:text-2xl lg:text-3xl" : "text-xl sm:text-2xl"
+                  }`}>
                     {pos.title}
                   </h3>
 
                   {/* Summary Description */}
-                  <p className="text-xs sm:text-sm text-slate-400 font-normal leading-relaxed mb-5">
+                  <p className={`text-slate-400 font-normal leading-relaxed mb-5 ${
+                    isFullWidth ? "text-xs sm:text-sm md:text-[14.5px] max-w-4xl" : "text-xs sm:text-sm"
+                  }`}>
                     {pos.description}
                   </p>
 
@@ -319,7 +547,7 @@ export default function CareersPage() {
                     onClick={() => toggleAccordion(pos.id)}
                     className="flex items-center gap-1.5 text-xs text-slate-300 hover:text-white font-medium transition-colors cursor-pointer select-none"
                   >
-                    <span>View Responsibilities & Scope</span>
+                    <span>View Responsibilities &amp; Scope</span>
                     <ChevronDown
                       className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
                         isExpanded ? "rotate-180 text-sky-400" : ""
@@ -337,13 +565,13 @@ export default function CareersPage() {
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
 
-        {/* Speculative Applications & Research Fellowships Banner */}
-        <div className="mt-10 sm:mt-12 p-6 sm:p-8 rounded-2xl bg-[#050c1c]/90 border border-slate-800/90 shadow-[0_12px_35px_rgba(0,0,0,0.6)] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                {/* Speculative Applications & Research Fellowships Banner */}
+        <div className="w-full mt-3 sm:mt-6 lg:mt-8 p-4.5 sm:p-7 lg:p-8 rounded-2xl bg-[#050c1c]/90 border border-slate-800/90 shadow-[0_12px_35px_rgba(0,0,0,0.6)] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="space-y-1.5 max-w-2xl">
             <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
               Speculative Applications & Research Fellowships
@@ -379,17 +607,33 @@ export default function CareersPage() {
         </div>
       </div>
 
-      {/* Application Modal (Matching Candidate Submission Dossier design) */}
+      {/* Application Modal (Matching Candidate Submission Dossier design - Perfect 320px to 4K responsiveness) */}
       {applyModalRole && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="relative w-full max-w-2xl sm:max-w-3xl bg-[#060b17] border border-slate-800 rounded-2xl sm:rounded-3xl p-6 sm:p-9 shadow-[0_25px_70px_rgba(0,0,0,0.95)] max-h-[92vh] overflow-y-auto">
-            {/* Modal Header */}
-            <div className="flex items-start justify-between gap-4 mb-6">
-              <div>
-                <h2 className="text-base sm:text-lg font-mono font-bold tracking-wider text-sky-400 uppercase">
+        <div
+          className="fixed inset-0 z-[100000] flex items-center justify-center p-2 sm:p-6 bg-black/90 backdrop-blur-md overflow-y-auto overscroll-contain"
+          style={{
+            paddingTop: "max(8px, env(safe-area-inset-top))",
+            paddingBottom: "max(8px, env(safe-area-inset-bottom))",
+            paddingLeft: "max(8px, env(safe-area-inset-left))",
+            paddingRight: "max(8px, env(safe-area-inset-right))",
+          }}
+          onClick={() => setApplyModalRole(null)} 
+        >
+          <div
+            className="relative w-full max-w-[844px] max-h-[calc(100dvh-16px)] sm:max-h-[90vh] overflow-y-auto overscroll-contain bg-[#060b17] border border-slate-800 rounded-2xl sm:rounded-3xl p-3.5 sm:p-7 md:p-8 shadow-[0_25px_70px_rgba(0,0,0,0.95)] my-auto box-border [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#030712] [&::-webkit-scrollbar-thumb]:bg-sky-500/60 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-sky-400"
+            style={{
+              scrollbarWidth: "thin",
+              scrollbarColor: "rgba(56, 189, 248, 0.6) rgba(3, 7, 18, 0.8)",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header: Sticky on mobile scroll so title and close button are permanently visible */}
+            <div className="sticky -top-3.5 sm:-top-7 md:-top-8 bg-[#060b17]/95 backdrop-blur-md z-30 -mx-3.5 sm:-mx-7 md:-mx-8 px-3.5 sm:px-7 md:px-8 pt-3.5 sm:pt-7 md:pt-8 pb-3 sm:pb-5 mb-3 sm:mb-5 border-b border-slate-800/80 flex items-start justify-between gap-3">
+              <div className="min-w-0 pr-2">
+                <h2 className="text-xs sm:text-base md:text-lg font-mono font-bold tracking-wider text-sky-400 uppercase leading-snug break-words">
                   CANDIDATE SUBMISSION DOSSIER
                 </h2>
-                <p className="text-xs sm:text-sm text-slate-400 font-normal mt-1">
+                <p className="text-[11px] sm:text-xs text-slate-400 font-normal mt-0.5 leading-relaxed">
                   Provide your technical credentials and background for immediate evaluation.
                 </p>
               </div>
@@ -398,7 +642,7 @@ export default function CareersPage() {
               <button
                 type="button"
                 onClick={() => setApplyModalRole(null)}
-                className="w-9 h-9 rounded-full bg-[#111927] hover:bg-slate-700/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white transition-colors cursor-pointer shrink-0"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#111927] hover:bg-slate-700/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white transition-colors cursor-pointer shrink-0"
                 aria-label="Close"
               >
                 <X className="w-4 h-4" />
@@ -406,11 +650,11 @@ export default function CareersPage() {
             </div>
 
             {submittedSuccess ? (
-              <div className="text-center py-10 space-y-4">
-                <div className="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-400/50 flex items-center justify-center mx-auto text-emerald-400">
-                  <CheckCircle2 className="w-8 h-8" />
+              <div className="text-center py-8 space-y-4">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-emerald-500/20 border border-emerald-400/50 flex items-center justify-center mx-auto text-emerald-400">
+                  <CheckCircle2 className="w-7 h-7 sm:w-8 sm:h-8" />
                 </div>
-                <h3 className="text-2xl font-bold text-white tracking-tight">
+                <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
                   Application Transmitted
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-md mx-auto">
@@ -421,17 +665,17 @@ export default function CareersPage() {
                 <button
                   type="button"
                   onClick={() => setApplyModalRole(null)}
-                  className="mt-4 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#0d3b61] to-[#125386] hover:from-[#114b7a] hover:to-[#1766a5] text-white text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer border border-sky-500/30"
+                  className="mt-3 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#0d3b61] to-[#125386] hover:from-[#114b7a] hover:to-[#1766a5] text-white text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer border border-sky-500/30"
                 >
                   Close Dossier
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleFormSubmit} className="space-y-5">
-                {/* Row 1: Full Name & Email Address */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+              <form onSubmit={handleFormSubmit} className="space-y-3.5 sm:space-y-4">
+                {/* Row 1: Full Name & Email Address (Single column on 320px mobile, 2 cols on desktop) */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div>
-                    <label className="block text-[11px] font-mono font-bold tracking-wider text-slate-300 uppercase mb-2">
+                    <label className="block text-[10px] sm:text-[11px] font-mono font-bold tracking-wider text-slate-300 uppercase mb-1.5">
                       FULL NAME <span className="text-sky-400">*</span>
                     </label>
                     <input
@@ -440,12 +684,12 @@ export default function CareersPage() {
                       value={formData.fullName}
                       onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                       placeholder="e.g. Vikram Sharma"
-                      className="w-full px-4 py-2.5 sm:py-3 text-xs sm:text-sm bg-[#040814] border border-slate-800 rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-400 transition-colors"
+                      className="w-full h-11 px-3.5 text-xs sm:text-sm bg-[#040814] border border-slate-800 rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-400 transition-colors"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-mono font-bold tracking-wider text-slate-300 uppercase mb-2">
+                    <label className="block text-[10px] sm:text-[11px] font-mono font-bold tracking-wider text-slate-300 uppercase mb-1.5">
                       EMAIL ADDRESS <span className="text-sky-400">*</span>
                     </label>
                     <input
@@ -454,15 +698,15 @@ export default function CareersPage() {
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="vikram@example.com"
-                      className="w-full px-4 py-2.5 sm:py-3 text-xs sm:text-sm bg-[#040814] border border-slate-800 rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-400 transition-colors"
+                      className="w-full h-11 px-3.5 text-xs sm:text-sm bg-[#040814] border border-slate-800 rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-400 transition-colors"
                     />
                   </div>
                 </div>
 
-                {/* Row 2: Contact Phone & Total Experience */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                {/* Row 2: Contact Phone & Total Experience (Single column on 320px mobile, 2 cols on desktop) */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div>
-                    <label className="block text-[11px] font-mono font-bold tracking-wider text-slate-300 uppercase mb-2">
+                    <label className="block text-[10px] sm:text-[11px] font-mono font-bold tracking-wider text-slate-300 uppercase mb-1.5">
                       CONTACT PHONE <span className="text-sky-400">*</span>
                     </label>
                     <input
@@ -471,12 +715,12 @@ export default function CareersPage() {
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="+91 98765 43210"
-                      className="w-full px-4 py-2.5 sm:py-3 text-xs sm:text-sm bg-[#040814] border border-slate-800 rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-400 transition-colors"
+                      className="w-full h-11 px-3.5 text-xs sm:text-sm bg-[#040814] border border-slate-800 rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-400 transition-colors"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-mono font-bold tracking-wider text-slate-300 uppercase mb-2">
+                    <label className="block text-[10px] sm:text-[11px] font-mono font-bold tracking-wider text-slate-300 uppercase mb-1.5">
                       TOTAL EXPERIENCE <span className="text-sky-400">*</span>
                     </label>
                     <input
@@ -486,20 +730,20 @@ export default function CareersPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, experienceYears: e.target.value })
                       }
-                      placeholder="e.g. 7 Years (Aerospace/Defense)"
-                      className="w-full px-4 py-2.5 sm:py-3 text-xs sm:text-sm bg-[#040814] border border-slate-800 rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-400 transition-colors"
+                      placeholder="e.g. 7 Years (Aerospace)"
+                      className="w-full h-11 px-3.5 text-xs sm:text-sm bg-[#040814] border border-slate-800 rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-400 transition-colors"
                     />
                   </div>
                 </div>
 
                 {/* Row 3: Resume / CV Dossier Upload */}
                 <div>
-                  <label className="block text-[11px] font-mono font-bold tracking-wider text-slate-300 uppercase mb-2">
+                  <label className="block text-[10px] sm:text-[11px] font-mono font-bold tracking-wider text-slate-300 uppercase mb-1.5">
                     RESUME / CV DOSSIER <span className="text-sky-400">*</span>
                   </label>
                   <label
                     htmlFor="resume-upload"
-                    className="group relative flex flex-col items-center justify-center p-6 sm:p-7 rounded-xl border border-dashed border-slate-700/80 hover:border-sky-400/80 bg-[#040814]/50 cursor-pointer transition-all duration-200"
+                    className="group relative flex flex-col sm:flex-row items-center justify-center py-3.5 px-3 sm:py-4 sm:px-6 rounded-xl border border-dashed border-slate-700/80 hover:border-sky-400/80 bg-[#040814]/50 cursor-pointer transition-all duration-200 gap-1.5 sm:gap-3 w-full text-center"
                   >
                     <input
                       id="resume-upload"
@@ -512,68 +756,78 @@ export default function CareersPage() {
                         }
                       }}
                     />
-                    <Upload className="w-6 h-6 text-sky-400 mb-2 group-hover:scale-110 transition-transform" />
-                    <span className="text-xs sm:text-sm font-bold text-white tracking-wide text-center">
+                    <Upload className="w-4 h-4 text-sky-400 shrink-0 group-hover:scale-110 transition-transform" />
+                    <span className="text-xs sm:text-sm font-bold text-white tracking-wide break-words max-w-full">
                       {resumeFileName ? resumeFileName : "Click to upload PDF or DOCX Resume"}
                     </span>
-                    <span className="text-[11px] text-slate-400 mt-1">
-                      Maximum file size: 15 MB
+                    <span className="text-[10px] sm:text-[11px] text-slate-400 shrink-0">
+                      (Max 15 MB)
                     </span>
                   </label>
                 </div>
 
                 {/* Row 4: Defense Focus / Brief Note */}
                 <div>
-                  <label className="block text-[11px] font-mono font-bold tracking-wider text-slate-300 uppercase mb-2">
+                  <label className="block text-[10px] sm:text-[11px] font-mono font-bold tracking-wider text-slate-300 uppercase mb-1.5">
                     DEFENSE FOCUS / BRIEF NOTE
                   </label>
                   <textarea
-                    rows={4}
+                    rows={2}
                     value={formData.coverNote}
                     onChange={(e) => setFormData({ ...formData, coverNote: e.target.value })}
                     placeholder="Highlight relevant airframe, autonomy, or defense projects..."
-                    className="w-full px-4 py-3 text-xs sm:text-sm bg-[#040814] border border-slate-800 rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-400 transition-colors resize-none"
+                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-[#040814] border border-slate-800 rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-400 transition-colors resize-none"
                   />
                 </div>
 
                 {/* Row 5: NDA & Genuine Credentials Agreement Checkbox */}
-                <div className="flex items-start gap-3 pt-1">
+                <div className="flex items-start gap-2.5 pt-1">
                   <input
                     type="checkbox"
                     id="nda-agreement"
                     required
                     checked={ndaAgreed}
                     onChange={(e) => setNdaAgreed(e.target.checked)}
-                    className="mt-0.5 w-4 h-4 rounded bg-[#040814] border-slate-700 text-sky-500 focus:ring-0 cursor-pointer accent-sky-500"
+                    className="mt-0.5 w-4 h-4 rounded bg-[#040814] border-slate-700 text-sky-500 focus:ring-0 cursor-pointer accent-sky-500 shrink-0"
                   />
                   <label
                     htmlFor="nda-agreement"
-                    className="text-[11.5px] sm:text-xs text-slate-300 font-normal leading-relaxed cursor-pointer select-none"
+                    className="text-[10.5px] sm:text-xs text-slate-300 font-normal leading-relaxed cursor-pointer select-none"
                   >
                     I confirm that the submitted technical credentials are genuine and agree to Sky Wardens sovereign defense confidentiality and NDA protocols.
                   </label>
                 </div>
 
-                {/* Row 6: Submit Button */}
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#0d3b61] to-[#125386] hover:from-[#114b7a] hover:to-[#1766a5] text-sky-200 hover:text-white font-mono font-bold text-xs sm:text-sm tracking-wider uppercase flex items-center justify-center gap-2 border border-sky-500/40 shadow-[0_0_20px_rgba(14,165,233,0.2)] transition-all cursor-pointer"
-                >
-                  {submitting ? (
-                    <span>TRANSMITTING APPLICATION...</span>
-                  ) : (
-                    <>
-                      <span>TRANSMIT APPLICATION</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </>
-                  )}
-                </button>
+                {/* Row 6: Submit Button & Cancel (Full-width stacked on 320px mobile, horizontal on desktop) */}
+                <div className="pt-2 sm:pt-3 pb-1 flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setApplyModalRole(null)}
+                    className="w-full sm:w-auto py-2.5 sm:py-3 px-5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white font-mono text-xs sm:text-sm tracking-wider uppercase border border-slate-700/60 transition-colors cursor-pointer text-center"
+                  >
+                    CANCEL
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="w-full sm:flex-1 py-2.5 sm:py-3 px-4 rounded-xl bg-gradient-to-r from-[#0d3b61] to-[#125386] hover:from-[#114b7a] hover:to-[#1766a5] text-sky-200 hover:text-white font-mono font-bold text-xs sm:text-sm tracking-wider uppercase flex items-center justify-center gap-2 border border-sky-500/40 shadow-[0_0_20px_rgba(14,165,233,0.2)] transition-all cursor-pointer"
+                  >
+                    {submitting ? (
+                      <span>TRANSMITTING APPLICATION...</span>
+                    ) : (
+                      <>
+                        <span className="truncate">TRANSMIT APPLICATION</span>
+                        <ArrowRight className="w-4 h-4 shrink-0" />
+                      </>
+                    )}
+                  </button>
+                </div>
               </form>
             )}
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 }

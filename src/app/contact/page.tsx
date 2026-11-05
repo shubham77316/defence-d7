@@ -99,7 +99,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="relative min-h-screen pt-32 sm:pt-36 pb-24 sm:pb-32 bg-[#000000] overflow-hidden text-white">
+    <div className="relative min-h-screen pt-32 sm:pt-36 pb-3 sm:pb-16 lg:pb-24 bg-[#000000] overflow-hidden text-white">
       {/* Background Ambience */}
       <div className="absolute top-0 right-1/4 w-[800px] h-[400px] bg-[radial-gradient(ellipse_at_top,rgba(56,189,248,0.08)_0%,transparent_70%)] blur-3xl pointer-events-none" />
 
@@ -139,6 +139,30 @@ export default function ContactPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="lg:col-span-5 space-y-8"
           >
+
+            {/* Google Map Card */}
+            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-2xl h-[240px] sm:h-[260px] w-full bg-[#0a0f1d]">
+              <iframe
+                title="Anuvyom Alliance Location"
+                src="https://maps.google.com/maps?q=Anuvyom+Alliance+Pvt+Ltd,+Site+V,+Greater+Noida&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                className="w-full h-full border-0 filter contrast-105"
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+              <div className="absolute top-3 left-3 z-10">
+                <a
+                  href="https://maps.google.com/?q=Anuvyom+Alliance+Pvt+Ltd,+Site+V,+Greater+Noida"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/95 hover:bg-white text-slate-900 text-xs font-semibold shadow-md transition-all hover:scale-105"
+                >
+                  <span>Open in Maps</span>
+                  <span className="text-[11px]">↗</span>
+                </a>
+              </div>
+            </div>
+
             {/* Corporate Office Title */}
             <h2 className="text-xl sm:text-2xl font-bold text-[#38bdf8] tracking-tight">
               Corporate Office
@@ -210,29 +234,6 @@ export default function ContactPage() {
                     {settings.phone || "+91 (0) 11 4988 2000"}
                   </a>
                 </p>
-              </div>
-            </div>
-
-            {/* Google Map Card */}
-            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-2xl h-[240px] sm:h-[260px] w-full bg-[#0a0f1d]">
-              <iframe
-                title="Anuvyom Alliance Location"
-                src="https://maps.google.com/maps?q=Anuvyom+Alliance+Pvt+Ltd,+Site+V,+Greater+Noida&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                className="w-full h-full border-0 filter contrast-105"
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-              <div className="absolute top-3 left-3 z-10">
-                <a
-                  href="https://maps.google.com/?q=Anuvyom+Alliance+Pvt+Ltd,+Site+V,+Greater+Noida"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/95 hover:bg-white text-slate-900 text-xs font-semibold shadow-md transition-all hover:scale-105"
-                >
-                  <span>Open in Maps</span>
-                  <span className="text-[11px]">↗</span>
-                </a>
               </div>
             </div>
 
@@ -308,11 +309,8 @@ export default function ContactPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:col-span-7"
           >
-            <div className="relative rounded-[28px] sm:rounded-[32px] bg-[#020514]/95 border border-[#0f172a] p-8 sm:p-10 lg:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.85)]">
+            <div className="relative rounded-[28px] sm:rounded-[32px] bg-[#020514]/95 border border-[#0f172a] p-5 sm:p-10 lg:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.85)]">
               
-              <div className="text-slate-300 text-sm font-normal mb-8">
-                Fields marked with <span className="text-white">*</span> are mandatory
-              </div>
 
               <form onSubmit={handleSubmit} className="space-y-7">
                 
@@ -478,13 +476,17 @@ export default function ContactPage() {
                     Message*
                   </label>
                   <textarea
-                    rows={3}
+                    rows={1}
                     name="message"
                     value={formData.message}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      handleChange(e);
+                      e.target.style.height = "auto";
+                      e.target.style.height = `${e.target.scrollHeight}px`;
+                    }}
                     placeholder="Tell us about your enquiry"
                     required
-                    className="w-full bg-transparent border-b border-white/20 hover:border-white/40 focus:border-[#7ec8ff] pb-2 text-sm text-white placeholder-slate-500 focus:outline-none transition-colors resize-none"
+                    className="w-full bg-transparent border-b border-white/20 hover:border-white/40 focus:border-[#7ec8ff] pb-2 text-sm text-white placeholder-slate-500 focus:outline-none transition-colors resize-none overflow-hidden"
                   />
                 </div>
 

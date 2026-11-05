@@ -55,3 +55,5 @@ server/uploads/*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+admin.zip
