@@ -93,7 +93,7 @@ export default function Navbar() {
           : "bg-gradient-to-b from-slate-950/90 via-slate-950/50 to-transparent py-2.5 sm:py-5"
       }`}
     >
-      <div className="w-full max-w-[1540px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-14 flex items-center justify-between gap-1.5 sm:gap-4">
+      <div className="w-full max-w-[1660px] mx-auto px-2.5 sm:px-5 flex items-center justify-between gap-1.5 sm:gap-4">
         {/* Brand Logo */}
         <Logo size="md" showSectorsList />
 
