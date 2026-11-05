@@ -606,7 +606,7 @@ export default function CapabilitiesPage() {
       {/* ======================================================== */}
       {/* LOWER CONTENT: BANNERS & ACCORDIONS (Normal Page Flow)   */}
       {/* ======================================================== */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 sm:pb-14 z-20 mt-8 sm:mt-12 md:mt-14">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-4 sm:pb-6 z-20 mt-2 sm:-mt-10 md:-mt-14 lg:-mt-16">
 
         {/* ========================================== */}
         {/* E-SHOP BANNER (Explore Tactical Gear Store) */}
@@ -656,7 +656,7 @@ export default function CapabilitiesPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-5 sm:mt-6 max-w-6xl mx-auto relative rounded-xl sm:rounded-2xl border border-sky-500/25 hover:border-[#7ec8ff]/40 bg-[#030916]/85 backdrop-blur-xl px-5 py-5 sm:px-8 sm:py-6 text-center shadow-[0_12px_40px_rgba(0,0,0,0.7)] transition-all duration-500 overflow-hidden"
+          className="mt-3 sm:mt-4 max-w-6xl mx-auto relative rounded-xl sm:rounded-2xl border border-sky-500/25 hover:border-[#7ec8ff]/40 bg-[#030916]/85 backdrop-blur-xl px-5 py-5 sm:px-8 sm:py-6 text-center shadow-[0_12px_40px_rgba(0,0,0,0.7)] transition-all duration-500 overflow-hidden"
         >
           {/* Subtle Ambient Center Glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-16 bg-sky-500/10 blur-3xl pointer-events-none" />
