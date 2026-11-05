@@ -109,67 +109,7 @@ const renderDefenceLogo = () => (
   </div>
 );
 
-const renderGenericLogo = (title: string) => (
-  <div className="relative flex items-center justify-center py-2">
-    <svg
-      className="w-28 h-28 sm:w-32 sm:h-32 transition-all duration-500 ease-out relative z-10"
-      viewBox="0 0 140 140"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <circle cx="70" cy="70" r="50" stroke="#38bdf8" strokeWidth="2.5" opacity="0.8" strokeDasharray="6 4" />
-      <circle cx="70" cy="70" r="26" fill="#0284c7" opacity="0.3" />
-      <path d="M70 28 L84 62 L120 68 L94 92 L101 128 L70 110 L39 128 L46 92 L20 68 L56 62 Z" fill="#38bdf8" opacity="0.9" />
-    </svg>
-  </div>
-);
-
 const DEFAULT_SECTORS: SectorCard[] = [
-  {
-    id: "jio",
-    number: "03",
-    title: "JIO",
-    tagline: "Specialized Defence Sector",
-    desc: "Tactical communications and sovereign systems.",
-    linkText: "Explore Jio",
-    href: "/news/jio",
-    bgImage: "/images/stealth-fighter-hangar.jpg",
-    glowClass: "bg-cyan-500/25",
-    accentBorder: "border-cyan-500/40 group-hover:border-cyan-300/90",
-    accentText: "text-cyan-400 group-hover:text-white",
-    logoGlow: "drop-shadow-[0_0_35px_rgba(6,182,212,0.7)]",
-    renderLogo: () => renderGenericLogo("JIO"),
-  },
-  {
-    id: "petro",
-    number: "04",
-    title: "PETRO",
-    tagline: "Energy & Strategic Materials",
-    desc: "Strategic fuels, composite materials, and defence logistics.",
-    linkText: "Explore Petro",
-    href: "/news/petro",
-    bgImage: "/uploads/screenshot_2026-09-26_154438_1792580426117_728760.png",
-    glowClass: "bg-rose-500/25",
-    accentBorder: "border-rose-500/40 group-hover:border-rose-300/90",
-    accentText: "text-rose-400 group-hover:text-white",
-    logoGlow: "drop-shadow-[0_0_35px_rgba(244,63,94,0.7)]",
-    renderLogo: () => renderGenericLogo("PETRO"),
-  },
-  {
-    id: "bisto",
-    number: "05",
-    title: "BISTO",
-    tagline: "Tactical Operations",
-    desc: "Specialized sovereign systems and equipment.",
-    linkText: "Explore Bisto",
-    href: "/news/bisto",
-    bgImage: "/images/stealth-fighter-hangar.jpg",
-    glowClass: "bg-amber-500/25",
-    accentBorder: "border-amber-500/40 group-hover:border-amber-300/90",
-    accentText: "text-amber-400 group-hover:text-white",
-    logoGlow: "drop-shadow-[0_0_35px_rgba(245,158,11,0.7)]",
-    renderLogo: () => renderGenericLogo("BISTO"),
-  },
   {
     id: "aerospace-highlights",
     number: "01",
