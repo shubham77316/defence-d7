@@ -44,21 +44,6 @@ export const NAV_LINKS: NavItem[] = [
         description: "Tactical armor, survivability equipment and kinetic technologies."
       },
       {
-        label: "Jio",
-        href: "/news?id=jio",
-        description: ""
-      },
-      {
-        label: "PETRO",
-        href: "/news?id=petro",
-        description: ""
-      },
-      {
-        label: "Bisto",
-        href: "/news?id=bisto",
-        description: ""
-      },
-      {
         label: "Aerospace Systems",
         href: "/aerospace",
         description: "Autonomous aerial platforms, tactical UAVs & surveillance suites."

@@ -21,47 +21,7 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
 
   const fetchNavigation = useCallback(async () => {
     try {
-      const [res, newsRes] = await Promise.all([
-        fetch("/api/navigation", { cache: "no-store" }),
-        fetch("/api/news", { cache: "no-store" }).catch(() => null),
-      ]);
-
-      let orderedProductsChildren: { label: string; href: string; description: string }[] = [];
-      if (newsRes && newsRes.ok) {
-        try {
-          const newsJson = await newsRes.json();
-          if (newsJson.success && Array.isArray(newsJson.data) && newsJson.data.length > 0) {
-            orderedProductsChildren = newsJson.data.map((item: any) => {
-              const slug = (item.slug || item.id || item._id || "").toLowerCase();
-              const rawTitle = (item.title || "").trim();
-
-              if (slug.includes("defence") || rawTitle.toLowerCase().includes("defence")) {
-                return {
-                  label: "Defence Solutions",
-                  href: "/defence",
-                  description: "Tactical armor, survivability equipment and kinetic technologies.",
-                };
-              }
-
-              if (slug.includes("aerospace") || rawTitle.toLowerCase().includes("aerospace")) {
-                return {
-                  label: "Aerospace Systems",
-                  href: "/aerospace",
-                  description: "Autonomous aerial platforms, tactical UAVs & surveillance suites.",
-                };
-              }
-
-              return {
-                label: rawTitle.toUpperCase() === "PETRO" ? "PETRO" : (rawTitle.charAt(0).toUpperCase() + rawTitle.slice(1)),
-                href: item.href || `/news/${slug}`,
-                description: item.excerpt || item.description || "Strategic intelligence briefings and tactical system specifications.",
-              };
-            });
-          }
-        } catch {
-          // Ignore news parsing error
-        }
-      }
+      const res = await fetch("/api/navigation", { cache: "no-store" });
 
       if (res.ok) {
         const json = await res.json();
@@ -80,8 +40,8 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
                   }))
                 : undefined;
 
-              if (item.label?.toLowerCase() === "products" && orderedProductsChildren.length > 0) {
-                children = orderedProductsChildren;
+              if (item.label?.trim().toLowerCase() === "products") {
+                children = NAV_LINKS.find((link) => link.label === "Products")?.children;
               }
 
               return {

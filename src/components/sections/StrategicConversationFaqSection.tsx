@@ -133,19 +133,16 @@ export default function StrategicConversationFaqSection() {
             {/* Contact Sky Wardens Button (Compact Blue Gradient Hero Pill) */}
             <Link
               href="/contact"
-              className="group relative inline-flex items-center justify-center px-5 sm:px-6 py-2 sm:py-2.5 bg-gradient-to-r from-[#1d6fa5] via-[#257dc0] to-[#5aa9f7] hover:from-[#257dc0] hover:via-[#3b8fd4] hover:to-[#70b9ff] text-white font-bold text-[11px] sm:text-xs tracking-wider uppercase transition-all duration-300 ease-out shadow-[0_0_20px_rgba(90,169,247,0.35)] hover:shadow-[0_0_32px_rgba(90,169,247,0.7),0_0_12px_rgba(255,255,255,0.4)] hover:-translate-y-0.5 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer border border-sky-300/30"
+              className="group relative inline-flex items-center justify-center px-5 sm:px-6 py-2 sm:py-2.5 bg-gradient-to-r from-[#1d6fa5] via-[#257dc0] to-[#4295e8] hover:from-[#2075ad] hover:via-[#2a80c3] hover:to-[#4a9cee] text-white font-bold text-[11px] sm:text-xs tracking-wider uppercase transition-all duration-300 ease-out shadow-[0_4px_16px_rgba(29,111,165,0.22)] hover:shadow-[0_4px_20px_rgba(37,125,192,0.32)] hover:-translate-y-0.5 active:translate-y-0 rounded-full overflow-hidden text-center cursor-pointer border border-sky-300/25 hover:border-sky-300/40"
             >
-              {/* Shimmer / Light beam sweep effect on hover */}
-              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/35 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
-
-              {/* Pulsing ambient radial glow */}
-              <span className="absolute -inset-1 rounded-full bg-sky-400/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+              {/* Subtle glassy shimmer sweep */}
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
 
               <span className="relative z-10 flex items-center justify-center gap-2">
-                <span className="tracking-widest drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                <span className="tracking-widest drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]">
                   CONTACT SKY WARDENS
                 </span>
-                <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white transition-transform duration-300 ease-out group-hover:translate-x-1 group-hover:scale-110 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
+                <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white transition-transform duration-300 ease-out group-hover:translate-x-1" />
               </span>
             </Link>
 
@@ -175,7 +172,7 @@ export default function StrategicConversationFaqSection() {
           
           {/* LEFT: Heading */}
           <div className="lg:col-span-5">
-            <h3 className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-white leading-[1.15]">
+            <h3 className="translate-x-2 font-display text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-white leading-[1.15]">
               FREQUENTLY ASKED <br />
               QUESTIONS
             </h3>
@@ -194,10 +191,6 @@ export default function StrategicConversationFaqSection() {
                     className="w-full flex items-center justify-between gap-4 text-left group transition-colors"
                   >
                     <div className="flex items-start sm:items-center gap-3.5 sm:gap-4">
-                      {/* Cyan Number */}
-                      <span className="text-[11px] sm:text-xs font-mono font-bold text-sky-400 mt-0.5 sm:mt-0 shrink-0">
-                        {item.num}
-                      </span>
                       {/* Question Text */}
                       <span className="text-sm sm:text-base font-semibold text-slate-100 group-hover:text-white transition-colors">
                         {item.question}

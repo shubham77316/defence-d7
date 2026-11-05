@@ -3,7 +3,6 @@ import HeroSection from "@/components/sections/HeroSection";
 import PartnerMarqueeSection from "@/components/sections/PartnerMarqueeSection";
 import HomeAboutSplitSection from "@/components/sections/HomeAboutSplitSection";
 import BusinessesSection from "@/components/sections/BusinessesSection";
-import PlatformShowcaseSection from "@/components/sections/PlatformShowcaseSection";
 import PartnershipsSection from "@/components/sections/PartnershipsSection";
 import NewsInsightsSection from "@/components/sections/NewsInsightsSection";
 import StrategicCtaBannerSection from "@/components/sections/StrategicCtaBannerSection";
@@ -47,8 +46,6 @@ export default async function HomePage() {
       {/* 4. Core Businesses Section */}
       <BusinessesSection />
 
-      {/* 4. Featured Platform Showcase */}
-      <PlatformShowcaseSection initialData={homepageData} />
 
       {/* 5. Affiliations / Partnerships */}
       <PartnershipsSection />
@@ -63,7 +60,7 @@ export default async function HomePage() {
       <StrategicConversationFaqSection />
 
       {/* 9. Live Breaking News / Spotlight Ticker */}
-      <BreakingNewsTickerSection initialItems={homepageData?.tickerItems} />
+      <BreakingNewsTickerSection />
     </div>
   );
 }

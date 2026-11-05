@@ -42,7 +42,7 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
     heroSubtitle:
       initialData?.heroSubtitle ??
       "Architecting sovereign aerospace platforms, kinetic tactical survivability systems, and specialized industrial petrochemical formulations.",
-    heroCtaText: initialData?.heroCtaText !== undefined ? initialData.heroCtaText : "",
+    heroCtaText: initialData?.heroCtaText?.trim() || "Explore Capabilities",
     heroCtaLink: initialData?.heroCtaLink || "/capabilities",
     heroSecondaryCtaText:
       initialData?.heroSecondaryCtaText !== undefined ? initialData.heroSecondaryCtaText : "Initiate Liaison",
@@ -60,7 +60,7 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
             setData((prev) => ({
               ...prev,
               ...json.data,
-              heroCtaText: json.data.heroCtaText !== undefined ? json.data.heroCtaText : prev.heroCtaText,
+              heroCtaText: json.data.heroCtaText?.trim() || "Explore Capabilities",
               heroSecondaryCtaText:
                 json.data.heroSecondaryCtaText !== undefined
                   ? json.data.heroSecondaryCtaText
@@ -96,7 +96,7 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
       </div>
 
       {/* 3. Main Hero Inner Content */}
-      <div className="relative w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-14 z-10 flex flex-col items-start text-left mt-1 sm:mt-0">
+      <div className="relative w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-14 z-10 flex flex-col items-start text-left mt-1 sm:mt-0 sm:translate-x-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -124,58 +124,53 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
 
           {/* Hero Subtitle from CMS */}
           {data.heroSubtitle && (
-            <p className="text-xs sm:text-sm md:text-base text-slate-300 max-w-2xl leading-relaxed select-none">
+            <p className="text-xs sm:text-sm md:text-base text-slate-300 max-w-2xl mx-auto text-center sm:mx-0 sm:text-left leading-relaxed select-none">
               {data.heroSubtitle}
             </p>
           )}
 
-          {/* Action Group: Buttons */}
-          {(Boolean(data.heroCtaText && data.heroCtaText.trim()) ||
-            Boolean(data.heroSecondaryCtaText && data.heroSecondaryCtaText.trim())) && (
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-3 sm:gap-4 pt-3 w-full sm:w-auto">
-              {Boolean(data.heroCtaText && data.heroCtaText.trim()) && (
-                <Link
-                  href={data.heroCtaLink || "/capabilities"}
-                  className="group relative inline-flex items-center justify-center px-6 sm:px-7 py-3 sm:py-3.5 bg-gradient-to-r from-[#1d6fa5] via-[#257dc0] to-[#5aa9f7] hover:from-[#257dc0] hover:via-[#3b8fd4] hover:to-[#70b9ff] text-white font-bold text-[11px] sm:text-xs tracking-wider uppercase transition-all duration-300 ease-out shadow-[0_0_25px_rgba(90,169,247,0.4)] hover:shadow-[0_0_40px_rgba(90,169,247,0.75),0_0_15px_rgba(255,255,255,0.4)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer border border-sky-300/30"
+                    {/* Action Group: Buttons */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center sm:justify-start gap-3 sm:gap-4 pt-3 w-full sm:w-auto">
+            {/* 1. Explore Capabilities (Primary Radiant Blue Pill) */}
+            <Link
+              href={data.heroCtaLink || "/capabilities"}
+              className="group relative inline-flex items-center justify-center px-6 sm:px-7 py-3 sm:py-3.5 bg-gradient-to-r from-[#1d6fa5] via-[#257dc0] to-[#4ea0f0] hover:from-[#227cb9] hover:via-[#318dd5] hover:to-[#5eb1ff] text-white font-bold text-[11px] sm:text-xs tracking-wider uppercase transition-all duration-300 ease-out shadow-[0_4px_18px_rgba(29,111,165,0.35)] hover:shadow-[0_0_28px_rgba(56,189,248,0.55),0_0_10px_rgba(255,255,255,0.25)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer border border-sky-300/30 hover:border-sky-300/70"
+            >
+              {/* Shimmer light sweep on hover */}
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+
+              {/* Controlled subtle blue edge glow on hover */}
+              <span className="absolute -inset-0.5 rounded-full bg-sky-400/25 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                <span className="tracking-widest drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
+                  {data.heroCtaText?.trim() || "Explore Capabilities"}
+                </span>
+                <svg
+                  className="w-3.5 h-3.5 transition-transform duration-300 ease-out group-hover:translate-x-1.5 drop-shadow-[0_0_6px_rgba(255,255,255,0.6)]"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
                 >
-                  {/* Shimmer / Light beam sweep effect on hover */}
-                  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/35 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </span>
+            </Link>
 
-                  {/* Pulsing ambient radial glow */}
-                  <span className="absolute -inset-1 rounded-full bg-sky-400/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+            {/* 2. Initiate Liaison (Secondary Translucent Dark Pill) */}
+            <Link
+              href={data.heroSecondaryCtaLink || "/contact"}
+              className="group relative inline-flex items-center justify-center px-6 sm:px-7 py-3 sm:py-3.5 bg-black/40 hover:bg-[#7ec8ff]/10 text-slate-200 hover:text-white border border-white/20 hover:border-[#7ec8ff]/90 text-[11px] sm:text-xs font-semibold tracking-wider uppercase transition-all duration-300 ease-out backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(126,200,255,0.45),inset_0_0_15px_rgba(126,200,255,0.15)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer"
+            >
+              {/* Subtle glassy shine sweep */}
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
 
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    <span className="tracking-widest drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
-                      {data.heroCtaText}
-                    </span>
-                    <svg
-                      className="w-3.5 h-3.5 transition-transform duration-300 ease-out group-hover:translate-x-1.5 group-hover:scale-110 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                    >
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                  </span>
-                </Link>
-              )}
-
-              {Boolean(data.heroSecondaryCtaText && data.heroSecondaryCtaText.trim()) && (
-                <Link
-                  href={data.heroSecondaryCtaLink || "/contact"}
-                  className="group relative inline-flex items-center justify-center px-6 sm:px-7 py-3 sm:py-3.5 bg-black/40 hover:bg-[#7ec8ff]/10 text-slate-200 hover:text-white border border-white/20 hover:border-[#7ec8ff]/90 text-[11px] sm:text-xs font-semibold tracking-wider uppercase transition-all duration-300 ease-out backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(126,200,255,0.45),inset_0_0_15px_rgba(126,200,255,0.15)] hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 rounded-full overflow-hidden text-center cursor-pointer"
-                >
-                  {/* Subtle glassy shine sweep */}
-                  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
-
-                  <span className="relative z-10 tracking-widest transition-colors duration-300 group-hover:text-[#e0f2fe]">
-                    {data.heroSecondaryCtaText}
-                  </span>
-                </Link>
-              )}
-            </div>
-          )}
+              <span className="relative z-10 tracking-widest transition-colors duration-300 group-hover:text-[#e0f2fe]">
+                {data.heroSecondaryCtaText?.trim() || "Initiate Liaison"}
+              </span>
+            </Link>
+          </div>
         </motion.div>
       </div>
     </section>
