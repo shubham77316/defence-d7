@@ -115,8 +115,8 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
           </div>
 
           {/* Monumental Display Headline */}
-          <div className="space-y-0.5 sm:space-y-1 -mt-2 sm:-mt-4 md:-mt-6 lg:-mt-8 xl:-mt-10">
-            <h1 className="font-oxanium text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-[40px] xl:text-[46px] font-semibold tracking-wide text-white leading-[1.2] select-none text-left">
+          <div className="space-y-0.5 sm:space-y-1 -mt-1 sm:-mt-2 md:-mt-3.5 lg:-mt-4 xl:-mt-5">
+            <h1 className="font-oxanium text-base xs:text-lg sm:text-xl md:text-2xl lg:text-[26px] xl:text-[30px] font-semibold tracking-wide text-white leading-[1.2] select-none text-left">
               {titleLines.map((line, idx) => (
                 <span
                   key={idx}
