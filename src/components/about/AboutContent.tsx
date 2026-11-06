@@ -531,7 +531,7 @@ export default function AboutContent() {
         {/* ========================================================================= */}
         {/* SECTION: GROUP OF COMPANIES / OUR BUSINESSES (Exact 3 Columns Requested)  */}
         {/* ========================================================================= */}
-        <div id="group" className="pt-5 sm:pt-10 space-y-4 sm:space-y-10 scroll-mt-28 w-full">
+        <div id="group" className="pt-0 sm:pt-10 space-y-4 sm:space-y-10 scroll-mt-28 w-full">
           
           {/* Centered Heading */}
           <motion.div
