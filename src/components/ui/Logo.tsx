@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -144,6 +145,36 @@ export default function Logo({
   hideWordmark = false,
 }: LogoProps) {
   const { settings } = useSettings();
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+  const [navWordmarkOpacity, setNavWordmarkOpacity] = useState(isHome ? 0 : 1);
+
+  useEffect(() => {
+    if (!isHome) {
+      setNavWordmarkOpacity(1);
+      return;
+    }
+
+    const onScroll = () => {
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      // Smoothly fade in as hero wordmark docks (between 100px and 220px)
+      const progress = Math.min(1, Math.max(0, (scrollY - 100) / 120));
+      setNavWordmarkOpacity(progress);
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    const win = window as any;
+    if (win.lenis) {
+      win.lenis.on("scroll", onScroll);
+    }
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (win.lenis) {
+        win.lenis.off("scroll", onScroll);
+      }
+    };
+  }, [isHome]);
 
   const sizeMap = {
     sm: { imgWidth: 32, imgHeight: 32, wordmarkClass: "h-3.5 sm:h-4.5 md:h-5.5", subText: "text-[9px] sm:text-[10px]" },
@@ -176,39 +207,36 @@ export default function Logo({
       </div>
 
       {/* Right-Side Column: Sky Wardens Wordmark on top + Sectors list */}
-            <AnimatePresence initial={false}>
-        {!hideWordmark && (
-          <motion.div
-            initial={{ opacity: 0, x: -10, scale: 0.96 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: -10, scale: 0.96 }}
-            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col items-start justify-center min-w-0"
-          >
-            <div className="flex items-center text-white group-hover:text-slate-100 transition-colors duration-200">
-              <SkyWardensWordmarkSvg className={currentSize.wordmarkClass} name={settings.siteName || "Sky Wardens"} />
-            </div>
+      <div
+        id="navbar-wordmark-container"
+        className="flex flex-col items-start justify-center min-w-0 will-change-[opacity]"
+        style={{
+          opacity: navWordmarkOpacity,
+          pointerEvents: navWordmarkOpacity > 0.5 ? "auto" : "none",
+        }}
+      >
+        <div className="flex items-center text-white group-hover:text-slate-100 transition-colors duration-200">
+          <SkyWardensWordmarkSvg className={currentSize.wordmarkClass} name={settings.siteName || "Sky Wardens"} />
+        </div>
 
-            {/* Sectors Horizontal Format starting directly from brand name */}
-            {showSectorsList && (
-              <div className="flex items-center flex-wrap gap-x-1 sm:gap-x-2 gap-y-0.5 mt-0.5 sm:mt-1 select-none text-[8px] xs:text-[9.5px] sm:text-[11px] md:text-[11.5px] font-semibold text-slate-300 tracking-wider whitespace-nowrap">
-                {sectors.slice(0, 3).map((sec, idx) => (
-                  <React.Fragment key={sec}>
-                    <span className="whitespace-nowrap">{sec}</span>
-                    {idx < Math.min(sectors.length, 3) - 1 && <span className="text-white/30 font-normal px-0.5">/</span>}
-                  </React.Fragment>
-                ))}
-              </div>
-            )}
-
-            {showTagline && (
-              <span className={`text-slate-400 font-mono tracking-[0.18em] uppercase ${currentSize.subText} mt-1.5`}>
-                {settings.tagline || "DEFENCE • AEROSPACE • ADVANCED SYSTEMS"}
-              </span>
-            )}
-          </motion.div>
+        {/* Sectors Horizontal Format starting directly from brand name */}
+        {showSectorsList && (
+          <div className="flex items-center flex-wrap gap-x-1 sm:gap-x-2 gap-y-0.5 mt-0.5 sm:mt-1 select-none text-[8px] xs:text-[9.5px] sm:text-[11px] md:text-[11.5px] font-semibold text-slate-300 tracking-wider whitespace-nowrap">
+            {sectors.slice(0, 3).map((sec, idx) => (
+              <React.Fragment key={sec}>
+                <span className="whitespace-nowrap">{sec}</span>
+                {idx < Math.min(sectors.length, 3) - 1 && <span className="text-white/30 font-normal px-0.5">/</span>}
+              </React.Fragment>
+            ))}
+          </div>
         )}
-      </AnimatePresence>
+
+        {showTagline && (
+          <span className={`text-slate-400 font-mono tracking-[0.18em] uppercase ${currentSize.subText} mt-1.5`}>
+            {settings.tagline || "DEFENCE • AEROSPACE • ADVANCED SYSTEMS"}
+          </span>
+        )}
+      </div>
     </Link>
   );
 }

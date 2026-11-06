@@ -96,7 +96,7 @@ export default function Navbar() {
     >
       <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 flex items-center justify-between gap-2 sm:gap-4">
         {/* Brand Logo */}
-        <Logo size="md" showSectorsList hideWordmark={pathname === "/"} />
+        <Logo size="md" showSectorsList />
         <FloatingHeroWordmark />
 
         {/* Desktop Navigation Links: All options directly visible */}
