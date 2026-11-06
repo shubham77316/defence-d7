@@ -9,6 +9,7 @@ interface LogoProps {
   size?: "sm" | "md" | "lg" | "xl";
   showTagline?: boolean;
   showSectorsList?: boolean;
+  hideWordmark?: boolean;
 }
 
 export function SkyWardensWordmarkSvg({ className = "", name = "Sky Wardens" }: { className?: string; name?: string }) {
@@ -139,6 +140,7 @@ export default function Logo({
   size = "md",
   showTagline = false,
   showSectorsList = false,
+  hideWordmark = false,
 }: LogoProps) {
   const { settings } = useSettings();
 
@@ -173,6 +175,7 @@ export default function Logo({
       </div>
 
       {/* Right-Side Column: Sky Wardens Wordmark on top + Sectors list */}
+      {!hideWordmark && (
       <div className="flex flex-col items-start justify-center min-w-0">
         <div className="flex items-center text-white group-hover:text-slate-100 transition-colors duration-200">
           <SkyWardensWordmarkSvg className={currentSize.wordmarkClass} name={settings.siteName || "Sky Wardens"} />
@@ -196,6 +199,7 @@ export default function Logo({
           </span>
         )}
       </div>
+      )}
     </Link>
   );
 }
