@@ -55,7 +55,7 @@ export default function FloatingHeroWordmark() {
       const targetScale = Math.min(0.32, Math.max(0.18, targetHeight / startHeight));
 
       // Docked coordinates: moved lower so SKY WARDENS centers right alongside the emblem
-      const dockedTop = emblemTop + (emblemHeight - 26) / 2 + 2;
+      const dockedTop = emblemTop + (emblemHeight - 26) / 2 - 1;
       const dockedLeft = emblemRight + 12;
 
       // Scroll threshold over which transition completes
@@ -90,7 +90,7 @@ export default function FloatingHeroWordmark() {
 
       if (emblem) {
         const eRect = emblem.getBoundingClientRect();
-        targetDockedTop = eRect.top + (eRect.height - 26) / 2 + 2;
+        targetDockedTop = eRect.top + (eRect.height - 26) / 2 - 1;
         targetDockedLeft = eRect.right + 12;
       }
 
