@@ -101,7 +101,7 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col items-start text-left space-y-4 sm:space-y-6 max-w-5xl w-full"
+          className="flex flex-col items-start text-left max-w-5xl w-full"
         >
 
           {/* Monumental Stacked Brand Wordmark - Inspired by Reference */}
@@ -115,7 +115,7 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
           </div>
 
           {/* Monumental Display Headline */}
-          <div className="space-y-0.5 sm:space-y-1 pt-1.5 sm:pt-2">
+          <div className="space-y-0.5 sm:space-y-1 -mt-1 sm:-mt-2.5 md:-mt-4 lg:-mt-5">
             <h1 className="font-oxanium text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-[34px] xl:text-[38px] font-semibold tracking-wide text-white leading-[1.2] select-none text-left">
               {titleLines.map((line, idx) => (
                 <span
@@ -134,13 +134,13 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
 
           {/* Hero Subtitle from CMS */}
           {data.heroSubtitle && (
-            <p className="text-xs sm:text-sm md:text-base text-slate-300 max-w-2xl text-left leading-relaxed select-none">
+            <p className="text-xs sm:text-sm md:text-base text-slate-300 max-w-2xl text-left leading-relaxed select-none mt-3.5 sm:mt-5">
               {data.heroSubtitle}
             </p>
           )}
 
                     {/* Action Group: Buttons */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-3 sm:gap-4 pt-3 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-3 sm:gap-4 mt-4 sm:mt-6 w-full sm:w-auto">
             {/* 1. Explore Capabilities (Primary Radiant Blue Pill) */}
             <Link
               href={data.heroCtaLink || "/capabilities"}
