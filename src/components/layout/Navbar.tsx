@@ -89,11 +89,11 @@ export default function Navbar() {
     <header
       className={`fixed top-0 left-0 right-0 ${mobileMenuOpen ? "z-[100000]" : "z-40"} transition-all duration-300 ${
         isScrolled
-          ? "bg-slate-950/85 backdrop-blur-xl border-b border-sky-400/20 shadow-[0_4px_30px_rgba(0,0,0,0.8)] py-2 sm:py-3"
-          : "bg-gradient-to-b from-slate-950/90 via-slate-950/50 to-transparent py-2.5 sm:py-5"
+          ? "bg-slate-950/85 backdrop-blur-xl border-b border-sky-400/20 shadow-[0_4px_30px_rgba(0,0,0,0.8)] py-2 sm:py-2.5"
+          : "bg-gradient-to-b from-slate-950/90 via-slate-950/50 to-transparent py-2.5 sm:py-3.5"
       }`}
     >
-      <div className="w-full max-w-[1660px] mx-auto px-2.5 sm:px-5 flex items-center justify-between gap-1.5 sm:gap-4">
+      <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 flex items-center justify-between gap-2 sm:gap-4">
         {/* Brand Logo */}
         <Logo size="md" showSectorsList />
 
