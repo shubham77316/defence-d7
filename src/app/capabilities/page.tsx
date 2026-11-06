@@ -90,10 +90,10 @@ const renderGenericLogo = (title: string) => (
 const DEFAULT_SECTORS: SectorCard[] = [
   {
     id: "aerospace",
-    number: "SECTOR 01",
+    number: "01",
     title: "AEROSPACE",
     tagline: "Autonomous Aerial & Space Systems",
-    desc: "Autonomous aerial systems, drone platforms, and aerospace-ready engineering developed for precision deployment.",
+    desc: "UAV platforms and aerial surveillance systems.",
     linkText: "Explore Aerospace",
     href: "/aerospace",
     bgImage: "/images/aerospace-stealth-hangar.jpg",
@@ -105,14 +105,14 @@ const DEFAULT_SECTORS: SectorCard[] = [
   },
   {
     id: "defence",
-    number: "SECTOR 02",
+    number: "02",
     title: "DEFENCE",
     tagline: "Tactical & Protective Warfare",
-    desc: "Protective systems, tactical gear, and operational defence equipment.",
+    desc: "Protective gear and tactical equipment for the field.",
     linkText: "Explore Defence",
     href: "/defence",
     bgImage: "/images/defence-card-bg.jpg",
-    normalBorder: "border-lime-500/25",
+    normalBorder: "border-white/15",
     hoverBorder: "border-lime-400/90 shadow-[0_0_35px_rgba(163,230,53,0.25)]",
     accentText: "text-lime-400",
     logoGlow: "",
@@ -151,94 +151,7 @@ function CapabilitiesMobileScrollLetter({
 
 export default function CapabilitiesPage() {
   const [hoveredSector, setHoveredSector] = useState<string | null>(null);
-  const [sectors, setSectors] = useState<SectorCard[]>(DEFAULT_SECTORS);
-
-  // Synchronize dynamic products/sectors from CMS
-  const fetchSectors = async () => {
-    try {
-      const res = await fetch("/api/news", { cache: "no-store" });
-      if (res.ok) {
-        const json = await res.json();
-        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
-          const mappedCards: SectorCard[] = json.data.map((item: any, idx: number) => {
-            const num = `SECTOR ${String(idx + 1).padStart(2, "0")}`;
-            const slug = (item.slug || item.id || item._id || "").toLowerCase();
-            const titleUpper = (item.title || "SECTOR").toUpperCase();
-            const bgImage = (item.image && typeof item.image === "string" && item.image.trim()) ? item.image.trim() : "";
-
-            // 1. Aerospace Sector
-            if (slug.includes("aerospace") || titleUpper.includes("AEROSPACE")) {
-              return {
-                id: slug || "aerospace",
-                number: num,
-                title: "AEROSPACE",
-                tagline: "Autonomous Aerial & Space Systems",
-                desc: item.excerpt || item.description || "Autonomous aerial systems, drone platforms, and aerospace-ready engineering developed for precision deployment.",
-                linkText: "Explore Aerospace",
-                href: "/aerospace",
-                bgImage: bgImage || "/images/aerospace-stealth-hangar.jpg",
-                normalBorder: "border-sky-500/25",
-                hoverBorder: "border-sky-400/90 shadow-[0_0_35px_rgba(56,189,248,0.25)]",
-                accentText: "text-sky-400",
-                logoGlow: "",
-                renderLogo: renderAerospaceLogo,
-              };
-            }
-
-            // 2. Defence Sector
-            if (slug.includes("defence") || titleUpper.includes("DEFENCE")) {
-              return {
-                id: slug || "defence",
-                number: num,
-                title: "DEFENCE",
-                tagline: "Tactical & Protective Warfare",
-                desc: item.excerpt || item.description || "Protective systems, tactical gear, and operational defence equipment.",
-                linkText: "Explore Defence",
-                href: "/defence",
-                bgImage: bgImage || "/images/defence-card-bg.jpg",
-                normalBorder: "border-lime-500/25",
-                hoverBorder: "border-lime-400/90 shadow-[0_0_35px_rgba(163,230,53,0.25)]",
-                accentText: "text-lime-400",
-                logoGlow: "",
-                renderLogo: renderDefenceLogo,
-              };
-            }
-
-            // 3. Dynamic Products/Sectors added via CMS (e.g. VI, TEST, etc.)
-            return {
-              id: slug || `sector-${idx}`,
-              number: num,
-              title: titleUpper,
-              tagline: item.category || "Specialized Sector",
-              desc: item.excerpt || item.description || "Strategic industrial capability and engineering operations.",
-              linkText: `Explore ${item.title}`,
-              href: `/news/${slug}`,
-              bgImage: bgImage || "/images/aerospace-stealth-hangar.jpg",
-              normalBorder: "border-cyan-500/25",
-              hoverBorder: "border-cyan-400/90 shadow-[0_0_35px_rgba(6,182,212,0.25)]",
-              accentText: "text-cyan-400",
-              logoGlow: "",
-              renderLogo: () => renderGenericLogo(titleUpper),
-            };
-          });
-
-          setSectors(mappedCards);
-        }
-      }
-    } catch (err) {
-      // Fallback
-    }
-  };
-
-  useEffect(() => {
-    fetchSectors();
-    window.addEventListener("focus", fetchSectors);
-    const interval = setInterval(fetchSectors, 3000);
-    return () => {
-      window.removeEventListener("focus", fetchSectors);
-      clearInterval(interval);
-    };
-  }, []);
+  const [sectors] = useState<SectorCard[]>(DEFAULT_SECTORS);
 
   // Scroll Container Ref for the kinetic heading & docking cards animation
   const heroTrackRef = useRef<HTMLDivElement>(null);
@@ -361,13 +274,13 @@ export default function CapabilitiesPage() {
           </p>
         </div>
 
-        {/* Sector Cards Mobile Grid */}
-        <div className="grid grid-cols-1 gap-3.5">
+        {/* Sector Cards Mobile Grid (2 Cards Matching Image 2) */}
+        <div className="grid grid-cols-1 gap-4">
           {sectors.map((sector) => (
             <Link
               key={sector.id}
               href={sector.href}
-              className={`group relative h-[300px] xs:h-[320px] rounded-2xl overflow-hidden border ${sector.normalBorder} shadow-[0_16px_45px_rgba(0,0,0,0.85)] flex flex-col justify-between p-4 xs:p-5 transition-all duration-300`}
+              className={`group relative h-[320px] rounded-2xl overflow-hidden border ${sector.normalBorder} shadow-[0_16px_45px_rgba(0,0,0,0.85)] flex flex-col justify-between p-5 transition-all duration-300`}
             >
               <div className="absolute inset-0 z-0 overflow-hidden">
                 {sector.bgImage && (
@@ -376,24 +289,23 @@ export default function CapabilitiesPage() {
                     alt={`${sector.title} backdrop`}
                     fill
                     priority
-                    className="object-cover object-center brightness-[0.65] contrast-[1.15]"
+                    className="object-cover object-center brightness-[0.6] contrast-[1.15]"
                   />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#02050f] via-[#02050f]/60 to-[#02050f]/85" />
               </div>
-              <div className="relative z-10 space-y-1">
-                <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-[#7ec8ff] uppercase block">
+              <div className="relative z-10 flex items-start justify-between gap-3">
+                <div className="space-y-1">
+                  <h3 className="text-2xl font-black text-white tracking-wider font-oxanium uppercase">
+                    {sector.title}
+                  </h3>
+                  <p className="text-xs text-slate-300 leading-relaxed font-normal">
+                    {sector.desc}
+                  </p>
+                </div>
+                <span className="flex-shrink-0 inline-flex items-center justify-center rounded-full border border-white/25 px-2.5 py-0.5 text-xs font-mono font-bold text-white/90 bg-black/40">
                   {sector.number}
                 </span>
-                <h3 className="text-xl font-black text-white tracking-wider font-oxanium uppercase">
-                  {sector.title}
-                </h3>
-                <p className="text-xs text-slate-300 leading-relaxed font-normal line-clamp-2">
-                  {sector.desc}
-                </p>
-              </div>
-              <div className="relative z-10 flex items-center justify-center my-auto py-2">
-                {sector.renderLogo()}
               </div>
             </Link>
           ))}
@@ -505,21 +417,13 @@ export default function CapabilitiesPage() {
               </motion.p>
             </motion.div>
 
-            {/* Interactive Sector Cards with Background Image & Hover-Reveal Logo */}
+            {/* Interactive Sector Cards with Background Image (2 Cards matching Image 2) */}
             <motion.div
               style={{
                 y: cardsY,
                 opacity: cardsOpacity,
               }}
-              className={`grid gap-5 md:gap-6 lg:gap-7 mx-auto mt-4 sm:mt-6 w-full relative z-20 pointer-events-auto ${
-                sectors.length === 1
-                  ? "max-w-md grid-cols-1"
-                  : sectors.length === 2
-                  ? "max-w-4xl grid-cols-1 md:grid-cols-2"
-                  : sectors.length === 3
-                  ? "max-w-6xl grid-cols-1 md:grid-cols-3"
-                  : "max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
-              }`}
+              className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mx-auto mt-6 sm:mt-8 w-full max-w-5xl relative z-20 pointer-events-auto"
             >
               {sectors.map((sector) => {
                 const isHovered = hoveredSector === sector.id;
@@ -532,11 +436,7 @@ export default function CapabilitiesPage() {
                     onMouseLeave={() => setHoveredSector(null)}
                     onFocus={() => setHoveredSector(sector.id)}
                     onBlur={() => setHoveredSector(null)}
-                    className={`group relative ${
-                      sectors.length > 2
-                        ? "h-[330px] sm:h-[350px] md:h-[370px] lg:h-[390px]"
-                        : "h-[350px] sm:h-[380px] md:h-[400px] lg:h-[420px]"
-                    } rounded-2xl sm:rounded-3xl overflow-hidden border shadow-[0_16px_45px_rgba(0,0,0,0.85)] flex flex-col justify-between p-5 sm:p-6 transition-all duration-500 block cursor-pointer select-none ${
+                    className={`group relative h-[380px] sm:h-[410px] md:h-[430px] rounded-2xl sm:rounded-3xl overflow-hidden border shadow-[0_16px_45px_rgba(0,0,0,0.85)] flex flex-col justify-between p-6 sm:p-7 transition-all duration-500 block cursor-pointer select-none ${
                       isHovered
                         ? `${sector.hoverBorder} shadow-[0_22px_65px_rgba(0,0,0,0.95)] -translate-y-1`
                         : `${sector.normalBorder}`
@@ -544,7 +444,7 @@ export default function CapabilitiesPage() {
                   >
                     {/* 1. Background Image with cinematic smooth zoom on hover */}
                     <div className="absolute inset-0 z-0 overflow-hidden">
-                      {sector.bgImage ? (
+                      {sector.bgImage && (
                         <Image
                           src={sector.bgImage}
                           alt={`${sector.title} backdrop`}
@@ -552,47 +452,30 @@ export default function CapabilitiesPage() {
                           priority
                           className={`object-cover object-center transition-transform duration-700 ease-out filter contrast-[1.15] ${
                             isHovered
-                              ? "scale-110 brightness-[0.55]"
-                              : "scale-100 brightness-[0.7]"
+                              ? "scale-105 brightness-[0.55]"
+                              : "scale-100 brightness-[0.68]"
                           }`}
                         />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-[#06152d] via-[#030917] to-[#02050f] flex items-center justify-center">
-                          <span className="text-white/10 font-oxanium text-4xl font-bold uppercase select-none">
-                            {sector.title}
-                          </span>
-                        </div>
                       )}
 
                       {/* Dark Cinematic Vignette & Gradients to guarantee text readability */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#02050f] via-[#02050f]/60 to-[#02050f]/85 transition-opacity duration-500" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#02050f] via-[#02050f]/50 to-[#02050f]/80 transition-opacity duration-500" />
                       <div className="absolute inset-0 bg-gradient-to-b from-[#02050f]/90 via-transparent to-[#02050f]/95" />
                     </div>
 
-                    {/* 2. Top Sector Information */}
-                    <div className="relative z-10 space-y-1 sm:space-y-1.5">
-                      <span className="text-[10px] sm:text-xs font-mono font-bold tracking-[0.2em] text-[#7ec8ff] uppercase block">
+                    {/* 2. Top Sector Information: Title + Desc on Left, Number Pill on Right */}
+                    <div className="relative z-10 flex items-start justify-between gap-4">
+                      <div className="space-y-1 sm:space-y-1.5 max-w-sm">
+                        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-wider font-oxanium uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)]">
+                          {sector.title}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal max-w-sm drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
+                          {sector.desc}
+                        </p>
+                      </div>
+                      <span className="flex-shrink-0 inline-flex items-center justify-center rounded-full border border-white/25 px-3 py-1 text-xs font-mono font-bold text-white/90 bg-black/40 backdrop-blur-sm shadow-md">
                         {sector.number}
                       </span>
-                      <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-wider font-oxanium uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)]">
-                        {sector.title}
-                      </h3>
-                      <p className="text-xs sm:text-[13px] text-slate-300 leading-relaxed font-normal max-w-sm drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)] line-clamp-2">
-                        {sector.desc}
-                      </p>
-                    </div>
-
-                    {/* 3. Center Logo Emblem: Hidden by default, smoothly reveals on hover with no color glow behind */}
-                    <div className="relative z-10 flex items-center justify-center my-auto py-2">
-                      <div
-                        className={`transform transition-all duration-500 ease-out flex items-center justify-center pointer-events-none ${
-                          isHovered
-                            ? "opacity-100 translate-y-0 scale-100"
-                            : "opacity-0 translate-y-4 scale-90"
-                        }`}
-                      >
-                        {sector.renderLogo()}
-                      </div>
                     </div>
                   </Link>
                 );
