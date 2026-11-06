@@ -139,26 +139,24 @@ export default function FloatingHeroWordmark() {
       className="select-none will-change-transform transition-opacity duration-150"
     >
       <Link href="/" className="cursor-pointer inline-block">
-        {/* Exact monumental stacked brand wordmark */}
-        <div className="flex flex-col items-start select-none -space-y-3 sm:-space-y-5 md:-space-y-7 lg:-space-y-9 xl:-space-y-11">
-          {/* Row 1: SKY on left + Aerospace / Defence directly above 'DENS' */}
-          <div className="flex items-baseline gap-3 sm:gap-5 md:gap-7 lg:gap-8 flex-wrap">
-            <span className="font-oxanium text-7xl xs:text-8xl sm:text-9xl md:text-[120px] lg:text-[142px] xl:text-[164px] 2xl:text-[180px] font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#9ad6ff] via-[#5aa9f7] to-[#1d6fa5] leading-none">
+                {/* Exact monumental brand wordmark: SKY WARDENS on row 1, Aerospace / Defence underneath */}
+        <div className="flex flex-col items-start select-none">
+          {/* Row 1: SKY + WARDENS side-by-side */}
+          <div className="flex items-baseline gap-2.5 xs:gap-3.5 sm:gap-5 md:gap-6 lg:gap-7 whitespace-nowrap">
+            <span className="font-oxanium text-4xl xs:text-5xl sm:text-7xl md:text-8xl lg:text-[104px] xl:text-[120px] 2xl:text-[136px] font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#9ad6ff] via-[#5aa9f7] to-[#1d6fa5] leading-none">
               SKY
             </span>
-
-            {/* Exact 'Aerospace / Defence' tagline above DENS */}
-            <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-bold tracking-[0.2em] uppercase select-none pb-1 sm:pb-3 md:pb-5 lg:pb-7">
-              <span className="text-[#7ec8ff]">Aerospace</span>
-              <span className="text-white/40 font-normal">/</span>
-              <span className="text-white">Defence</span>
-            </div>
+            <span className="font-oxanium text-4xl xs:text-5xl sm:text-7xl md:text-8xl lg:text-[104px] xl:text-[120px] 2xl:text-[136px] font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#ffffff] via-[#f1f5f9] to-[#cbd5e1] leading-none">
+              WARDENS
+            </span>
           </div>
 
-          {/* Row 2: WARDENS */}
-          <span className="font-oxanium text-7xl xs:text-8xl sm:text-9xl md:text-[120px] lg:text-[142px] xl:text-[164px] 2xl:text-[180px] font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#ffffff] via-[#f1f5f9] to-[#cbd5e1] leading-none">
-            WARDENS
-          </span>
+          {/* Row 2: Aerospace / Defence underneath */}
+          <div className="flex items-center gap-2 sm:gap-3 text-[10px] xs:text-xs sm:text-sm md:text-base lg:text-lg font-bold tracking-[0.25em] uppercase select-none mt-1.5 sm:mt-2.5 md:mt-3">
+            <span className="text-[#7ec8ff]">Aerospace</span>
+            <span className="text-white/40 font-normal">/</span>
+            <span className="text-white">Defence</span>
+          </div>
         </div>
       </Link>
     </div>
