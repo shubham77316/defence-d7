@@ -15,7 +15,7 @@ export default function FloatingHeroWordmark() {
     anchorInitialTop: 240,
     startLeft: 48,
     startHeight: 200,
-    dockedTop: 14,
+    dockedTop: 20,
     dockedLeft: 96,
     targetScale: 0.22,
     scrollThreshold: 220,
@@ -47,15 +47,16 @@ export default function FloatingHeroWordmark() {
 
       // Emblem dimensions
       const emblemTop = emblemRect ? emblemRect.top : 14;
-      const emblemHeight = emblemRect ? emblemRect.height : 42;
+      const emblemHeight = emblemRect ? emblemRect.height : 44;
       const emblemRight = emblemRect ? emblemRect.right : startLeft + 48;
+      const emblemCenterY = emblemTop + emblemHeight / 2;
 
       // Target scaled height when docked in navbar
-      const targetHeight = Math.max(28, emblemHeight * 0.82);
+      const targetHeight = Math.max(26, Math.min(34, emblemHeight * 0.78));
       const targetScale = Math.min(0.32, Math.max(0.18, targetHeight / startHeight));
 
-      // Docked coordinates beside shield emblem
-      const dockedTop = emblemTop + (emblemHeight - startHeight * targetScale) / 2;
+      // Docked coordinates: vertically centered with the emblem, with +3px optical baseline adjustment
+      const dockedTop = emblemCenterY - targetHeight / 2 + 3;
       const dockedLeft = emblemRight + 12;
 
       // Scroll threshold over which transition completes
@@ -95,7 +96,6 @@ export default function FloatingHeroWordmark() {
       containerRef.current.style.opacity = "1";
 
       // 2. Cross-fade between State A (Hero stacked) and State B (Navbar horizontal)
-      // Transition happens between progress 0.35 and 0.65
       const fadeStart = 0.35;
       const fadeEnd = 0.65;
       let opacityA = 1;
@@ -202,7 +202,7 @@ export default function FloatingHeroWordmark() {
             className="absolute top-0 left-0 flex flex-col items-start select-none pointer-events-none"
           >
             {/* Row 1: SKY + WARDENS side-by-side */}
-            <div className="flex items-baseline gap-3 sm:gap-5 whitespace-nowrap">
+            <div className="flex items-baseline gap-3 sm:gap-4 whitespace-nowrap">
               <span className="font-oxanium text-7xl xs:text-8xl sm:text-9xl md:text-[120px] lg:text-[142px] xl:text-[164px] 2xl:text-[180px] font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#9ad6ff] via-[#5aa9f7] to-[#1d6fa5] leading-none">
                 SKY
               </span>
@@ -212,7 +212,7 @@ export default function FloatingHeroWordmark() {
             </div>
 
             {/* Row 2: AEROSPACE / DEFENCE underneath */}
-            <div className="flex items-center gap-2.5 sm:gap-3 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-bold tracking-[0.25em] uppercase select-none mt-2 sm:mt-3 md:mt-4">
+            <div className="flex items-center gap-2.5 sm:gap-3 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-bold tracking-[0.25em] uppercase select-none mt-2 sm:mt-2.5">
               <span className="text-[#7ec8ff]">AEROSPACE</span>
               <span className="text-white/40 font-normal">/</span>
               <span className="text-white">DEFENCE</span>
