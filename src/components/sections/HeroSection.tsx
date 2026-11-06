@@ -104,24 +104,26 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
           className="flex flex-col items-start text-left max-w-6xl w-full"
         >
 
-                    {/* Monumental Brand Wordmark Spacer - Matches Floating Wordmark */}
-          <div id="hero-title-anchor" className="flex flex-col items-start select-none pointer-events-none opacity-0 invisible" aria-hidden="true">
-            {/* Row 1: SKY + WARDENS side-by-side */}
-            <div className="flex items-baseline gap-2.5 xs:gap-3.5 sm:gap-5 md:gap-6 lg:gap-7 whitespace-nowrap">
-              <span className="font-oxanium text-4xl xs:text-5xl sm:text-7xl md:text-8xl lg:text-[104px] xl:text-[120px] 2xl:text-[136px] font-black tracking-tight uppercase leading-none">
+                              {/* Monumental Stacked Brand Wordmark Spacer - Original Hero Position */}
+          <div id="hero-title-anchor" className="flex flex-col items-start select-none -space-y-3 sm:-space-y-5 md:-space-y-7 lg:-space-y-9 xl:-space-y-11 pointer-events-none opacity-0 invisible" aria-hidden="true">
+            {/* Row 1: SKY on left + Aerospace / Defence directly above 'DENS' */}
+            <div className="flex items-baseline gap-3 sm:gap-5 md:gap-7 lg:gap-8 flex-wrap">
+              <span className="font-oxanium text-7xl xs:text-8xl sm:text-9xl md:text-[120px] lg:text-[142px] xl:text-[164px] 2xl:text-[180px] font-black tracking-tight uppercase leading-none">
                 SKY
               </span>
-              <span className="font-oxanium text-4xl xs:text-5xl sm:text-7xl md:text-8xl lg:text-[104px] xl:text-[120px] 2xl:text-[136px] font-black tracking-tight uppercase leading-none">
-                WARDENS
-              </span>
+
+              {/* Exact 'Aerospace / Defence' tagline above DENS */}
+              <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-bold tracking-[0.2em] uppercase select-none pb-1 sm:pb-3 md:pb-5 lg:pb-7">
+                <span>Aerospace</span>
+                <span>/</span>
+                <span>Defence</span>
+              </div>
             </div>
 
-            {/* Row 2: Aerospace / Defence underneath */}
-            <div className="flex items-center gap-2 sm:gap-3 text-[10px] xs:text-xs sm:text-sm md:text-base lg:text-lg font-bold tracking-[0.25em] uppercase select-none mt-1.5 sm:mt-2.5 md:mt-3">
-              <span>Aerospace</span>
-              <span>/</span>
-              <span>Defence</span>
-            </div>
+            {/* Row 2: WARDENS */}
+            <span className="font-oxanium text-7xl xs:text-8xl sm:text-9xl md:text-[120px] lg:text-[142px] xl:text-[164px] 2xl:text-[180px] font-black tracking-tight uppercase leading-none">
+              WARDENS
+            </span>
           </div>
 
           {/* Monumental Display Headline */}

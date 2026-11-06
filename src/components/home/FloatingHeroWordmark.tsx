@@ -8,6 +8,9 @@ export default function FloatingHeroWordmark() {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const stateARef = useRef<HTMLDivElement>(null);
+  const stateBRef = useRef<HTMLDivElement>(null);
+
   const metricsRef = useRef({
     anchorInitialTop: 240,
     startLeft: 48,
@@ -49,9 +52,9 @@ export default function FloatingHeroWordmark() {
 
       // Target scaled height when docked in navbar
       const targetHeight = Math.max(28, emblemHeight * 0.82);
-      const targetScale = Math.min(0.34, Math.max(0.18, targetHeight / startHeight));
+      const targetScale = Math.min(0.32, Math.max(0.18, targetHeight / startHeight));
 
-      // Docked coordinates
+      // Docked coordinates beside shield emblem
       const dockedTop = emblemTop + (emblemHeight - startHeight * targetScale) / 2;
       const dockedLeft = emblemRight + 12;
 
@@ -80,7 +83,7 @@ export default function FloatingHeroWordmark() {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
       const progress = Math.min(1, Math.max(0, scrollY / m.scrollThreshold));
 
-      // Smooth interpolation
+      // 1. Move and scale the entire container
       const currentTop = Math.max(m.dockedTop, m.anchorInitialTop - scrollY);
       const currentLeft = m.startLeft + (m.dockedLeft - m.startLeft) * progress;
       const currentScale = 1.0 + (m.targetScale - 1.0) * progress;
@@ -90,6 +93,32 @@ export default function FloatingHeroWordmark() {
       containerRef.current.style.transform = `scale(${currentScale})`;
       containerRef.current.style.pointerEvents = progress > 0.8 ? "auto" : "none";
       containerRef.current.style.opacity = "1";
+
+      // 2. Cross-fade between State A (Hero stacked) and State B (Navbar horizontal)
+      // Transition happens between progress 0.35 and 0.65
+      const fadeStart = 0.35;
+      const fadeEnd = 0.65;
+      let opacityA = 1;
+      let opacityB = 0;
+
+      if (progress <= fadeStart) {
+        opacityA = 1;
+        opacityB = 0;
+      } else if (progress >= fadeEnd) {
+        opacityA = 0;
+        opacityB = 1;
+      } else {
+        const t = (progress - fadeStart) / (fadeEnd - fadeStart);
+        opacityA = 1 - t;
+        opacityB = t;
+      }
+
+      if (stateARef.current) {
+        stateARef.current.style.opacity = `${opacityA}`;
+      }
+      if (stateBRef.current) {
+        stateBRef.current.style.opacity = `${opacityB}`;
+      }
     };
 
     measure();
@@ -139,23 +168,55 @@ export default function FloatingHeroWordmark() {
       className="select-none will-change-transform transition-opacity duration-150"
     >
       <Link href="/" className="cursor-pointer inline-block">
-                {/* Exact monumental brand wordmark: SKY WARDENS on row 1, Aerospace / Defence underneath */}
-        <div className="flex flex-col items-start select-none">
-          {/* Row 1: SKY + WARDENS side-by-side */}
-          <div className="flex items-baseline gap-2.5 xs:gap-3.5 sm:gap-5 md:gap-6 lg:gap-7 whitespace-nowrap">
-            <span className="font-oxanium text-4xl xs:text-5xl sm:text-7xl md:text-8xl lg:text-[104px] xl:text-[120px] 2xl:text-[136px] font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#9ad6ff] via-[#5aa9f7] to-[#1d6fa5] leading-none">
-              SKY
-            </span>
-            <span className="font-oxanium text-4xl xs:text-5xl sm:text-7xl md:text-8xl lg:text-[104px] xl:text-[120px] 2xl:text-[136px] font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#ffffff] via-[#f1f5f9] to-[#cbd5e1] leading-none">
+        <div className="relative select-none">
+          {/* State A: Monumental Stacked (Hero down position - exact original design) */}
+          <div
+            ref={stateARef}
+            style={{ opacity: 1 }}
+            className="flex flex-col items-start select-none -space-y-3 sm:-space-y-5 md:-space-y-7 lg:-space-y-9 xl:-space-y-11"
+          >
+            {/* Row 1: SKY on left + Aerospace / Defence directly above 'DENS' */}
+            <div className="flex items-baseline gap-3 sm:gap-5 md:gap-7 lg:gap-8 flex-wrap">
+              <span className="font-oxanium text-7xl xs:text-8xl sm:text-9xl md:text-[120px] lg:text-[142px] xl:text-[164px] 2xl:text-[180px] font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#9ad6ff] via-[#5aa9f7] to-[#1d6fa5] leading-none">
+                SKY
+              </span>
+
+              {/* Exact 'Aerospace / Defence' tagline above DENS */}
+              <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-bold tracking-[0.2em] uppercase select-none pb-1 sm:pb-3 md:pb-5 lg:pb-7">
+                <span className="text-[#7ec8ff]">Aerospace</span>
+                <span className="text-white/40 font-normal">/</span>
+                <span className="text-white">Defence</span>
+              </div>
+            </div>
+
+            {/* Row 2: WARDENS */}
+            <span className="font-oxanium text-7xl xs:text-8xl sm:text-9xl md:text-[120px] lg:text-[142px] xl:text-[164px] 2xl:text-[180px] font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#ffffff] via-[#f1f5f9] to-[#cbd5e1] leading-none">
               WARDENS
             </span>
           </div>
 
-          {/* Row 2: Aerospace / Defence underneath */}
-          <div className="flex items-center gap-2 sm:gap-3 text-[10px] xs:text-xs sm:text-sm md:text-base lg:text-lg font-bold tracking-[0.25em] uppercase select-none mt-1.5 sm:mt-2.5 md:mt-3">
-            <span className="text-[#7ec8ff]">Aerospace</span>
-            <span className="text-white/40 font-normal">/</span>
-            <span className="text-white">Defence</span>
+          {/* State B: Horizontal Wordmark (Navbar top docked position - exact uploaded image) */}
+          <div
+            ref={stateBRef}
+            style={{ opacity: 0 }}
+            className="absolute top-0 left-0 flex flex-col items-start select-none pointer-events-none"
+          >
+            {/* Row 1: SKY + WARDENS side-by-side */}
+            <div className="flex items-baseline gap-3 sm:gap-5 whitespace-nowrap">
+              <span className="font-oxanium text-7xl xs:text-8xl sm:text-9xl md:text-[120px] lg:text-[142px] xl:text-[164px] 2xl:text-[180px] font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#9ad6ff] via-[#5aa9f7] to-[#1d6fa5] leading-none">
+                SKY
+              </span>
+              <span className="font-oxanium text-7xl xs:text-8xl sm:text-9xl md:text-[120px] lg:text-[142px] xl:text-[164px] 2xl:text-[180px] font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#ffffff] via-[#f1f5f9] to-[#cbd5e1] leading-none">
+                WARDENS
+              </span>
+            </div>
+
+            {/* Row 2: AEROSPACE / DEFENCE underneath */}
+            <div className="flex items-center gap-2.5 sm:gap-3 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-bold tracking-[0.25em] uppercase select-none mt-2 sm:mt-3 md:mt-4">
+              <span className="text-[#7ec8ff]">AEROSPACE</span>
+              <span className="text-white/40 font-normal">/</span>
+              <span className="text-white">DEFENCE</span>
+            </div>
           </div>
         </div>
       </Link>
