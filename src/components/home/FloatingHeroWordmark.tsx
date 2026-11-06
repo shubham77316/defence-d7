@@ -15,7 +15,7 @@ export default function FloatingHeroWordmark() {
     anchorInitialTop: 240,
     startLeft: 48,
     startHeight: 200,
-    dockedTop: 20,
+    dockedTop: 22,
     dockedLeft: 96,
     targetScale: 0.22,
     scrollThreshold: 220,
@@ -49,14 +49,13 @@ export default function FloatingHeroWordmark() {
       const emblemTop = emblemRect ? emblemRect.top : 14;
       const emblemHeight = emblemRect ? emblemRect.height : 44;
       const emblemRight = emblemRect ? emblemRect.right : startLeft + 48;
-      const emblemCenterY = emblemTop + emblemHeight / 2;
 
       // Target scaled height when docked in navbar
       const targetHeight = Math.max(26, Math.min(34, emblemHeight * 0.78));
       const targetScale = Math.min(0.32, Math.max(0.18, targetHeight / startHeight));
 
-      // Docked coordinates: vertically centered with the emblem, with +3px optical baseline adjustment
-      const dockedTop = emblemCenterY - targetHeight / 2 + 3;
+      // Docked coordinates: moved lower so SKY WARDENS centers right alongside the emblem
+      const dockedTop = emblemTop + (emblemHeight - 26) / 2 + 5;
       const dockedLeft = emblemRight + 12;
 
       // Scroll threshold over which transition completes
@@ -84,9 +83,20 @@ export default function FloatingHeroWordmark() {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
       const progress = Math.min(1, Math.max(0, scrollY / m.scrollThreshold));
 
-      // 1. Move and scale the entire container
-      const currentTop = Math.max(m.dockedTop, m.anchorInitialTop - scrollY);
-      const currentLeft = m.startLeft + (m.dockedLeft - m.startLeft) * progress;
+      // Dynamically measure live emblem position for 100% accurate alignment on scroll
+      const emblem = document.getElementById("navbar-emblem");
+      let targetDockedTop = m.dockedTop;
+      let targetDockedLeft = m.dockedLeft;
+
+      if (emblem) {
+        const eRect = emblem.getBoundingClientRect();
+        targetDockedTop = eRect.top + (eRect.height - 26) / 2 + 5;
+        targetDockedLeft = eRect.right + 12;
+      }
+
+      // Smooth interpolation
+      const currentTop = Math.max(targetDockedTop, m.anchorInitialTop - scrollY);
+      const currentLeft = m.startLeft + (targetDockedLeft - m.startLeft) * progress;
       const currentScale = 1.0 + (m.targetScale - 1.0) * progress;
 
       containerRef.current.style.top = `${currentTop}px`;
@@ -95,7 +105,7 @@ export default function FloatingHeroWordmark() {
       containerRef.current.style.pointerEvents = progress > 0.8 ? "auto" : "none";
       containerRef.current.style.opacity = "1";
 
-      // 2. Cross-fade between State A (Hero stacked) and State B (Navbar horizontal)
+      // Cross-fade between State A (Hero stacked) and State B (Navbar horizontal)
       const fadeStart = 0.35;
       const fadeEnd = 0.65;
       let opacityA = 1;
