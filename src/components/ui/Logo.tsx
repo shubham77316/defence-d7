@@ -185,11 +185,12 @@ export default function Logo({
 
   const currentSize = sizeMap[size];
 
-  // Dynamically parse sectors from CMS subTagline
-  const sectors = (settings.subTagline || "Aerospace / Defence")
+  // Dynamically parse sectors - Aerospace / Defence only
+  const rawSectors = (settings.subTagline || "Aerospace / Defence")
     .split("/")
     .map((s) => s.trim())
-    .filter(Boolean);
+    .filter((s) => Boolean(s) && !s.toLowerCase().includes("advanced") && !s.toLowerCase().includes("petrochemical"));
+  const sectors = rawSectors.length > 0 ? rawSectors.slice(0, 2) : ["Aerospace", "Defence"];
 
   return (
     <Link href="/" className={`inline-flex items-center gap-2 sm:gap-3 group select-none min-w-0 ${className}`}>
@@ -222,10 +223,10 @@ export default function Logo({
         {/* Sectors Horizontal Format starting directly from brand name */}
         {showSectorsList && (
           <div className="flex items-center flex-wrap gap-x-1 sm:gap-x-2 gap-y-0.5 mt-0.5 sm:mt-1 select-none text-[8px] xs:text-[9.5px] sm:text-[11px] md:text-[11.5px] font-semibold text-slate-300 tracking-wider whitespace-nowrap">
-            {sectors.slice(0, 3).map((sec, idx) => (
+            {sectors.slice(0, 2).map((sec, idx) => (
               <React.Fragment key={sec}>
                 <span className="whitespace-nowrap">{sec}</span>
-                {idx < Math.min(sectors.length, 3) - 1 && <span className="text-white/30 font-normal px-0.5">/</span>}
+                {idx < Math.min(sectors.length, 2) - 1 && <span className="text-white/30 font-normal px-0.5">/</span>}
               </React.Fragment>
             ))}
           </div>
