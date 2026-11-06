@@ -78,7 +78,7 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
   const titleLines = formatHeadline(data.heroTitle || "");
 
   return (
-    <section className="relative w-full sm:min-h-screen pt-0 sm:pt-24 lg:pt-28 pb-8 sm:pb-16 lg:pb-20 flex flex-col justify-between sm:justify-end items-start overflow-hidden bg-[#020612]">
+    <section className="relative w-full sm:min-h-screen pt-0 sm:pt-24 lg:pt-28 pb-6 sm:pb-10 lg:pb-12 flex flex-col justify-between sm:justify-end items-start overflow-hidden bg-[#020612]">
       {/* 1. Deep Royal Navy Atmospheric Lighting & Desktop Background Video */}
       <HeroBackgroundAtmosphere />
 
@@ -96,7 +96,7 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
       </div>
 
       {/* 3. Main Hero Inner Content */}
-      <div className="relative w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-14 z-10 flex flex-col items-start text-left mt-1 sm:mt-0 sm:translate-x-4">
+      <div className="relative w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 z-10 flex flex-col items-start text-left mt-3 sm:mt-0">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -124,13 +124,13 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
 
           {/* Hero Subtitle from CMS */}
           {data.heroSubtitle && (
-            <p className="text-xs sm:text-sm md:text-base text-slate-300 max-w-2xl mx-auto text-center sm:mx-0 sm:text-left leading-relaxed select-none">
+            <p className="text-xs sm:text-sm md:text-base text-slate-300 max-w-2xl text-left leading-relaxed select-none">
               {data.heroSubtitle}
             </p>
           )}
 
                     {/* Action Group: Buttons */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center sm:justify-start gap-3 sm:gap-4 pt-3 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-3 sm:gap-4 pt-3 w-full sm:w-auto">
             {/* 1. Explore Capabilities (Primary Radiant Blue Pill) */}
             <Link
               href={data.heroCtaLink || "/capabilities"}
