@@ -531,7 +531,7 @@ export default function AboutContent() {
         {/* ========================================================================= */}
         {/* SECTION: GROUP OF COMPANIES / OUR BUSINESSES (Exact 3 Columns Requested)  */}
         {/* ========================================================================= */}
-        <div id="group" className="pt-0 sm:pt-10 space-y-4 sm:space-y-10 scroll-mt-28 w-full">
+        <div id="group" className="pt-2 sm:pt-10 space-y-5 sm:space-y-10 scroll-mt-28 w-full">
           
           {/* Centered Heading */}
           <motion.div
@@ -539,7 +539,7 @@ export default function AboutContent() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.6 }}
-            className="text-center space-y-1.5 sm:space-y-3"
+            className="text-center space-y-2 sm:space-y-3"
           >
             <div className="inline-flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#7ec8ff]" />
@@ -547,7 +547,7 @@ export default function AboutContent() {
                 GROUP OF COMPANIES
               </span>
             </div>
-            <h2 className="font-oxanium text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-white leading-tight">
+            <h2 className="font-oxanium text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-white">
               OUR BUSINESSES
             </h2>
           </motion.div>
