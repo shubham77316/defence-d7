@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "@/components/ui/Logo";
+import FloatingHeroWordmark from "@/components/home/FloatingHeroWordmark";
 import Button from "@/components/ui/Button";
 import { NAV_LINKS } from "@/data/navigation";
 import { useNavigation } from "@/context/NavigationContext";
@@ -95,7 +96,8 @@ export default function Navbar() {
     >
       <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 flex items-center justify-between gap-2 sm:gap-4">
         {/* Brand Logo */}
-        <Logo size="md" showSectorsList hideWordmark={pathname === "/" && !isScrolled} />
+        <Logo size="md" showSectorsList hideWordmark={pathname === "/"} />
+        <FloatingHeroWordmark />
 
         {/* Desktop Navigation Links: All options directly visible */}
         <div className="hidden lg:flex items-center gap-3 xl:gap-4">

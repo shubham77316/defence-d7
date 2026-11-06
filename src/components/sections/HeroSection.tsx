@@ -105,7 +105,7 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
         >
 
           {/* Monumental Stacked Brand Wordmark - Inspired by Reference */}
-          <div className="flex flex-col items-start select-none -space-y-3 sm:-space-y-5 md:-space-y-7 lg:-space-y-9 xl:-space-y-11">
+          <div id="hero-title-anchor" className="flex flex-col items-start select-none -space-y-3 sm:-space-y-5 md:-space-y-7 lg:-space-y-9 xl:-space-y-11 pointer-events-none opacity-0 invisible" aria-hidden="true">
             {/* Row 1: SKY on left + Aerospace / Defence directly above 'DENS' */}
             <div className="flex items-baseline gap-3 sm:gap-5 md:gap-7 lg:gap-8 flex-wrap">
               <span className="font-oxanium text-7xl xs:text-8xl sm:text-9xl md:text-[120px] lg:text-[142px] xl:text-[164px] 2xl:text-[180px] font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#9ad6ff] via-[#5aa9f7] to-[#1d6fa5] leading-none">

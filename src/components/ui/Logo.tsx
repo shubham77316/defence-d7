@@ -163,7 +163,7 @@ export default function Logo({
   return (
     <Link href="/" className={`inline-flex items-center gap-2 sm:gap-3 group select-none min-w-0 ${className}`}>
       {/* Left-Side Logo Emblem (100% Exact User-Uploaded Original Design - Refined) */}
-      <div className="relative flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+      <div id="navbar-emblem" className="relative flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
         <Image
           src={settings.logoUrl || "/images/skywardens-logo.png"}
           alt={`${settings.siteName || "Sky Wardens"} Logo`}
