@@ -436,7 +436,7 @@ export default function CapabilitiesPage() {
                     onMouseLeave={() => setHoveredSector(null)}
                     onFocus={() => setHoveredSector(sector.id)}
                     onBlur={() => setHoveredSector(null)}
-                    className={`group relative h-[380px] sm:h-[410px] md:h-[430px] rounded-2xl sm:rounded-3xl overflow-hidden border shadow-[0_16px_45px_rgba(0,0,0,0.85)] flex flex-col justify-between p-6 sm:p-7 transition-all duration-500 block cursor-pointer select-none ${
+                    className={`group relative h-[360px] sm:h-[390px] md:h-[400px] rounded-2xl sm:rounded-3xl overflow-hidden border shadow-[0_16px_45px_rgba(0,0,0,0.85)] flex flex-col justify-between p-6 sm:p-7 transition-all duration-500 block cursor-pointer select-none ${
                       isHovered
                         ? `${sector.hoverBorder} shadow-[0_22px_65px_rgba(0,0,0,0.95)] -translate-y-1`
                         : `${sector.normalBorder}`
@@ -489,7 +489,7 @@ export default function CapabilitiesPage() {
       {/* ======================================================== */}
       {/* LOWER CONTENT: BANNERS & ACCORDIONS (Normal Page Flow)   */}
       {/* ======================================================== */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-10 z-20 mt-6 sm:mt-8 md:mt-10">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8 z-20 mt-4 sm:-mt-5 md:-mt-6">
 
         {/* ========================================== */}
         {/* E-SHOP BANNER (Explore Tactical Gear Store) */}
