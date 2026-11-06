@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -19,7 +19,7 @@ interface NewsItem {
 const FALLBACK_NEWS_ITEMS: NewsItem[] = [
   {
     id: "defence-systems",
-    title: "Defence systems, protective platforms, and readiness updates",
+    title: "DEFENCE SYSTEMS, PROTECTIVE PLATFORMS, AND READINESS UPDATES",
     category: "DEFENCE",
     date: "FEBRUARY 2026",
     description:
@@ -29,7 +29,7 @@ const FALLBACK_NEWS_ITEMS: NewsItem[] = [
   },
   {
     id: "aerospace-highlights",
-    title: "Aerospace highlights and autonomous program positioning",
+    title: "AEROSPACE HIGHLIGHTS AND AUTONOMOUS PROGRAM POSITIONING",
     category: "AEROSPACE",
     date: "MARCH 2026",
     description:
@@ -83,7 +83,7 @@ export default function NewsInsightsSection() {
       if (res.ok) {
         const json = await res.json();
         if (json.success && Array.isArray(json.data) && json.data.length > 0) {
-          // Strictly extract only Defence and Aerospace (filter out test, vi, etc.)
+          // Strictly extract only Defence and Aerospace (filter out generic/dummy test items)
           const defenceData = json.data.find((d: any) => {
             const s = `${d.slug || ""} ${d.category || ""} ${d.title || ""}`.toLowerCase();
             return (s.includes("defence") || s.includes("defense")) && !s.includes("test") && s !== "vi";
@@ -97,7 +97,7 @@ export default function NewsInsightsSection() {
           const onlyTwo: NewsItem[] = [
             {
               id: defenceData?.slug || "defence-systems",
-              title: defenceData?.title || FALLBACK_NEWS_ITEMS[0].title,
+              title: defenceData?.title ? defenceData.title.toUpperCase() : FALLBACK_NEWS_ITEMS[0].title,
               category: "DEFENCE",
               date: defenceData?.date || FALLBACK_NEWS_ITEMS[0].date,
               description: defenceData?.excerpt || defenceData?.description || FALLBACK_NEWS_ITEMS[0].description,
@@ -109,7 +109,7 @@ export default function NewsInsightsSection() {
             },
             {
               id: aerospaceData?.slug || "aerospace-highlights",
-              title: aerospaceData?.title || FALLBACK_NEWS_ITEMS[1].title,
+              title: aerospaceData?.title ? aerospaceData.title.toUpperCase() : FALLBACK_NEWS_ITEMS[1].title,
               category: "AEROSPACE",
               date: aerospaceData?.date || FALLBACK_NEWS_ITEMS[1].date,
               description: aerospaceData?.excerpt || aerospaceData?.description || FALLBACK_NEWS_ITEMS[1].description,
@@ -125,14 +125,14 @@ export default function NewsInsightsSection() {
         }
       }
     } catch {
-      // Fallback silently
+      // Fallback silently to static structured items
     }
   }, []);
 
   useEffect(() => {
     fetchNews();
     window.addEventListener("focus", fetchNews);
-    const interval = setInterval(fetchNews, 8000);
+    const interval = setInterval(fetchNews, 10000);
     return () => {
       window.removeEventListener("focus", fetchNews);
       clearInterval(interval);
@@ -174,7 +174,7 @@ export default function NewsInsightsSection() {
         }}
       />
 
-      {/* Main Container */}
+      {/* Main Container Aligned with Layout */}
       <div className="relative w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-14 z-10">
         
         {/* Section Header */}
@@ -221,7 +221,7 @@ export default function NewsInsightsSection() {
           onMouseLeave={() => setIsHovered(false)}
         >
           {/* Main Slider Screen */}
-          <div className="relative w-full h-[330px] sm:h-[380px] md:h-[430px] lg:h-[460px] rounded-2xl md:rounded-3xl overflow-hidden border border-white/15 shadow-[0_24px_60px_rgba(0,0,0,0.92)] bg-[#050914]">
+          <div className="relative w-full h-[340px] sm:h-[400px] md:h-[450px] lg:h-[480px] rounded-2xl md:rounded-3xl overflow-hidden border border-white/15 shadow-[0_24px_60px_rgba(0,0,0,0.92)] bg-[#050914]">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
                 key={page}
@@ -262,8 +262,8 @@ export default function NewsInsightsSection() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/30 pointer-events-none" />
                 <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black/80 via-black/35 to-transparent pointer-events-none z-10" />
 
-                {/* Vertical Category Tag (Matches exact aesthetic from user's screenshot) */}
-                <div className="absolute left-4 sm:left-5 md:left-6 top-6 sm:top-7 z-20 flex flex-col items-center gap-3 pointer-events-none select-none">
+                {/* Vertical Category Tag (Matches exact reference layout) */}
+                <div className="absolute left-4 sm:left-6 md:left-7 top-6 sm:top-8 z-20 flex flex-col items-center gap-3 pointer-events-none select-none">
                   <div className="flex items-center gap-2.5 [writing-mode:vertical-rl] rotate-180">
                     <span className="text-base sm:text-lg md:text-xl lg:text-2xl font-mono uppercase tracking-[0.25em] font-extrabold text-[#7ec8ff] drop-shadow-[0_0_16px_rgba(126,200,255,0.85)]">
                       {currentItem.category}
@@ -273,23 +273,23 @@ export default function NewsInsightsSection() {
                 </div>
 
                 {/* Bottom Glassmorphic Caption Bar */}
-                <div className="absolute inset-x-0 bottom-0 z-20 bg-black/60 backdrop-blur-md border-t border-white/10 px-5 sm:px-7 py-3 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 select-none">
-                  <div className="max-w-3xl pr-2">
-                    <h3 className="text-sm sm:text-base md:text-[17px] font-bold uppercase tracking-tight text-white leading-snug drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+                <div className="absolute inset-x-0 bottom-0 z-20 bg-black/75 backdrop-blur-md border-t border-white/10 px-5 sm:px-7 py-4 sm:py-5 flex flex-col md:flex-row md:items-center justify-between gap-4 select-none">
+                  <div className="max-w-2xl pr-2">
+                    <h3 className="font-oxanium text-sm sm:text-base md:text-lg font-bold uppercase tracking-tight text-white leading-snug drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
                       {currentItem.title}
                     </h3>
-                    <p className="text-xs sm:text-[13px] text-slate-200/90 leading-relaxed font-normal line-clamp-2 mt-1 drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
+                    <p className="text-xs sm:text-[13px] text-slate-300 leading-relaxed font-normal mt-1 line-clamp-2 drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
                       {currentItem.description}
                     </p>
                   </div>
 
-                  {/* Read Article Action Button */}
+                  {/* Read Briefing Action Button */}
                   <Link
                     href={currentItem.href}
-                    className="group inline-flex items-center justify-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-400/30 hover:border-sky-400/60 text-sky-300 hover:text-white text-xs font-bold tracking-wider uppercase transition-all duration-300 shadow-[0_0_15px_rgba(56,189,248,0.15)] shrink-0 self-start sm:self-center"
+                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#03203f]/90 hover:bg-[#063363] border border-sky-500/40 hover:border-sky-400 text-sky-200 hover:text-white text-xs sm:text-[13px] font-semibold tracking-wider uppercase transition-all duration-200 shadow-[0_0_15px_rgba(56,189,248,0.15)] shrink-0 self-start md:self-center group/btn"
                   >
-                    <span>Read Briefing</span>
-                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                    <span>READ BRIEFING</span>
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
                   </Link>
                 </div>
               </motion.div>
@@ -301,8 +301,9 @@ export default function NewsInsightsSection() {
                 e.stopPropagation();
                 paginate(-1);
               }}
-              className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/55 hover:bg-black/85 backdrop-blur-md border border-white/20 hover:border-sky-400/50 text-white flex items-center justify-center transition-all hover:scale-105 shadow-[0_4px_20px_rgba(0,0,0,0.8)] cursor-pointer"
+              className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-md border border-white/20 hover:border-sky-400/50 text-white flex items-center justify-center transition-all hover:scale-105 shadow-[0_4px_20px_rgba(0,0,0,0.8)] cursor-pointer"
               title="Previous Slide"
+              aria-label="Previous Slide"
             >
               <ChevronLeft className="w-5 h-5 text-slate-200" />
             </button>
@@ -313,11 +314,25 @@ export default function NewsInsightsSection() {
                 e.stopPropagation();
                 paginate(1);
               }}
-              className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/55 hover:bg-black/85 backdrop-blur-md border border-white/20 hover:border-sky-400/50 text-white flex items-center justify-center transition-all hover:scale-105 shadow-[0_4px_20px_rgba(0,0,0,0.8)] cursor-pointer"
+              className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-md border border-white/20 hover:border-sky-400/50 text-white flex items-center justify-center transition-all hover:scale-105 shadow-[0_4px_20px_rgba(0,0,0,0.8)] cursor-pointer"
               title="Next Slide"
+              aria-label="Next Slide"
             >
               <ChevronRight className="w-5 h-5 text-slate-200" />
             </button>
+          </div>
+
+          {/* Tactical HUD Reticle on Right Side */}
+          <div className="hidden xl:flex absolute -right-8 top-1/2 -translate-y-1/2 pointer-events-none z-20 items-center justify-center opacity-80">
+            <div className="relative w-14 h-14 flex items-center justify-center">
+              <div className="absolute inset-0 rounded-full border border-sky-400/35 border-dashed animate-[spin_25s_linear_infinite]" />
+              <div className="absolute inset-2 rounded-full border border-sky-400/25" />
+              <div className="w-2 h-2 rounded-full bg-sky-400 shadow-[0_0_10px_#38bdf8]" />
+              <div className="absolute top-0 w-[1px] h-2.5 bg-sky-400/50" />
+              <div className="absolute bottom-0 w-[1px] h-2.5 bg-sky-400/50" />
+              <div className="absolute left-0 h-[1px] w-2.5 bg-sky-400/50" />
+              <div className="absolute right-0 h-[1px] w-2.5 bg-sky-400/50" />
+            </div>
           </div>
 
           {/* Bottom Pagination Dots / Progress Indicator */}
@@ -330,10 +345,11 @@ export default function NewsInsightsSection() {
                   onClick={() => jumpToSlide(idx)}
                   className={`relative transition-all duration-300 rounded-full cursor-pointer ${
                     isActive
-                      ? "w-8 h-2.5 bg-[#38bdf8] shadow-[0_0_12px_#38bdf8]"
-                      : "w-2.5 h-2.5 bg-white/20 hover:bg-white/40"
+                      ? "w-7 sm:w-8 h-2 sm:h-2.5 bg-[#38bdf8] shadow-[0_0_12px_#38bdf8]"
+                      : "w-2 sm:w-2.5 h-2 sm:h-2.5 bg-white/25 hover:bg-white/45"
                   }`}
                   title={`Go to slide ${idx + 1}: ${item.category}`}
+                  aria-label={`Go to slide ${idx + 1}: ${item.category}`}
                 />
               );
             })}
