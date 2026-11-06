@@ -114,9 +114,9 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
 
               {/* Exact 'Aerospace / Defence' tagline above DENS */}
               <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-bold tracking-[0.2em] uppercase select-none pb-1 sm:pb-3 md:pb-5 lg:pb-7">
-                <span className="text-[#7ec8ff] drop-shadow-[0_2px_8px_rgba(126,200,255,0.4)]">Aerospace</span>
+                <span className="text-[#7ec8ff]">Aerospace</span>
                 <span className="text-white/40 font-normal">/</span>
-                <span className="text-white drop-shadow-[0_2px_8px_rgba(255,255,255,0.3)]">Defence</span>
+                <span className="text-white">Defence</span>
               </div>
             </div>
 
@@ -134,7 +134,7 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
                   key={idx}
                   className={`block ${
                     idx === 1
-                      ? "text-transparent bg-clip-text bg-gradient-to-r from-[#5aa9f7] via-[#93c5fd] to-white drop-shadow-[0_2px_12px_rgba(90,169,247,0.3)]"
+                      ? "text-transparent bg-clip-text bg-gradient-to-r from-[#5aa9f7] via-[#93c5fd] to-white"
                       : "text-white"
                   }`}
                 >
