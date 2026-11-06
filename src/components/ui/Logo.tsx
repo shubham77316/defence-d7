@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface LogoProps {
   className?: string;
@@ -175,31 +176,39 @@ export default function Logo({
       </div>
 
       {/* Right-Side Column: Sky Wardens Wordmark on top + Sectors list */}
-      {!hideWordmark && (
-      <div className="flex flex-col items-start justify-center min-w-0">
-        <div className="flex items-center text-white group-hover:text-slate-100 transition-colors duration-200">
-          <SkyWardensWordmarkSvg className={currentSize.wordmarkClass} name={settings.siteName || "Sky Wardens"} />
-        </div>
+            <AnimatePresence initial={false}>
+        {!hideWordmark && (
+          <motion.div
+            initial={{ opacity: 0, x: -10, scale: 0.96 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: -10, scale: 0.96 }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col items-start justify-center min-w-0"
+          >
+            <div className="flex items-center text-white group-hover:text-slate-100 transition-colors duration-200">
+              <SkyWardensWordmarkSvg className={currentSize.wordmarkClass} name={settings.siteName || "Sky Wardens"} />
+            </div>
 
-        {/* Sectors Horizontal Format starting directly from brand name */}
-        {showSectorsList && (
-          <div className="flex items-center flex-wrap gap-x-1 sm:gap-x-2 gap-y-0.5 mt-0.5 sm:mt-1 select-none text-[8px] xs:text-[9.5px] sm:text-[11px] md:text-[11.5px] font-semibold text-slate-300 tracking-wider">
-            {sectors.slice(0, 3).map((sec, idx) => (
-              <React.Fragment key={sec}>
-                <span className="whitespace-nowrap">{sec}</span>
-                {idx < Math.min(sectors.length, 3) - 1 && <span className="text-white/30 font-normal px-0.5">/</span>}
-              </React.Fragment>
-            ))}
-          </div>
-        )}
+            {/* Sectors Horizontal Format starting directly from brand name */}
+            {showSectorsList && (
+              <div className="flex items-center flex-wrap gap-x-1 sm:gap-x-2 gap-y-0.5 mt-0.5 sm:mt-1 select-none text-[8px] xs:text-[9.5px] sm:text-[11px] md:text-[11.5px] font-semibold text-slate-300 tracking-wider whitespace-nowrap">
+                {sectors.slice(0, 3).map((sec, idx) => (
+                  <React.Fragment key={sec}>
+                    <span className="whitespace-nowrap">{sec}</span>
+                    {idx < Math.min(sectors.length, 3) - 1 && <span className="text-white/30 font-normal px-0.5">/</span>}
+                  </React.Fragment>
+                ))}
+              </div>
+            )}
 
-        {showTagline && (
-          <span className={`text-slate-400 font-mono tracking-[0.18em] uppercase ${currentSize.subText} mt-1.5`}>
-            {settings.tagline || "DEFENCE • AEROSPACE • ADVANCED SYSTEMS"}
-          </span>
+            {showTagline && (
+              <span className={`text-slate-400 font-mono tracking-[0.18em] uppercase ${currentSize.subText} mt-1.5`}>
+                {settings.tagline || "DEFENCE • AEROSPACE • ADVANCED SYSTEMS"}
+              </span>
+            )}
+          </motion.div>
         )}
-      </div>
-      )}
+      </AnimatePresence>
     </Link>
   );
 }
