@@ -101,22 +101,22 @@ export default function HeroSection({ initialData }: HeroSectionProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col items-start text-left max-w-5xl w-full"
+          className="flex flex-col items-start text-left max-w-6xl w-full"
         >
 
           {/* Monumental Stacked Brand Wordmark - Inspired by Reference */}
-          <div className="flex flex-col items-start select-none -space-y-2 sm:-space-y-4 md:-space-y-5 lg:-space-y-6">
-            <span className="font-oxanium text-6xl xs:text-7xl sm:text-8xl md:text-9xl lg:text-[112px] xl:text-[132px] 2xl:text-[144px] font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#9ad6ff] via-[#5aa9f7] to-[#1d6fa5] drop-shadow-[0_4px_24px_rgba(56,189,248,0.4)] leading-none">
+          <div className="flex flex-col items-start select-none -space-y-3 sm:-space-y-5 md:-space-y-7 lg:-space-y-9 xl:-space-y-11">
+            <span className="font-oxanium text-7xl xs:text-8xl sm:text-9xl md:text-[120px] lg:text-[142px] xl:text-[164px] 2xl:text-[180px] font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#9ad6ff] via-[#5aa9f7] to-[#1d6fa5] drop-shadow-[0_4px_24px_rgba(56,189,248,0.4)] leading-none">
               SKY
             </span>
-            <span className="font-oxanium text-6xl xs:text-7xl sm:text-8xl md:text-9xl lg:text-[112px] xl:text-[132px] 2xl:text-[144px] font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#ffffff] via-[#f1f5f9] to-[#cbd5e1] drop-shadow-[0_4px_24px_rgba(255,255,255,0.25)] leading-none">
+            <span className="font-oxanium text-7xl xs:text-8xl sm:text-9xl md:text-[120px] lg:text-[142px] xl:text-[164px] 2xl:text-[180px] font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#ffffff] via-[#f1f5f9] to-[#cbd5e1] drop-shadow-[0_4px_24px_rgba(255,255,255,0.25)] leading-none">
               WARDENS
             </span>
           </div>
 
           {/* Monumental Display Headline */}
-          <div className="space-y-0.5 sm:space-y-1 -mt-1 sm:-mt-2.5 md:-mt-4 lg:-mt-5">
-            <h1 className="font-oxanium text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-[34px] xl:text-[38px] font-semibold tracking-wide text-white leading-[1.2] select-none text-left">
+          <div className="space-y-0.5 sm:space-y-1 -mt-2 sm:-mt-4 md:-mt-6 lg:-mt-8 xl:-mt-10">
+            <h1 className="font-oxanium text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-[40px] xl:text-[46px] font-semibold tracking-wide text-white leading-[1.2] select-none text-left">
               {titleLines.map((line, idx) => (
                 <span
                   key={idx}
