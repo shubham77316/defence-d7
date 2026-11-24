@@ -214,6 +214,8 @@ export default function Logo({
         style={{
           opacity: navWordmarkOpacity,
           pointerEvents: navWordmarkOpacity > 0.5 ? "auto" : "none",
+
+          
         }}
       >
         <div className="flex items-center text-white group-hover:text-slate-100 transition-colors duration-200">

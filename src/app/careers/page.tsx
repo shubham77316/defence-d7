@@ -35,7 +35,7 @@ function CareerScrollLetter({
   return (
     <motion.span
       style={{ y, opacity }}
-      className="inline-block font-anton font-black uppercase text-[14vh] sm:text-[15.5vh] md:text-[17vh] lg:text-[19vh] xl:text-[20.5vh] leading-[0.63] tracking-tight text-center bg-gradient-to-b from-[#e0f2fe] via-[#7ec8ff] to-[#38bdf8] bg-clip-text text-transparent will-change-transform drop-shadow-[0_10px_30px_rgba(0,0,0,0.95)] select-none"
+      className="inline-block font-anton font-black uppercase text-[13.5vh] sm:text-[14.5vh] md:text-[15.5vh] lg:text-[16.5vh] xl:text-[17.5vh] leading-[0.72] tracking-tight text-center bg-gradient-to-b from-[#e0f2fe] via-[#7ec8ff] to-[#38bdf8] bg-clip-text text-transparent will-change-transform drop-shadow-[0_10px_30px_rgba(0,0,0,0.95)] select-none"
     >
       {char}
     </motion.span>
@@ -383,9 +383,9 @@ export default function CareersPage() {
             </motion.div>
           </div>
 
-          {/* Vertical CAREERS letters column */}
-          <div className="absolute right-4 sm:right-6 md:right-8 lg:right-10 xl:right-14 top-18 sm:top-20 lg:top-22 z-20 flex flex-col items-center pointer-events-none select-none">
-            <h1 aria-label="CAREERS" className="flex flex-col items-center select-none pointer-events-none">
+          {/* Vertical CAREERS letters column - Locked from navbar border line down to the exact bottom edge with zero space leftover */}
+          <div className="absolute right-4 sm:right-6 md:right-8 lg:right-10 xl:right-14 top-[58px] sm:top-[62px] bottom-0 z-20 flex flex-col items-center pointer-events-none select-none">
+            <h1 aria-label="CAREERS" className="h-full flex flex-col justify-between items-center select-none pointer-events-none pb-0">
               {CAREERS_LETTERS.map((char, index) => (
                 <CareerScrollLetter
                   key={index}

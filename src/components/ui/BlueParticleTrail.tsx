@@ -18,6 +18,12 @@ interface RadarBlip {
   speed: number;
 }
 
+interface TrailNode {
+  x: number;
+  y: number;
+  alpha: number;
+}
+
 export default function BlueParticleTrail() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -60,35 +66,54 @@ export default function BlueParticleTrail() {
     resize();
     window.addEventListener("resize", resize, { passive: true });
 
-    // Target (actual mouse) and smooth lerp coordinates
+    // Target (actual mouse pointer)
     let targetX = -500;
     let targetY = -500;
+
+    // 2-Stage Cascaded Butterworth Smoothing Coordinates:
+    // Stage 1: Filter out mouse hardware polling step jitter
+    let smoothTargetX = -500;
+    let smoothTargetY = -500;
+
+    // Stage 2: Silky-smooth cinematic gliding position (currX, currY)
     let currX = -500;
     let currY = -500;
 
+    // State variables with continuous interpolation
     let isVisible = false;
     let isHovering = false;
+    let currentAlpha = 0;
+    let currentScale = 0.72;
+    let currentSpinSpeed = 0.007;
+
+    // Kinetic pulses and continuous smooth trail
     const clickPulses: PulseRing[] = [];
+    const trailHistory: TrailNode[] = [];
+    const maxTrailNodes = 14;
 
     // Continuous rotation angles for concentric mechanical rings
     let rotTickDial = 0;
     let rotArcRing = 0;
     let flarePos = 0; // Orbital angle of the cyan light glint
 
-    // Ambient floating tactical blips (matching reference image upper right)
+    // Ambient floating tactical blips (matching reference image)
     const radarBlips: RadarBlip[] = [
-      { angle: 0.72, dist: 44, size: 2.2, alpha: 0.9, speed: 0.003 },
-      { angle: 0.98, dist: 52, size: 1.6, alpha: 0.7, speed: 0.0025 },
-      { angle: 1.18, dist: 60, size: 2.6, alpha: 0.95, speed: 0.002 },
-      { angle: 3.85, dist: 48, size: 1.8, alpha: 0.55, speed: -0.002 },
+      { angle: 0.72, dist: 44, size: 2.2, alpha: 0.9, speed: 0.0025 },
+      { angle: 0.98, dist: 52, size: 1.6, alpha: 0.7, speed: 0.002 },
+      { angle: 1.18, dist: 60, size: 2.6, alpha: 0.95, speed: 0.0018 },
+      { angle: 3.85, dist: 48, size: 1.8, alpha: 0.55, speed: -0.0018 },
     ];
 
     const handleMouseMove = (e: MouseEvent) => {
       targetX = e.clientX;
       targetY = e.clientY;
       if (!isVisible || currX < -100) {
-        currX = targetX;
-        currY = targetY;
+        targetX = e.clientX;
+        targetY = e.clientY;
+        smoothTargetX = e.clientX;
+        smoothTargetY = e.clientY;
+        currX = e.clientX;
+        currY = e.clientY;
         isVisible = true;
       }
     };
@@ -102,8 +127,12 @@ export default function BlueParticleTrail() {
     const handleMouseEnter = (e: MouseEvent) => {
       targetX = e.clientX;
       targetY = e.clientY;
-      currX = targetX;
-      currY = targetY;
+      if (currX < -100) {
+        smoothTargetX = e.clientX;
+        smoothTargetY = e.clientY;
+        currX = e.clientX;
+        currY = e.clientY;
+      }
       isVisible = true;
     };
 
@@ -125,12 +154,11 @@ export default function BlueParticleTrail() {
     };
 
     const handleClick = (e: MouseEvent) => {
-      // Trigger kinetic radar pulse expanding outward
       clickPulses.push({
         x: e.clientX,
         y: e.clientY,
-        radius: 12,
-        maxRadius: 55,
+        radius: 10,
+        maxRadius: 58,
         alpha: 0.95,
       });
     };
@@ -141,8 +169,14 @@ export default function BlueParticleTrail() {
     document.addEventListener("mouseleave", handleMouseLeave);
     document.addEventListener("mouseenter", handleMouseEnter);
 
-    // 60FPS Tactical HUD Canvas Renderer
+    let lastTime = performance.now();
+
+    // High refresh rate 60-144FPS Ultra-Smooth Tactical HUD Canvas Renderer
     const render = () => {
+      const now = performance.now();
+      const dt = Math.min((now - lastTime) / 1000, 0.05);
+      lastTime = now;
+
       // Safe high-DPI transform & clear
       ctx.save();
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -151,27 +185,81 @@ export default function BlueParticleTrail() {
       // Do not render tactical HUD reticle over open modals or mobile drawers
       if (typeof document !== "undefined" && document.body.style.overflow === "hidden") {
         animId = requestAnimationFrame(render);
+        ctx.restore();
         return;
       }
 
-      if (isVisible && targetX >= 0 && targetY >= 0) {
-        // High-precision smooth follow (spring lerp)
-        const lerpFactor = isHovering ? 0.3 : 0.22;
-        currX += (targetX - currX) * lerpFactor;
-        currY += (targetY - currY) * lerpFactor;
+      // Smooth opacity fade in/out
+      const targetAlpha = isVisible && targetX >= 0 && targetY >= 0 ? 1 : 0;
+      currentAlpha += (targetAlpha - currentAlpha) * (1 - Math.exp(-6 * dt));
 
-        // Rotations update
-        const spinSpeed = isHovering ? 0.024 : 0.009;
-        rotTickDial += spinSpeed;
-        rotArcRing -= spinSpeed * 0.75;
-        flarePos += spinSpeed * 1.6;
+      if (currentAlpha > 0.005) {
+        // =========================================================================
+        // 2-Stage Cascaded Butter-Smooth Tracking
+        // Stage 1: Soft-damps the mouse polling steps (rate ~14.0)
+        // Stage 2: Glides the reticle with silky, organic physical inertia (rate ~5.2)
+        // =========================================================================
+        const filterRate = 14.0;
+        const filterFactor = 1 - Math.exp(-filterRate * dt);
+        smoothTargetX += (targetX - smoothTargetX) * filterFactor;
+        smoothTargetY += (targetY - smoothTargetY) * filterFactor;
 
+        // Cinematic inertia tracking rate: 5.2 (calm, liquid glide) / 6.8 (hover focus)
+        const glideRate = isHovering ? 6.8 : 5.2;
+        const glideFactor = 1 - Math.exp(-glideRate * dt);
+        currX += (smoothTargetX - currX) * glideFactor;
+        currY += (smoothTargetY - currY) * glideFactor;
+
+        // Smooth scale transition on hover
+        const targetScale = isHovering ? 0.86 : 0.72;
+        currentScale += (targetScale - currentScale) * (1 - Math.exp(-8 * dt));
+
+        // Smooth rotation speeds normalized across all refresh rates
+        const targetSpin = isHovering ? 0.016 : 0.006;
+        currentSpinSpeed += (targetSpin - currentSpinSpeed) * (1 - Math.exp(-6 * dt));
+        const dtMultiplier = dt * 60;
+        rotTickDial += currentSpinSpeed * dtMultiplier;
+        rotArcRing -= currentSpinSpeed * 0.7 * dtMultiplier;
+        flarePos += currentSpinSpeed * 1.5 * dtMultiplier;
+
+        // Maintain continuous history points for soft liquid motion wake
+        trailHistory.unshift({ x: currX, y: currY, alpha: currentAlpha });
+        if (trailHistory.length > maxTrailNodes) {
+          trailHistory.pop();
+        }
+
+        // =========================================================================
+        // Render Soft Luminous Liquid Motion Wake (Continuous Stream)
+        // =========================================================================
+        if (trailHistory.length > 2) {
+          ctx.save();
+          for (let i = 1; i < trailHistory.length; i++) {
+            const p1 = trailHistory[i - 1];
+            const p2 = trailHistory[i];
+            const ratio = 1 - i / trailHistory.length;
+            const wakeAlpha = currentAlpha * ratio * 0.14;
+
+            if (wakeAlpha > 0.005) {
+              ctx.strokeStyle = `rgba(0, 229, 255, ${wakeAlpha})`;
+              ctx.lineWidth = ratio * 3.5 * currentScale;
+              ctx.lineCap = "round";
+              ctx.lineJoin = "round";
+              ctx.beginPath();
+              ctx.moveTo(p1.x, p1.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.stroke();
+            }
+          }
+          ctx.restore();
+        }
+
+        // =========================================================================
+        // Render Tactical HUD Reticle (Rock-solid, Upright, Sub-pixel Crisp)
+        // =========================================================================
         ctx.save();
+        ctx.globalAlpha = currentAlpha;
         ctx.translate(currX, currY);
-
-        // Reticle size scales slightly on hover lock-on (compact tactical scale)
-        const baseScale = isHovering ? 0.84 : 0.72;
-        ctx.scale(baseScale, baseScale);
+        ctx.scale(currentScale, currentScale);
 
         // =========================================================================
         // 1. Central Ambient Luminous Halo Core (Exact matching reference image)
@@ -377,7 +465,7 @@ export default function BlueParticleTrail() {
         // 6. Ambient Floating Radar Blips (Upper Right in Reference Image)
         // =========================================================================
         radarBlips.forEach((blip) => {
-          blip.angle += blip.speed;
+          blip.angle += blip.speed * dtMultiplier;
           const bx = Math.cos(blip.angle) * blip.dist;
           const by = Math.sin(blip.angle) * blip.dist;
 
@@ -389,7 +477,7 @@ export default function BlueParticleTrail() {
           ctx.fill();
         });
 
-        ctx.restore();
+        ctx.restore(); // Restore HUD transform
       }
 
       // =========================================================================
@@ -397,8 +485,8 @@ export default function BlueParticleTrail() {
       // =========================================================================
       for (let i = clickPulses.length - 1; i >= 0; i--) {
         const pulse = clickPulses[i];
-        pulse.radius += (pulse.maxRadius - pulse.radius) * 0.12 + 0.8;
-        pulse.alpha -= 0.035;
+        pulse.radius += (pulse.maxRadius - pulse.radius) * (1 - Math.exp(-9 * dt)) + 0.8;
+        pulse.alpha -= 1.8 * dt;
 
         if (pulse.alpha <= 0.01 || pulse.radius >= pulse.maxRadius) {
           clickPulses.splice(i, 1);
@@ -406,7 +494,7 @@ export default function BlueParticleTrail() {
         }
 
         ctx.save();
-        ctx.strokeStyle = `rgba(0, 229, 255, ${pulse.alpha})`;
+        ctx.strokeStyle = `rgba(0, 229, 255, ${Math.max(0, pulse.alpha)})`;
         ctx.lineWidth = 1.5;
         ctx.shadowColor = "#00e5ff";
         ctx.shadowBlur = 10;
