@@ -140,9 +140,9 @@ export default function AboutContent() {
       {/* HERO SECTION: PINNED STICKY TRACK (4-Card Stacked Deck Scroll Animation)  */}
       {/* ========================================================================= */}
       <div ref={heroTrackRef} className="relative w-full h-[450vh]">
-        <div className="sticky top-0 h-screen w-full flex flex-col justify-center items-center overflow-x-clip pt-16 sm:pt-20 pb-4 px-2.5 sm:px-6 md:px-8 lg:px-12 xl:px-14">
+        <div className="sticky top-0 h-screen w-full flex flex-col justify-center items-center overflow-x-clip pt-16 sm:pt-20 pb-4 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
           {/* Back to Home Button */}
-          <div className="absolute top-20 sm:top-24 left-4 sm:left-6 md:left-8 lg:left-12 xl:left-14 z-30 pointer-events-auto">
+          <div className="absolute top-20 sm:top-24 left-4 sm:left-6 md:left-8 lg:left-10 xl:left-12 z-30 pointer-events-auto">
             <Link
               href="/"
               className="inline-flex items-center gap-2 text-xs sm:text-sm font-mono text-cyan-300 hover:text-white uppercase tracking-wider transition-all duration-300 py-1.5 px-3.5 rounded-lg bg-[#040814]/80 hover:bg-[#071329] border border-cyan-400/30 hover:border-cyan-300/60 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.6)] group"
@@ -434,7 +434,7 @@ export default function AboutContent() {
       {/* ========================================================================= */}
       {/* CONTENT: Split Layout, Cards, Mission/Vision, Group of Sectors            */}
       {/* ========================================================================= */}
-      <div className="relative z-10 w-full max-w-[1660px] mx-auto px-2.5 sm:px-5 space-y-8 sm:space-y-16 mt-4 sm:mt-14">
+      <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 space-y-8 sm:space-y-16 mt-4 sm:mt-14">
 
         {/* ========================================================================= */}
         {/* SECTION: MISSION & VISION                                                 */}

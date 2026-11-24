@@ -532,7 +532,7 @@ export default function DefencePage() {
       </div>
 
       {/* Main Content Area */}
-      <div className="relative z-10 max-w-[1540px] mx-auto px-4 sm:px-6 md:px-10 lg:px-14 pt-3 sm:pt-16 pb-4 sm:pb-12 lg:pb-20 space-y-12 sm:space-y-16">
+      <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 pt-3 sm:pt-16 pb-4 sm:pb-12 lg:pb-20 space-y-12 sm:space-y-16">
 
         {/* ========================================================================= */}
         {/* MAIN CONTENT GRID: 2 COLUMNS (LEFT: CONTINUOUS SECTIONS, RIGHT: SIDEBAR)   */}

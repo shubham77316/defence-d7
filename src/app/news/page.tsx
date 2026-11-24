@@ -399,7 +399,7 @@ export default function NewsPage() {
           </div>
         </div>
 
-        <div className="relative z-10 w-full max-w-[1660px] mx-auto px-2.5 sm:px-5">
+        <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
           {/* Top Back Button */}
           <div className="mb-3.5 sm:mb-6">
             <button
@@ -630,7 +630,7 @@ export default function NewsPage() {
           <div className="absolute top-[45%] right-0 w-[500px] h-[300px] bg-cyan-500/5 blur-[130px] rounded-full" />
         </div>
 
-        <div className="relative z-10 w-full max-w-[1660px] mx-auto px-2.5 sm:px-5">
+        <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
           {/* Breadcrumb nav */}
           <div className="mb-3.5 sm:mb-6 flex items-center gap-2 text-xs font-mono text-slate-400">
             <button
@@ -838,7 +838,7 @@ export default function NewsPage() {
           <div className="absolute top-[45%] right-0 w-[500px] h-[300px] bg-cyan-500/5 blur-[130px] rounded-full" />
         </div>
 
-        <div className="relative z-10 w-full max-w-[1660px] mx-auto px-2.5 sm:px-5">
+        <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
           {/* Top Back Button */}
           <div className="mb-3.5 sm:mb-6">
             <button
@@ -1068,7 +1068,7 @@ export default function NewsPage() {
           <div className="absolute top-[45%] right-0 w-[500px] h-[300px] bg-cyan-500/5 blur-[130px] rounded-full" />
         </div>
 
-        <div className="relative z-10 w-full max-w-[1660px] mx-auto px-2.5 sm:px-5">
+        <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
           {/* Top Back Button */}
           <div className="mb-3.5 sm:mb-6">
             <button
@@ -1292,7 +1292,7 @@ export default function NewsPage() {
           <div className="absolute top-[45%] right-0 w-[500px] h-[300px] bg-cyan-500/5 blur-[130px] rounded-full" />
         </div>
 
-        <div className="relative z-10 w-full max-w-[1660px] mx-auto px-2.5 sm:px-5">
+        <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
           {/* Top Back Button */}
           <div className="mb-3.5 sm:mb-6">
             <button
@@ -1505,7 +1505,7 @@ export default function NewsPage() {
           <div className="absolute top-[45%] right-0 w-[500px] h-[300px] bg-cyan-500/5 blur-[130px] rounded-full" />
         </div>
 
-        <div className="relative z-10 w-full max-w-[1660px] mx-auto px-2.5 sm:px-5">
+        <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
           {/* Top Back Button */}
           <div className="mb-3.5 sm:mb-6">
             <button
@@ -1734,7 +1734,7 @@ export default function NewsPage() {
           <div className="absolute top-[45%] right-0 w-[500px] h-[300px] bg-cyan-500/5 blur-[130px] rounded-full" />
         </div>
 
-        <div className="relative z-10 w-full max-w-[1660px] mx-auto px-2.5 sm:px-5">
+        <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
           <div className="mb-3.5 sm:mb-6">
             <button
               type="button"
@@ -1990,7 +1990,7 @@ export default function NewsPage() {
         </div>
       </div>
 
-      <div className="relative z-10 w-full max-w-[1660px] mx-auto px-2.5 sm:px-5 pt-4 sm:pt-12 pb-3 sm:pb-10 lg:pb-16">
+      <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 pt-4 sm:pt-12 pb-3 sm:pb-10 lg:pb-16">
         {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: 22 }}

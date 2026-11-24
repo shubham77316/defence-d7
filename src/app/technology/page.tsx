@@ -77,7 +77,7 @@ export default function TechnologyPage() {
       <div className="absolute inset-0 tech-grid-bg opacity-30 pointer-events-none" />
       <div className="absolute top-24 left-1/2 -translate-x-1/2 w-[850px] h-[350px] bg-cyan-600/10 blur-[160px] pointer-events-none rounded-full" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
+      <div className="relative w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 space-y-20">
         
         {/* Page Hero */}
         <div className="text-center max-w-4xl mx-auto space-y-6">

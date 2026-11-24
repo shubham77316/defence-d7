@@ -379,7 +379,7 @@ export default function CapabilitiesPage() {
           {/* ======================================================== */}
           {/* MAIN HERO CONTENT (Headline + Sector Cards)              */}
           {/* ======================================================== */}
-          <div className="relative w-full max-w-7xl mx-auto h-full flex flex-col justify-start pt-20 sm:pt-24 md:pt-28 pb-6 px-4 sm:px-6 lg:px-8 z-20 pointer-events-none">
+          <div className="relative w-full h-full flex flex-col justify-start pt-20 sm:pt-24 md:pt-28 pb-6 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 z-20 pointer-events-none">
             {/* Animated Headline Block (Starts completely hidden below screen, ascends on scroll) */}
             <motion.div
               style={{
@@ -489,7 +489,7 @@ export default function CapabilitiesPage() {
       {/* ======================================================== */}
       {/* LOWER CONTENT: BANNERS & ACCORDIONS (Normal Page Flow)   */}
       {/* ======================================================== */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8 z-20 mt-4 sm:-mt-5 md:-mt-6">
+      <div className="relative w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 pb-6 sm:pb-8 z-20 mt-4 sm:-mt-5 md:-mt-6">
 
         {/* ========================================== */}
         {/* E-SHOP BANNER (Explore Tactical Gear Store) */}

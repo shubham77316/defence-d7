@@ -151,7 +151,7 @@ export default function HomeAboutSplitSection() {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-sky-500/5 rounded-full blur-[140px] pointer-events-none z-0" />
 
       {/* Main Inner Content */}
-      <div className="relative w-full max-w-[1680px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 z-10">
+      <div className="relative w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 z-10">
         <div className="flex flex-col items-center justify-center space-y-5 sm:space-y-8">
           
           {/* ========================================================================= */}

@@ -496,7 +496,7 @@ export default function PartnershipsPage() {
           </svg>
         </div>
 
-        <div className="relative z-10 w-full max-w-[1660px] mx-auto px-2.5 sm:px-5 space-y-4 sm:space-y-12">
+        <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 space-y-4 sm:space-y-12">
 
           {/* Section Header with Word-by-Word Scroll Reveal and Centered Layout */}
           <div ref={headingRevealRef} className="space-y-3 sm:space-y-4 text-center flex flex-col items-center justify-center pt-1 pb-1 sm:pb-4">

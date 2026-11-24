@@ -229,7 +229,7 @@ export default function BusinessesSection() {
       {/* Background Ambience Spotlight */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1100px] h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(56,189,248,0.1)_0%,transparent_65%)] blur-3xl pointer-events-none" />
 
-      <div className="relative w-full max-w-[1660px] mx-auto px-4 sm:px-6 lg:px-5 space-y-6 sm:space-y-8">
+      <div className="relative w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 space-y-6 sm:space-y-8">
         
         {/* Centered Header matching exact ABOUT US SVG Wordmark Typography */}
         <div className="flex w-full flex-col items-center text-center space-y-2.5 sm:space-y-3 select-none">

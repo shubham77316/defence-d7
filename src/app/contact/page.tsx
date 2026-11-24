@@ -103,7 +103,7 @@ export default function ContactPage() {
       {/* Background Ambience */}
       <div className="absolute top-0 right-1/4 w-[800px] h-[400px] bg-[radial-gradient(ellipse_at_top,rgba(56,189,248,0.08)_0%,transparent_70%)] blur-3xl pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
         
         {/* Top Header Section matching Screenshot */}
         <motion.div
